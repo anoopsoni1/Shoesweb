@@ -10,7 +10,7 @@ function Lower() {
 <div className="flex justify-between">
      <div className="absolute top-[40vh] text-center grid gap-5">
         <h1 className="text-2xl text-white font-semibold">DROPSET 3</h1>
-        <p className="sm:w-[90vh] w-[45vh] font-semibold sm:text-2xl text-[15px] text-white">A perfect blend of performance,durability,and style for every athlete and adventure.</p>
+        <p className="sm:w-[90vh] w-[42vh] font-semibold sm:text-2xl text-[15px] text-white">A perfect blend of performance,durability,and style for every athlete and adventure.</p>
      </div>
       <div className="sm:block hidden">
      <div className="absolute right-0 top-[40vh] text-center grid gap-5 ">

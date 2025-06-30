@@ -11,8 +11,8 @@ function Paragraph() {
 
   return (
    <>
-   <div className="sm:flex sm:ml-10 ml-5  justify-between sm:mr-10">
-    <div className="sm:w-[550px] w-[50vh]  mt-10  grid gap-5 ">
+   <div className="sm:flex sm:ml-10 ml-2  justify-between sm:mr-10">
+    <div className="sm:w-[550px] w-[42vh]  mt-10  grid gap-5 ">
       <p className="sm:text-7xl text-2xl font-semibold">We are Bold.</p>
       <p className="sm:text-[20px] text-[14px] text-gray-500">Bold design ,pushing boundaries,shoes that stant out.Each pair combines innovation,comfort,and style,designed to make a bold statement and elevate every occasion effortlessly</p>
     </div>
@@ -23,7 +23,7 @@ function Paragraph() {
   {shoe.map((sh, i)=>(
   <div key={i}>
   <div className="sm:ml-12">
-   <div className="h-[45vh] sm:w-[60vh] w-[54.26vh]  bg-cover bg-center"
+   <div className="h-[45vh] sm:w-[60vh] w-[50vh] sm:ml-0  bg-cover bg-center"
    style={{ backgroundImage:`url(${sh.img})` }}></div>
 <p className="h-[5vh] w-[10vh] bg-white sm:p-1  text-2xl relative bottom-[40vh] rotate-90 text-center ">{sh.new}</p>
     <p className="font-semibold ">{sh.name}</p>
