@@ -28,18 +28,18 @@ function Footer() {
             <div className="flex justify-between mt-14">
                 <div>
                     <ul className="grid gap-2 font-semibold ">
-                    <li className="hover:text-black text-gray-700">Register/Sign In</li>
-                    <li className="hover:text-black text-gray-700">Account</li>
-                    <li className="hover:text-black text-gray-700">Orders</li>
-                    <li className="hover:text-black text-gray-700">Shipping & Returns</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Register/Sign In</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Account</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Orders</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Shipping & Returns</li>
                     </ul>
                 </div>
                 <div>
                     <ul className="grid gap-2 font-semibold">
-                    <li className="hover:text-black text-gray-700">FAQ</li>
-                    <li className="hover:text-black text-gray-700">Contact Us</li>
-                    <li className="hover:text-black text-gray-700">Careers</li>
-                    <li className="hover:text-black text-gray-700"> Instagram</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">FAQ</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Contact Us</li>
+                    <li className="hover:text-black text-gray-700 hover:underline">Careers</li>
+                    <li className="hover:text-black text-gray-700 hover:underline"> Instagram</li>
                     </ul>
                 </div>
             </div>

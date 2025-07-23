@@ -22,9 +22,9 @@ function Paragraph() {
  <div className="sm:mt-6 w-full mt-10 flex flex-wrap gap-0">
   {shoe.map((sh, i)=>(
   <div key={i}>
-  <div className="sm:ml-12">
+  <div className="sm:ml-12 hover:scale-105">
    <div className="h-[45vh] sm:w-[60vh] w-[50vh] sm:ml-0  bg-cover bg-center"
-   style={{ backgroundImage:`url(${sh.img})` }}></div>
+   style={{ backgroundImage:`url(${sh.img}) ` }}></div>
 <p className="h-[5vh] w-[10vh] bg-white sm:p-1  text-2xl relative bottom-[40vh] rotate-90 text-center ">{sh.new}</p>
     <p className="font-semibold ">{sh.name}</p>
    <p className="sm:text-[13px] text-[12px] text-gray-500">₹{sh.price}</p>

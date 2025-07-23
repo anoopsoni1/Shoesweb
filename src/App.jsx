@@ -12,7 +12,6 @@ function App() {
       <div className='overflow-hidden'>
       <Heading />
       <Home />
-      <Page />
       <Paragraph />
       <Header />
       <Lower />
