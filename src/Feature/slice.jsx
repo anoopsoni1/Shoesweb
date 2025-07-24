@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
  const initialState = {
     cartitem : [] ,
@@ -32,12 +32,9 @@ if(existingitem){
         removefromcart: (state, action) => {
             state.cartitem = state.cartitem.filter(item => item.id !== action.payload);
           },
-          removefrombuy: (state, action) => {
-            state.cartitem = state.cartitem.filter(item => item.id !== action.payload);
-          },
       }
   })
 
-  export const {addtocart,addtobuy ,removefromcart} = cartslice.actions; 
+  export const {addtocart ,removefromcart} = cartslice.actions; 
     
  export default cartslice.reducer 

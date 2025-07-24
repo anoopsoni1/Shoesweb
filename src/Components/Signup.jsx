@@ -31,12 +31,12 @@ export default function SignupPage() {
       console.log(data);
 
       if (response.status === 201) {
-        alert('✅ Registered successfully!');
+        alert('Registered successfully!');
       } else {
         alert(`${data.message}`);
       }
     } catch (err) {
-      alert('❌ Error connecting to server');
+      alert('Error connecting to server');
     }
   };
 
