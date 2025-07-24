@@ -1,11 +1,9 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import LoginPage from './Components/Login.jsx'
 import SignupPage from './Components/Signup.jsx'
-import Products from "./ProductsList/One.jsx"
 import List from './Components/List.jsx'
 import CheckoutPage from './Components/Checkout.jsx'
 import Cart from './Components/Cart.jsx'
@@ -33,6 +31,9 @@ import Fifteen from './ProductsList/Fifteen.jsx'
 import Fourteen from './ProductsList/Fouteen.jsx'
 import Eleven from './ProductsList/Eleven.jsx'
 import Twentyone from './ProductsList/Twentyone.jsx'
+import { useEffect } from 'react'
+import Dashboard from './Components/Dashboard.jsx'
+
 
 const route = createBrowserRouter([
   {
@@ -144,6 +145,10 @@ const route = createBrowserRouter([
       {
         path: "/cart" ,
         element : <Cart />
+      },
+      {
+        path: "/dashboard" ,
+        element : <Dashboard />
       }
     ]
   }
@@ -153,7 +158,7 @@ const route = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
       <Provider store={store}>
       <ToastContainer autoClose={1000} pauseOnHover={false}  /> 
-  <RouterProvider router = {route} />
+    <RouterProvider router = {route} />
      </Provider>
 
 )

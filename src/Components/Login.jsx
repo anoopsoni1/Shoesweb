@@ -36,7 +36,6 @@ export default function LoginPage() {
         setMessage(`✅ ${data.message}`);
         console.log("JWT token:", data.token);
         localStorage.setItem("userToken", data.token);
-        // Optionally redirect here
       } else {
         setMessage(`❌ ${data.message}`);
       }

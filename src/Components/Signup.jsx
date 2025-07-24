@@ -24,7 +24,7 @@ export default function SignupPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), // Send the full formData
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -33,7 +33,7 @@ export default function SignupPage() {
       if (response.status === 201) {
         alert('✅ Registered successfully!');
       } else {
-        alert(`❌ ${data.message}`);
+        alert(`${data.message}`);
       }
     } catch (err) {
       alert('❌ Error connecting to server');
