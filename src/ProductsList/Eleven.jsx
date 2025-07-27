@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export const product = {
   id : 2 ,
-  name: "Nike Air Max 2025",
+  name: "Adidas Ultraboost",
   price: 149.99,
   description:
     "Experience ultimate comfort and sleek design with the latest Nike Air Max 2025. Engineered for performance and style.",

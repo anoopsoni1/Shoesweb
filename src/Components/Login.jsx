@@ -2,47 +2,53 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function LoginPage() {
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+          email: '',
+          password: ''
   });
 
-  const [message, setMessage] = useState('');
-
   const handleChange = (e) => {
-    setFormData({
+        setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    const { email, password } = formData;
+  const { email, password } = formData;
 
-    try {
-      const res = await fetch('http://localhost:5000/api/v1/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
+  try {
+    const res = await fetch("http://localhost:5000/api/v1/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include", 
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (res.ok) {
-        setMessage(`✅ ${data.message}`);
-        console.log("JWT token:", data.token);
-        localStorage.setItem("userToken", data.token);
-      } else {
-        setMessage(`❌ ${data.message}`);
-      }
-    } catch (err) {
-      setMessage('❌ Login failed: ' + err.message);
+    if (res.ok) {
+      console.log(data.token); 
+      setMessage("Login Successful");
+      alert("Login Successful");
+
+      window.location.href = "/dashboard";
+    } else {
+      setMessage(data.message || "Login failed");
+      alert(data.message || "Login failed");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setMessage("Something went wrong");
+    alert(`Login Failed: ${err.message}`);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

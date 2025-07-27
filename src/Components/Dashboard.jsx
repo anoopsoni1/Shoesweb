@@ -1,13 +1,22 @@
 import React from "react";
+import axios from "axios";
+
 export default function Dashboard({ user }) {
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      window.location.href = "/login" ;
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Welcome, {user?.FirstName}</h2>
         <button
-          onClick={() => {
-            localStorage.removeItem("userToken");
-            window.location.reload();
-          }}
+          onClick={handleLogout}
           className="mt-6 w-full bg-red-500 text-white py-2 rounded-xl hover:bg-red-600 transition"
         >
           Logout

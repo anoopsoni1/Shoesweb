@@ -1,15 +1,29 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { removefromcart } from '../Feature/slice.jsx';
-import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { removefromcart, fetchCart, saveCart } from "../Feature/slice.jsx";
 
 function Cart() {
+  const userId = ""; 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCart(userId));
+  }, [dispatch, userId]);
+
   const cartItems = useSelector((state) => state.cart.cartitem);
 
-  const handleRemove = (item) => {
-    dispatch(removefromcart(item.id));
-    toast.success(`${item.name} removed from cart!`);
+  const handleRemove = (id) => {
+  
+    dispatch(removefromcart(id));
+
+    const removedItem = cartItems.find((item) => item.id === id);
+    if (removedItem) {
+      toast.success(`${removedItem.name} removed from cart!`);
+    }
+
+    const updatedItems = cartItems.filter((item) => item.id !== id);
+    dispatch(saveCart({ userId, items: updatedItems }));
   };
 
   const total = cartItems.reduce(
@@ -18,8 +32,8 @@ function Cart() {
   );
 
   return (
-    <div className="min-h-screen p-8  mx-auto text-center bg-gray-50">
-      <h1 className="text-4xl font-bold mb-10">🛒 Your Cart</h1>
+    <div className="min-h-screen p-8 mx-auto text-center bg-gray-50">
+      <h1 className="text-4xl font-bold mb-10">Your Cart</h1>
 
       {cartItems.length === 0 ? (
         <div className="text-gray-600 text-lg mt-20">
@@ -51,7 +65,7 @@ function Cart() {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleRemove(item)}
+                  onClick={() => handleRemove(item.id)}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                 >
                   Remove

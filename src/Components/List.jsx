@@ -1,128 +1,135 @@
 import Secondheader from "./Secondheader";
 import { useDispatch } from "react-redux";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import { addtocart } from "../Feature/slice";
+import { addtocart ,saveCart} from "../Feature/slice";
 import { toast } from "react-toastify";
-import {product} from "../ProductsList/One.jsx"
+
 import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
+ 
+const userId = "123"
+ 
 const products = [
   {
     id: 1,
     name: "Nike Air Max",
     price: 14999,
-    image: "https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg?cs=srgb&dl=pexels-craytive-1456706.jpg&fm=jpg",
+    image: "./List01.jpg",
   },
   {
     id: 2,
     name: "Adidas Ultraboost",
     price: 12999,
-    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3",
+    image: "./List02.jpeg",
   },
   {
     id: 3,
     name: "Puma RS-X",
     price: 9999,
-    image: "https://cdn.pixabay.com/photo/2016/11/19/18/06/feet-1840619_640.jpg",
+    image: "./List03.jpg",
   },
   {
     id: 4,
     name: "Reebok Classic",
     price: 7999,
-    image: "https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?cs=srgb&dl=pexels-mstudio-360817-1240892.jpg&fm=jpg",
+    image: "./List04.jpg",
   },
   {
     id: 5,
     name: "Jordan 1 Retro",
     price: 17999,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtwHk2LbS4joC06LGw6hVIAhJD61JPPTty8g&s",
+    image: "./List05.jpeg",
   },
   {
     id: 6,
     name: "New Balance 574",
     price: 8999,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6PS9r5pHGaWR8Ps2-5nKybm57D9LIa9N1pw&s",
+    image: "./List06.jpeg",
   },
    {
     id: 7,
     name: "New Balance 574",
     price: 8999,
-    image: "https://i.pinimg.com/736x/2f/d5/d4/2fd5d44e37c3d178d60678a1961010c8.jpg",
+    image: "./List07.jpg",
   },
    {
     id: 8,
     name: "New Balance 574",
     price: 8999,
-    image: "https://t4.ftcdn.net/jpg/03/66/57/71/360_F_366577181_uSV6BlMExtlVofV0xdkuEykF11OTIRT3.jpg",
+    image: "./List08.jpg",
   },
    {
     id: 9,
     name: "New Balance 574",
     price: 8999,
-    image: "https://t3.ftcdn.net/jpg/06/12/00/18/360_F_612001823_TkzT0xmIgagoDCyQ0yuJYEGu8j6VNVYT.jpg",
+    image: "./List09.jpg",
   },
    {
     id: 10,
     name: "New Balance 574",
     price: 8999,
-    image: "https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/32085907/2024/12/25/af794381-a454-4a0c-bb4d-3646c42928301735143929280UnisexComfortableRunningShoes1.jpg",
+    image: "./List10.jpg",
   },
    {
     id: 11,
     name: "New Balance 574",
     price: 8999,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD_nEW6vlxMluARSCdXjp6awXDnV5ZrBGHMw&s",
+    image: "./List11.jpeg",
   },
    {
     id: 12,
     name: "New Balance 574",
     price: 8999,
-    image: "https://png.pngtree.com/thumb_back/fh260/background/20240621/pngtree-running-shoes-with-mesh-and-black-and-white-soles-close-up-image_15805469.jpg",
+    image: "./List12.jpg",
   },
    {
     id: 13,
     name: "New Balance 574",
     price: 8999,
-    image: "https://www.pixelstalk.net/wp-content/uploads/2016/07/HD-Air-Jordan-Shoes-Image.jpg",
+    image: "./List13.jpg",
   },
    {
     id: 14,
     name: "New Balance 574",
     price: 8999,
-    image: "https://images.unsplash.com/photo-1651013691313-81b822df0044?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YWRpZGFzJTIwc2hvZXxlbnwwfHwwfHx8MA%3D%3D",
+    image: "./List14.jpeg",
   },
    {
     id: 15,
     name: "New Balance 574",
     price: 8999,
-    image: "https://www.buyon.in/wp-content/uploads/2024/08/WhatsApp-Image-2023-10-29-at-11.34.10-AM-600x545.jpeg",
+    image: "./List15.jpg",
   },
    {
     id: 16,
     name: "New Balance 574",
     price: 8999,
-    image: "https://c1.wallpaperflare.com/preview/426/87/675/shoe-adidas-sneaker.jpg",
+    image: "./List16.jpg",
   },
    {
     id: 17,
     name: "New Balance 574",
     price: 8999,
-    image: "https://t4.ftcdn.net/jpg/04/79/11/23/360_F_479112366_dku6Ufwd9OVnRB3AZxonMgRzuZYeTTYY.jpg",
+    image: "./List17.jpg",
   },
    {
     id: 18,
     name: "New Balance 574",
     price: 8999,
-    image: "https://handsomedans.co.uk/cdn/shop/products/hd-gustavo-shoes-825788.jpg?v=1642601455",
+    image: "./List18.jpeg",
+    category : "Sneaker"
   },
 ];
 const List = () => {
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
   const handleAddToCart = (product) => {
     dispatch(addtocart(product));
-    toast.success(`${product.name} added successfully`);
+    dispatch(saveCart({ userId, items: [product] })); 
+    
+     toast.success(`${product.name} added successfully`);
   };
+   
 
  const bigger = (e)=>{
    if(e===1){
@@ -211,7 +218,7 @@ const List = () => {
   ];
 
     const filteredProducts = products.filter(product => {
-    const matchesCategory = category === "All" || product.category === category &&  product.price >= minPrice && product.price <= maxPrice
+    const matchesCategory = category === "All" || product.category === category 
     return  matchesCategory;
   });
 
@@ -228,8 +235,8 @@ const List = () => {
         <h2 className="text-lg font-semibold mb-4">Categories</h2>
         <ul className="space-y-2">
           {categories.map((cat, index) => (
-            <li key={index}>
-              <button
+            <li key={index} >
+              <button 
                 onClick={() => setcategory(cat)}
                 className={`w-full text-left px-3 py-2 rounded-md ${
                   category === cat ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'
@@ -244,7 +251,7 @@ const List = () => {
       </div>
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product.id}
             className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"

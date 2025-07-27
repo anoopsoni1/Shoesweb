@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 
 export const product = {
   id : 2 ,
-  name: "Nike Air Max 2025",
+  name: "Adidas Ultraboost",
   price: 149.99,
   description:
-    "Experience ultimate comfort and sleek design with the latest Nike Air Max 2025. Engineered for performance and style.",
+    "Designed with performance mesh and cushioned soles, these sneakers offer maximum comfort and breathability for your daily runs.",
   sizes: ["6", "7", "8", "9", "10", "11"],
   images: [
     "https://www.asics.co.in/media/catalog/product/1/0/1011b974_001_sr_rt_glb-base.jpg?optimize=high&bg-color=255%2C255%2C255&fit=cover&height=375&width=500&auto=webp&format=pjpg", // front
