@@ -6,7 +6,7 @@ import Page from "./Page";
 function Home() {
   return (
    <>
-   <div className="bg-[url('./bg.png')] bg-cover bg-center">
+   <div className="bg-[url('/bg.png')] bg-cover bg-center">
     <header className="relative">
         <nav className="mt-5 ml-5 flex justify-between ">
             <div >
