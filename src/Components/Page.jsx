@@ -8,8 +8,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import Model from './model';
 import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 
 function Page() {
+const ref = useRef()
+
 
 const swipe = [
 {img:"./01.png"},
@@ -73,9 +76,9 @@ const navi = useNavigate();
          </div>
         </div>
       </div>
-       <div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg.png")] flex place-item-center sm:ml-0 ml-3'>
-         <Model />
-       </div>
+       <div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg.png")] flex place-item-center '>
+           <Model  />
+         </div>
    </>
   )
 }

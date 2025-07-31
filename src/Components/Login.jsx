@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
@@ -7,6 +8,7 @@ export default function LoginPage() {
           email: '',
           password: ''
   });
+  const navdata = useNavigate()
 
   const handleChange = (e) => {
         setFormData({
@@ -17,7 +19,6 @@ export default function LoginPage() {
 
 const handleLogin = async (e) => {
   e.preventDefault();
-
   const { email, password } = formData;
 
   try {
@@ -27,23 +28,24 @@ const handleLogin = async (e) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include", 
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      console.log(data.token); 
       setMessage("Login Successful");
-      alert("Login Successful");
+        alert("Login Successful");
 
-      window.location.href = "/dashboard";
+     const userdata = data.data.user;
+     
+      navdata("/dashboard" , {state : userdata});
+           
     } else {
       setMessage(data.message || "Login failed");
       alert(data.message || "Login failed");
     }
   } catch (err) {
-    console.error(err);
+         console.error(err);
     setMessage("Something went wrong");
     alert(`Login Failed: ${err.message}`);
   }

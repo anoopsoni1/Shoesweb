@@ -26,9 +26,9 @@ function Home() {
                 </ul>
              </div>
              <div className="flex sm:hidden none list-none gap-1">
-                <li className="bg-amber-100 p-3 rounded-[5px]"><FaRegHeart/></li>
+                <Link className="bg-amber-100 p-3 rounded-[5px]"><FaRegHeart/></Link>
                 <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]"><FaShoppingBag /></Link>
-                <li className="bg-amber-100 p-3 rounded-[5px]"><FaRegUserCircle /></li>
+                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px]"><FaRegUserCircle /></Link>
              </div>
         </nav>
     </header>

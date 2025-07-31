@@ -33,7 +33,7 @@ import Eleven from './ProductsList/Eleven.jsx'
 import Twentyone from './ProductsList/Twentyone.jsx'
 import { useEffect } from 'react'
 import Dashboard from './Components/Dashboard.jsx'
-
+import ChatBot from './Components/Chatservices.jsx'
 
 const route = createBrowserRouter([
   {
@@ -149,6 +149,10 @@ const route = createBrowserRouter([
       {
         path: "/dashboard" ,
         element : <Dashboard />
+      },
+       {
+        path: "/chat" ,
+        element : <ChatBot />
       }
     ]
   }

@@ -11,7 +11,7 @@ const Secondheader = () => {
    nav("/cart")
   }
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 w-full">
+    <header className="bg-white shadow-md sticky top-0 z-50 ">
       <div className=" mx-auto px-6 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-black">SoleMate</h1>
 

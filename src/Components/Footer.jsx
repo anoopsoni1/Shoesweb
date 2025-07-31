@@ -1,5 +1,6 @@
 import { PiShieldStarFill } from "react-icons/pi";
 import { MdOutlineDocumentScanner } from "react-icons/md";
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <>
@@ -28,7 +29,7 @@ function Footer() {
             <div className="flex justify-between mt-14">
                 <div>
                     <ul className="grid gap-2 font-semibold ">
-                    <li className="hover:text-black text-gray-700 hover:underline">Register/Sign In</li>
+                    <Link to="/SignIn" className="hover:text-black text-gray-700 hover:underline">Register/Sign In</Link>
                     <li className="hover:text-black text-gray-700 hover:underline">Account</li>
                     <li className="hover:text-black text-gray-700 hover:underline">Orders</li>
                     <li className="hover:text-black text-gray-700 hover:underline">Shipping & Returns</li>
@@ -55,8 +56,8 @@ function Footer() {
             <div className="flex justify-between mt-14 ">
                 <div>
                     <ul className="grid gap-6 font-semibold ml-2 ">
-                    <li className="hover:text-black text-gray-700">Register/Sign In</li>
-                    <li className="hover:text-black text-gray-700">Account</li>
+                    <Link to="/SignIn" className="hover:text-black text-gray-700">Register/Sign In</Link>
+                    <Link to="/dashboard" className="hover:text-black text-gray-700">Account</Link>
                     <li className="hover:text-black text-gray-700">Orders</li>
                     <li className="hover:text-black text-gray-700">Shipping & Returns</li>
                     </ul>

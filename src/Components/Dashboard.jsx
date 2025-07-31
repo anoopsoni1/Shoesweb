@@ -1,10 +1,13 @@
-import React from "react";
 import axios from "axios";
-
-export default function Dashboard({ user }) {
+import { useLocation } from "react-router-dom";
+export default function Dashboard() {
+const location = useLocation();
+ const user = location.state ;
+ 
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+         
       window.location.href = "/login" ;
     } catch (error) {
       console.error("Logout failed", error);

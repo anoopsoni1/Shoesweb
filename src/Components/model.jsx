@@ -6,16 +6,16 @@ import { useEffect, useRef } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
-function Model() {
+function Model(glbfile) {
   const canvasRef = useRef();
   gsap.registerPlugin(useGSAP);
-
+  
   useEffect(() => {
  
     const scene = new THREE.Scene();
    
     const camera = new THREE.PerspectiveCamera(
-      15,
+      19,
       window.innerWidth.clientWidth / window.innerHeight.clientHeight,
       0.1,
       1000

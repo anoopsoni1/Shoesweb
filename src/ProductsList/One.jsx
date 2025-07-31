@@ -22,9 +22,7 @@ export const product = {
 const One = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
-
     const dispatch = useDispatch();
-
   const handleAddToCart = (product) => {
     dispatch(addtocart(product));
     toast.success(`${product.name} added successfully`);
@@ -33,12 +31,12 @@ const One = () => {
   return (
           <>
      <Secondheader />
-    <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-2">
+    <div className="sm:max-w-6xl mx-auto sm:p-6 p-2.5 grid md:grid-cols-2 gap-10 mt-2">
       <div>
         <img
           src={selectedImage}
           alt="Shoe"
-          className="w-full h-[400px] object-cover rounded-xl shadow-md"
+          className="sm:w-[500px] w-[300px] h-[400px] object-cover rounded-xl shadow-md"
         />
         <div className="flex gap-4 mt-4">
           {product.images.map((img, index) => (
@@ -57,16 +55,16 @@ const One = () => {
 
       <div className="flex flex-col justify-between">
         <div>
-          <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-          <p className="text-xl text-gray-700 font-semibold mb-4">
+          <h1 className="sm:text-4xl text-2xl font-bold mb-2">{product.name}</h1>
+          <p className="text-[14px] text-gray-700 font-semibold mb-4">
             ₹{product.price}
           </p>
-          <p className="text-gray-600 mb-6">{product.description}</p>
+          <p className="text-gray-600 mb-6 sm:text-[16px] text-[14px] w-[300px] sm:w-full">{product.description}</p>
 
     
           <div className="mb-6">
             <h3 className="mb-2 font-semibold">Select Size</h3>
-            <div className="flex gap-3">
+            <div className="flex sm:gap-3 gap-1">
               {product.sizes.map((size) => (
                 <button
                   key={size}
