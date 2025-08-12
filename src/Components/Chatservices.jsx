@@ -10,7 +10,7 @@ const [answer ,setanswer] = useState("")
 async function generateanswer (){
   setanswer("Loading...")
  const response = await axios({
-  url:"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA2DQkTOWLjNxcej8ObMDjrAgIZjSowdfs" ,
+  url:"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" ,
   method:"post" ,
   data: { 
     contents : [{
