@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
-function Model() {
+function Model2() {
   const canvasRef = useRef();
   gsap.registerPlugin(useGSAP);
   
@@ -52,23 +52,13 @@ const controls = new OrbitControls(camera, renderer.domElement);
     };
      animate();
   }, []);
-useGSAP(()=>{
-   gsap.from("#one" ,{
-        y  : -500 , 
-       duration : 1.5, 
-       ease : "power2.out",
-   })
-      
-}, [])
-
-
   return (
    <>
- <div className='sm:mt-24  overflow-hidden'>
-  <canvas ref={canvasRef} id="one" className='sm:h-[80vh] sm:w-[100vw] w-[50vh] h-[50vh] z-50 '/>
+ <div className=' overflow-hidden'>
+  <canvas ref={canvasRef} id="one" className='w-[50vh] h-[50vh] z-50 '/>
  </div>
 </>
    )
 }
 
-export default Model;
+export default Model2;

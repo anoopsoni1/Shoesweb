@@ -5,7 +5,6 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import LoginPage from './Components/Login.jsx'
 import SignupPage from './Components/Signup.jsx'
 import List from './Components/List.jsx'
-import CheckoutPage from './Components/Checkout.jsx'
 import Cart from './Components/Cart.jsx'
 import { Provider } from 'react-redux'
 import { store } from './Store/Store.js'
@@ -34,6 +33,9 @@ import Twentyone from './ProductsList/Twentyone.jsx'
 import { useEffect } from 'react'
 import Dashboard from './Components/Dashboard.jsx'
 import ChatBot from './Components/Chatservices.jsx'
+import ContactUs from './Components/Contact.jsx'
+import List1 from './Components/List1.jsx'
+
 
 const route = createBrowserRouter([
   {
@@ -139,10 +141,6 @@ const route = createBrowserRouter([
         element : <List />
       },
       {
-        path: "/checkout",
-        element : <CheckoutPage />
-      },
-      {
         path: "/cart" ,
         element : <Cart />
       },
@@ -153,7 +151,27 @@ const route = createBrowserRouter([
        {
         path: "/chat" ,
         element : <ChatBot />
-      }
+      },
+      {
+        path: "/contact" ,
+        element : <ContactUs />
+      },
+      {
+        path: "/list1" ,
+        element : <List1 />
+      },
+      {
+        path: "/list2" ,
+        element : <List1 />
+      },
+      {
+        path: "/list3" ,
+        element : <List1 />
+      },
+      {
+        path: "/list4" ,
+        element : <List1 />
+      },
     ]
   }
 ])

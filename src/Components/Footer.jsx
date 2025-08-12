@@ -30,15 +30,15 @@ function Footer() {
                 <div>
                     <ul className="grid gap-2 font-semibold ">
                     <Link to="/SignIn" className="hover:text-black text-gray-700 hover:underline">Register/Sign In</Link>
-                    <li className="hover:text-black text-gray-700 hover:underline">Account</li>
-                    <li className="hover:text-black text-gray-700 hover:underline">Orders</li>
+                    <Link to="/dashboard" className="hover:text-black text-gray-700 hover:underline">Account</Link>
+                    <Link to="/cart" className="hover:text-black text-gray-700 hover:underline">Orders</Link>
                     <li className="hover:text-black text-gray-700 hover:underline">Shipping & Returns</li>
                     </ul>
                 </div>
                 <div>
                     <ul className="grid gap-2 font-semibold">
                     <li className="hover:text-black text-gray-700 hover:underline">FAQ</li>
-                    <li className="hover:text-black text-gray-700 hover:underline">Contact Us</li>
+                    <Link to="/contact" className="hover:text-black text-gray-700 hover:underline">Contact Us</Link>
                     <li className="hover:text-black text-gray-700 hover:underline">Careers</li>
                     <li className="hover:text-black text-gray-700 hover:underline"> Instagram</li>
                     </ul>
@@ -65,7 +65,7 @@ function Footer() {
                 <div>
                     <ul className="grid gap-6 font-semibold">
                     <li className="hover:text-black text-gray-700">FAQ</li>
-                    <li className="hover:text-black text-gray-700">Contact Us</li>
+                    <Link to="/contact" className="hover:text-black text-gray-700">Contact Us</Link>
                     <li className="hover:text-black text-gray-700">Careers</li>
                     <li className="hover:text-black text-gray-700"> Instagram</li>
                     </ul>

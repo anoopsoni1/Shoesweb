@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {  Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Feature/Slicetwo.jsx";
+import { id } from 'date-fns/locale';
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
@@ -8,7 +11,9 @@ export default function LoginPage() {
           email: '',
           password: ''
   });
-  const navdata = useNavigate()
+const navdata = useNavigate()
+
+const dispatch = useDispatch();
 
   const handleChange = (e) => {
         setFormData({
@@ -17,29 +22,30 @@ export default function LoginPage() {
     });
   };
 
-const handleLogin = async (e) => {
+let userid ;
+const handleLogin =  async(e) => {
   e.preventDefault();
   const { email, password } = formData;
 
   try {
     const res = await fetch("http://localhost:5000/api/v1/user/login", {
       method: "POST",
+      credentials : "include" ,
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    });
+    });      
 
     const data = await res.json();
-
+   dispatch(setUser(data.data.user)); 
+        const id  = data.data.user._id ;
+           userid = {id : id}
     if (res.ok) {
       setMessage("Login Successful");
-        alert("Login Successful");
-
-     const userdata = data.data.user;
-     
-      navdata("/dashboard" , {state : userdata});
-           
+          alert("Login Successful");
+             Getcart() ;
+             navdata("/contact");
     } else {
       setMessage(data.message || "Login failed");
       alert(data.message || "Login failed");
@@ -51,6 +57,17 @@ const handleLogin = async (e) => {
   }
 };
 
+const Getcart  = async()=>{
+    const res = await fetch(`http://localhost:5000/api/v1/user/getcart/${userid.id}`, {
+      method: "GET",
+      credentials : "include" ,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+     const dat = await res.json();
+       console.log(dat);
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

@@ -2,10 +2,13 @@ import  { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addtocart } from "../Feature/slice.jsx";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import Secondheader from "../Components/Secondheader.jsx";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { FaRegHeart } from "react-icons/fa";
+import { FaShoppingBag } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Model2 from "../Components/Model2.jsx";
 export const product = {
   id : 1 ,
   name: "Nike Air Max 2025",
@@ -14,23 +17,90 @@ export const product = {
     "Experience ultimate comfort and sleek design with the latest Nike Air Max 2025. Engineered for performance and style.",
   sizes: ["6", "7", "8", "9", "10", "11"],
   images: [
-    "https://www.asics.co.in/media/catalog/product/1/0/1011b974_001_sr_rt_glb-base.jpg?optimize=high&bg-color=255%2C255%2C255&fit=cover&height=375&width=500&auto=webp&format=pjpg", // front
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS76qCk_aFsvo99GdxCQAKqpgsssaLcOijaIg&s", // side
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff",    // top
-  ],
+    "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/f6ab642d-c6d0-4a99-b2d8-b582cc99576f/NIKE+AIR+MAX+1+%2786+OG.png ", // front
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj3a4O9pcaumww-n2NFThWA9w4yl_5aMlbhg&s", // side
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmGzUQheUOLHRZSoFCNBM1QxPBoY6_3AhUlQ&s"   
+ ],
 };
+
 const One = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
     const dispatch = useDispatch();
-  const handleAddToCart = (product) => {
-    dispatch(addtocart(product));
-    toast.success(`${product.name} added successfully`);
+    const handleAddToCart = (product) => {
+       dispatch(addtocart(product));
+       toast.success(`${product.name} added successfully`);
   };
+
+  const user = useSelector((state) => state.user.userData);
+
+ const handleLogout = async() => {
+      try {
+      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+       dispatch(clearUser())
+         navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
 
   return (
           <>
-     <Secondheader />
+      <header className="relative">
+          <nav className="mt-5 ml-5 flex  justify-between">
+            <div>
+              <Link to="/" className="text-2xl font-medium">SoleMate</Link>
+            </div>
+  
+            <div className="sm:block hidden">
+              <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5">
+  
+                <Link to="/" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaRegHeart />
+                </Link>
+                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaShoppingBag />
+                </Link>
+  
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
+                    <FaRegUserCircle />
+                  </Link>
+                )}
+              </ul>
+            </div>
+  
+            <div className="flex sm:hidden list-none gap-1">
+              <Link className="bg-amber-100 p-3 rounded-[5px]">
+                <FaRegHeart />
+              </Link>
+              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+                <FaShoppingBag />
+              </Link>
+  
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaRegUserCircle />
+                </Link>
+              )}
+            </div>
+          </nav>
+        </header>
     <div className="sm:max-w-6xl mx-auto sm:p-6 p-2.5 grid md:grid-cols-2 gap-10 mt-2">
       <div>
         <img
@@ -51,6 +121,9 @@ const One = () => {
             />
           ))}
         </div>
+        {/* <div className="absolute bottom-70 ml-13 ">
+          <Model2 />
+        </div> */}
       </div>
 
       <div className="flex flex-col justify-between">

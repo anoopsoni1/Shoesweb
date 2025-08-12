@@ -5,7 +5,7 @@ import { useDispatch , useSelector } from "react-redux";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { addtocart ,saveCart} from "../Feature/slice";
 import { toast } from "react-toastify";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { clearUser ,setUser } from "../Feature/Slicetwo";
@@ -122,7 +122,7 @@ const products = [
     category : "Sneaker"
   },
 ];
-const List = () => {
+const List3 = () => {
    const dispatch = useDispatch();
 const user = useSelector((state) => state.user.userData);
  const navigate = useNavigate();
@@ -345,22 +345,10 @@ const user = useSelector((state) => state.user.userData);
       </div>
 <div className="mt-14 ">
   <ul className="flex gap-12 justify-center">
-    <NavLink to="/list1" className={(isActive)=>
-      ` text-white text-2xl p-2 rounded-b-full
-      ${isActive ? "bg-amber-400" : "bg-black" }`
-    }>1</NavLink>
-     <NavLink to="/list2" className={(isActive)=>
-      ` text-white text-2xl p-2 rounded-b-full
-      ${isActive ? "bg-amber-400" : "bg-black" }`
-    }>2</NavLink>
-     <NavLink to="/list3" className={(isActive)=>
-      ` text-white text-2xl p-2 rounded-b-full
-      ${isActive ? "bg-amber-400" : "bg-black" }`
-    }>3</NavLink>
-     <NavLink to="/list4" className={(isActive)=>
-      ` text-white text-2xl p-2 rounded-b-full
-      ${isActive ? "bg-amber-400" : "bg-black" }`
-    }>4</NavLink>
+    <Link to="/list1" className="bg-black text-white text-2xl p-2 rounded-b-full">1</Link>
+    <Link to="/list2" className="bg-black text-white text-2xl p-2 rounded-b-full">2</Link>
+    <Link to="/list3" className="bg-black text-white text-2xl p-2 rounded-b-full">3</Link>
+    <Link to="/list4" className="bg-black text-white text-2xl p-2 rounded-b-full">4</Link>
   </ul>
 </div>
     </div>
@@ -408,4 +396,4 @@ const user = useSelector((state) => state.user.userData);
     </>
   );
 }
-export default List;
+export default List3;

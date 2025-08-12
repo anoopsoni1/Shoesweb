@@ -1,78 +1,48 @@
-import React, { useState } from "react";
+import { useState } from 'react'
+import axios from 'axios';
+
 
 function Chatbot() {
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([
-    {
-      role: "bot",
-      text: "Hi! I’m your shoe assistant. Ask about orders, payments, or returns.",
+const [question , setquestion] = useState("")
+const [answer ,setanswer] = useState("")
+
+
+async function generateanswer (){
+  setanswer("Loading...")
+ const response = await axios({
+  url:"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA2DQkTOWLjNxcej8ObMDjrAgIZjSowdfs" ,
+  method:"post" ,
+  data: { 
+    contents : [{
+    parts :[{text: question}]
     },
-  ]);
-
-  const sendMessage = async () => {
-    if (!message.trim()) return;
-
-    const updatedChat = [...chat, { role: "user", text: message }];
-
-    try {
-      const res = await fetch("http://localhost:5000/api/v1/user/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: updatedChat.map((msg) => ({
-            role: msg.role,
-            parts: [{ text: msg.text }],
-          })),
-        }),
-      });
-
-      const data = await res.json();
-      const botReply = data.reply || "⚠️ Gemini did not return a reply.";
-
-      setChat([...updatedChat, { role: "bot", text: botReply }]);
-      setMessage("");
-    } catch (error) {
-      console.error("Gemini API error:", error);
-      setChat([
-        ...updatedChat,
-        { role: "bot", text: "⚠️ Failed to connect to Gemini server." },
-      ]);
-    }
-  };
-
-  return (
-    <div className="max-w-md mx-auto h-screen flex flex-col border rounded-lg shadow-lg p-4">
-      <div className="flex-1 overflow-y-auto space-y-2 bg-gray-50 p-3 rounded">
-        {chat.map((msg, i) => (
-          <div
-            key={i}
-            className={`p-2 rounded-xl text-sm max-w-[80%] ${
-              msg.role === "user"
-                ? "bg-blue-600 text-white ml-auto"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-            <strong>{msg.role === "user" ? "You" : "Bot"}:</strong> {msg.text}
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 flex gap-2">
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          className="flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Ask about shoes, payments, or orders..."
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          Send
-        </button>
-      </div>
-    </div>
-  );
+  ],
+  },
+});
+  setanswer(response['data']['candidates'][0]['content']['parts'][0]['text']);
 }
 
-export default Chatbot;
+  return (
+    <>
+  <div className='flex justify-around '>
+   <h1 className='text-7xl place-items-center grid text-white'>AI BOT</h1>
+   <img src='https://impossibleimages.ai/wp-content/uploads/2023/02/Ten-misconceptions-about-AI-generated-art.jpg' className='h-20  rounded-full w-20 mt-5'/>
+
+   <h1 className='text-white mt-4 text-7xl '> Created by Anoop</h1>  </div>
+   <div className='grid place-items-center gap-8 mt-32'>
+     <input  value={question}  
+     onChange={(e)=>{
+       setquestion(e.target.value)
+     }}
+    className='  rounded-2xl   text-3xl h-16 w-1/2 '/>
+    
+    <button className='bg-slate-600 rounded-lg w-36 h-12 text-white ' onClick={generateanswer}>Generate Answer</button>
+    </div>
+    <div className='grid place-items-center mt-9'>
+   <pre className='overflow-hidden font-medium  font-sans  w-3/4 bg-slate-200 text-center'><p>{answer}</p></pre>
+   </div>
+    </>
+  )
+}
+
+export default Chatbot
