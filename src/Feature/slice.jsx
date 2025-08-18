@@ -1,9 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 
-const API_URL = "http://localhost:5000/api/v1/user";
-
-
+// Load cart from localStorage
 const loadCartFromStorage = () => {
   try {
     const data = localStorage.getItem("cart");
@@ -14,7 +11,6 @@ const loadCartFromStorage = () => {
   }
 };
 
-
 const saveCartToStorage = (cart) => {
   try {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -23,26 +19,8 @@ const saveCartToStorage = (cart) => {
   }
 };
 
-
-export const fetchCart = createAsyncThunk(
-  "cart/fetchCart",
-  async () => {
-    const res = await axios.get(`${API_URL}/getcart`);
-    return res.data.items || [];
-  }
-);
-
-export const saveCart = createAsyncThunk(
-  "cart/saveCart",
-  async ({ userId, items }) => {
-    await axios.post(`${API_URL}/cart`, { userId, items });
-    return items;
-  }
-);
-
 const initialState = {
-  cartitem: loadCartFromStorage(), 
-  status: "idle",
+  cartitem: loadCartFromStorage(),
 };
 
 const cartSlice = createSlice({
@@ -74,18 +52,6 @@ const cartSlice = createSlice({
       state.cartitem = [];
       saveCartToStorage([]);
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCart.fulfilled, (state, action) => {
-        state.cartitem = action.payload;
-        saveCartToStorage(action.payload);
-        state.status = "succeeded";
-      })
-      .addCase(saveCart.fulfilled, (state, action) => {
-        state.cartitem = action.payload;
-        saveCartToStorage(action.payload);
-      });
   },
 });
 

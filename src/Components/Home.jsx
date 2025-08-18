@@ -23,15 +23,15 @@ function Home() {
   };
 
   return (
-    <div className="bg-[url('/bg.png')] bg-cover bg-center">
+    <div className="bg-[url('/imagesss.png')] bg-cover bg-center">
       <header className="relative">
-        <nav className="mt-2 ml-5 flex justify-between">
+        <nav className="pt-2 ml-5 flex justify-between">
           <div>
-            <p className="text-2xl font-medium">SoleMate</p>
+            <p className="text-2xl font-medium text-white">SoleMate</p>
           </div>
 
           <div className="sm:block hidden">
-            <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5">
+            <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5 text-white">
               <li>Featured</li>
               <li>Men</li>
               <li>Women</li>
@@ -39,10 +39,10 @@ function Home() {
               <li>Accessories</li>
               <li>Sale</li>
 
-              <li className="bg-amber-100 p-3 rounded-[5px]">
+              <li className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaRegHeart />
               </li>
-              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaShoppingBag />
               </Link>
 
@@ -54,12 +54,12 @@ function Home() {
                 >
                   Logout
                 </button>
-                <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
+                <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
                   <FaRegUserCircle />
                 </Link>
                 </>
               ) : (
-                <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
+                <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
                   <FaRegUserCircle />
                 </Link>
               )}

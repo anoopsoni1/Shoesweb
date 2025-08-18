@@ -3,12 +3,12 @@ import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useDispatch , useSelector } from "react-redux";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import { addtocart ,saveCart} from "../Feature/slice";
+import { addtocart } from "../Feature/slice";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import { clearUser ,setUser } from "../Feature/Slicetwo";
+import { clearUser  } from "../Feature/Slicetwo";
  
  
 const products = [
@@ -139,7 +139,6 @@ const user = useSelector((state) => state.user.userData);
 
   const handleAddToCart = (product) => {
     dispatch(addtocart(product));
-    dispatch(saveCart({  items: [product] })); 
     
      toast.success(`${product.name} added successfully`);
   };

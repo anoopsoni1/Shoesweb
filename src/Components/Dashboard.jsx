@@ -1,88 +1,107 @@
 import {
-  FaShoePrints,
   FaHome,
   FaShoppingCart,
   FaRupeeSign,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector ,useDispatch} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
-import { clearUser ,setUser } from "../Feature/Slicetwo.jsx";
+import { clearUser, setUser } from "../Feature/Slicetwo.jsx";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
- const dispatch = useDispatch()
-const navigate = useNavigate(); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/v1/user/profile", {
-        withCredentials: true,
-      });
-      dispatch(setUser(res.data.user));
-    } catch (err) {
-       dispatch(clearUser());
-    }
-  };
-  fetchUser();
-}, []);
-
-const handleLogout = async() => {
+  // Fetch user profile
+  useEffect(() => {
+    const fetchUser = async () => {
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
-             dispatch(clearUser())
-            console.log("hello");
-             navigate("/login");
+        const res = await axios.get("http://localhost:5000/api/v1/user/profile", {
+          withCredentials: true,
+        });
+        dispatch(setUser(res.data.user));
+      } catch (err) {
+        dispatch(clearUser());
+      }
+    };
+    fetchUser();
+  }, [dispatch]);
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/v1/user/logout",
+        {},
+        { withCredentials: true }
+      );
+      dispatch(clearUser());
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
     }
-  }
- 
-  const handlenav = ()=>{
-    navigate("/login")
-  }
+  };
 
- const user = useSelector((state) => state.user.userData);
+  // Redirect to login if not logged in
+  const handlenav = () => {
+    navigate("/login");
+  };
+
+  const user = useSelector((state) => state.user.userData);
 
   return (
-    <div className="min-h-screen flex">
-      <aside className="sm:w-64 w-[360px] shadow-md p-6 grid place-items-center">
-        <h1 className="text-3xl font-bold text-gray-800 sm:mb-8">
-         {  user ? (<h1>{user?.FirstName}{user?.LastName}</h1>):(
-          <>
-          <div className="grid gap-2 place-items-center">
-          <h1>Please Login </h1>
-          <button onClick={handlenav} className="border-2 px-2 bg-black text-amber-50">Login</button>
-          </div>
-           </>
-          ) }</h1>
-        <nav className="gap-6 grid text-gray-700">
-        <Link to="/" ><NavItem icon={<FaHome />} label="Home" /></Link> 
-        <Link to="/list"> <NavItem icon={<FaShoePrints />} label="Products" /></Link>  
-        <Link> <NavItem icon={<FaShoppingCart />} label="Orders" /> </Link> 
-        <Link onClick={handleLogout}><NavItem icon={<FaSignOutAlt />} label="Logout" /></Link>  
-        </nav>
-      </aside>
-
-    
-      <main className="flex-1 ">
-        <header className="mb-8 sm:block hidden">
-          <h2 className="text-3xl font-semibold text-gray-800">Dashboard Overview</h2>
-          <p className="text-gray-500">Manage your products, orders and more.</p>
-        </header>
-      </main>
+    <div className="">
+      {user ? (
+        <div className="min-h-screen flex justify-between bg-gradient-to-br from-orange-100 to-purple-100 p-6">
+          <aside className="w-[40vh] bg-white rounded-2xl p-6 shadow-lg flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <img
+                  src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user.user}`}
+                  alt="User Avatar"
+                  className="w-16 h-16 rounded-full border-2 border-purple-500 object-cover"
+                />
+                <div>
+                  <h2 className="font-bold">
+                    {user.FirstName} {user.LastName}
+                  </h2>
+                  <p className="text-sm text-gray-500">{user.email}</p>
+                </div>
+              </div>
+              <nav className="mt-4">
+                <ul className="grid gap-6 font-bold">
+                  <Link to="/" className="hover:text-yellow-500">1. Home</Link>
+                  <Link to="/cart" className="hover:text-yellow-500">2. Cart</Link>
+                  <Link to="/cart" className="hover:text-yellow-500">3. Orders</Link>
+                  <Link to="/contact" className="hover:text-yellow-500">4. Contact</Link>
+                  <Link to="/setting" className="hover:text-yellow-500">5. Setting</Link>
+                </ul>
+              </nav>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-red-500 mt-6 hover:text-red-700"
+            >
+              <FaSignOutAlt /> Logout
+            </button>
+          </aside>
+        </div>
+      ) : (
+        <div className="grid gap-2 place-items-center min-h-screen">
+          <h1 className="text-xl font-bold">Please Login</h1>
+          <button
+            onClick={handlenav}
+            className="border-2 px-4 py-2 bg-black text-amber-50 rounded-lg hover:bg-gray-800"
+          >
+            Login
+          </button>
+        </div>
+      )}
     </div>
   );
 };
-
-const NavItem = ({ icon, label }) => (
-  <div className="flex items-center space-x-3 cursor-pointer hover:text-black transition">
-    {icon}
-    <span>{label}</span>
-  </div>
-);
-
 
 export default Dashboard;

@@ -34,21 +34,21 @@ const navi = useNavigate();
 
   return (
    <>
-    <div className=' sm:flex grid justify-between mr-10'>
+    <div className=' sm:flex grid justify-between mr-10 pb-[15.52vh]'>
       <div className='sm:mt-32 sm:ml-10 mt-16 ml-5 grid'>
-       <p className='sm:text-7xl text-2xl font-bold'>Discover</p>
-       <p className='sm:text-7xl text-2xl font-bold'>Comfort and Style for</p>
-       <p className='sm:text-7xl text-2xl font-bold'>Every Occasion</p>
-       <p className='mt-2 sm:text-[20px] text-[14px] w-[50vh] sm:w-full'>Discover the perfect balance of comfort,durability,and style for every</p> 
-       <p className='sm:text-[20px] text-[14px] w-[50vh] sm:w-full'>occasion with our versatile,high-quality footwear collection</p>
+       <p className='sm:text-7xl text-2xl font-bold text-white'>Discover</p>
+       <p className='sm:text-7xl text-2xl font-bold text-white'>Comfort and Style for</p>
+       <p className='sm:text-7xl text-2xl font-bold text-white'>Every Occasion</p>
+       <p className='mt-2 sm:text-[20px] text-[14px] w-[50vh] sm:w-full text-gray-300'>Discover the perfect balance of comfort,durability,and style for every</p> 
+       <p className='text-gray-300 sm:text-[20px] text-[14px] w-[50vh] sm:w-full'>occasion with our versatile,high-quality footwear collection</p>
          <div className='sm:block hidden'>
-         <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-black flex justify-between place-items-center '>
-        <button  className='ml-4 text-[18px] mb-1 text-white'>Explore</button>
+         <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-gradient-to-r from-yellow-300 to-yellow-600 flex justify-between place-items-center '>
+        <button  className='ml-4 text-[18px] mb-1 font-bold'>Explore</button>
             <div className='rounded-full bg-amber-50 mr-1'><MdArrowOutward  size={35}/></div>
          </div>
          </div>
       </div>
-    <div className="sm:w-[80vh] sm:h-[65vh] sm:mt-14 w-[40vh] h-[30vh] mt-7 sm:ml-0 ml-10">
+    <div className="sm:w-[90vh] sm:h-[65vh] sm:mt-14 w-[40vh] h-[30vh] mt-7 sm:ml-0 ml-6">
         <Swiper
         modules={[Autoplay]}
         autoplay={{ delay: 2000, disableOnInteraction: false }}
@@ -76,7 +76,7 @@ const navi = useNavigate();
          </div>
         </div>
       </div>
-       <div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg.png")] flex place-item-center '>
+       <div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg99.png")] flex place-item-center'>
            <Model  />
          </div>
    </>

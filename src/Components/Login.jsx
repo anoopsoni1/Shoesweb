@@ -45,7 +45,7 @@ const handleLogin =  async(e) => {
       setMessage("Login Successful");
           alert("Login Successful");
              Getcart() ;
-             navdata("/contact");
+             navdata("/dashboard");
     } else {
       setMessage(data.message || "Login failed");
       alert(data.message || "Login failed");
