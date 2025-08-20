@@ -8,7 +8,6 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import Model2 from "../Components/Model2.jsx";
 export const product = {
   id : 1 ,
   name: "Nike Air Max 2025",

@@ -2,11 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { addtocart, removefromcart, clearCart } from "../Feature/slice.jsx";
 import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import {useNavigate} from "react-router-dom"
+import { Link } from "react-router-dom";
+import { FaRegHeart } from "react-icons/fa";
+import { FaShoppingBag } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
 
 function Cart() {
   const dispatch = useDispatch();
   const payal = useNavigate() ;
   const cart = useSelector((state) => state.cart.cartitem);
+
+  const user = useSelector((state) => state.user.userData);
 
   const handleAdd = (item) => {
     dispatch(addtocart(item));
@@ -25,10 +31,81 @@ function Cart() {
     0
   );
 
+    const handleLogout = async() => {
+      try {
+      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+        dispatch(clearUser())
+         navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
    const handlenavigate = ()=>{
-       payal("/checkout")
+      payal("/checkout")
    }
+
+   const handlenavi = ()=>{
+     payal("/login")
+   }
+
   return (
+    <>
+    <header className="relative" >
+          <nav className=" ml-5 flex  justify-between">
+            <div>
+              <Link to="/" className="text-2xl font-medium">SoleMate</Link>
+            </div>
+  
+            <div className="sm:block hidden">
+              <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5">
+  
+                <Link to="/" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaRegHeart />
+                </Link>
+                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaShoppingBag />
+                </Link>
+  
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
+                    <FaRegUserCircle />
+                  </Link>
+                )}
+              </ul>
+            </div>
+  
+            <div className="flex sm:hidden list-none gap-1">
+              <Link className="bg-amber-100 p-3 rounded-[5px]">
+                <FaRegHeart />
+              </Link>
+              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+                <FaShoppingBag />
+              </Link>
+  
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px]">
+                  <FaRegUserCircle />
+                </Link>
+              )}
+            </div>
+          </nav>
+        </header>
+   
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
       <div className="flex items-center gap-2 mb-6">
         <ShoppingCart className="w-6 h-6 text-indigo-600" />
@@ -80,7 +157,6 @@ function Cart() {
                 </button>
               </div>
 
-              {/* Item Total */}
               <div className="text-right">
                 <p className="text-lg font-semibold text-gray-800">
                   ₹{item.price * item.quantity}
@@ -91,7 +167,6 @@ function Cart() {
         </div>
       )}
 
-      {/* Subtotal & Actions */}
       {cart.length > 0 && (
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t pt-6">
           <h3 className="text-xl font-bold text-gray-800">
@@ -104,14 +179,19 @@ function Cart() {
             >
               <Trash2 className="w-5 h-5" /> Clear Cart
             </button>
-            <button onClick={handlenavigate}
+            {user ? (  <button onClick={handlenavigate}
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Checkout
-            </button>
+            </button>) : (  <button onClick={handlenavi}
+             className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
+              Login
+            </button>)}
+          
           </div>
         </div>
       )}
     </div>
+     </>
   );
 }
 

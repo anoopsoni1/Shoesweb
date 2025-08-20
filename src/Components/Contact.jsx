@@ -37,7 +37,7 @@ const dispatch = useDispatch()
       if (!formData.name || !formData.email || !formData.message) {
         return toast.error("Please fill in all required fields");
       }
-
+      
       const res = await axios.post("http://localhost:5000/api/v1/user/contact", formData);
       toast.success("Message sent successfully");
       setFormData({ name: "", email: "", phone: "", message: "" });

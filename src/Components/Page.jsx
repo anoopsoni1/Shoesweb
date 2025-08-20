@@ -1,7 +1,7 @@
 import React from 'react'
 import { MdArrowOutward } from "react-icons/md";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -10,9 +10,10 @@ import Model from './model';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 
+
 function Page() {
 const ref = useRef()
-
+const navi = useNavigate()
 
 const swipe = [
 {img:"./01.png"},
@@ -27,10 +28,13 @@ const swipe = [
 {img:"./10.png" },
 {img:"./11.png" },
 ]
-const navi = useNavigate();
-  const handlepage = () =>{
-     navi("/list")
-  }
+
+const handlepage = function(){
+      setTimeout(()=>{
+        navi("/list")
+      },500)
+}
+
 
   return (
    <>
@@ -76,11 +80,15 @@ const navi = useNavigate();
          </div>
         </div>
       </div>
-       <div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg99.png")] flex place-item-center'>
+<div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg99.png")] flex place-item-center'>
            <Model  />
-         </div>
+        </div>
+       
    </>
   )
 }
 
 export default Page
+
+
+

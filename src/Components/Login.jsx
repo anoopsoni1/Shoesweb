@@ -3,7 +3,6 @@ import {  Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Feature/Slicetwo.jsx";
-import { id } from 'date-fns/locale';
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");

@@ -12,8 +12,10 @@ function Home() {
    const navigate = useNavigate();
  const dispatch = useDispatch() ;
    const handleLogout = async() => {
+        dispatch(clearUser())
+        
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true })
           dispatch(clearUser())
           console.log("hello");
           navigate("/login");
