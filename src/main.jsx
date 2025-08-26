@@ -34,9 +34,9 @@ import { useEffect } from 'react'
 import Dashboard from './Components/Dashboard.jsx'
 import ChatBot from './Components/Chatservices.jsx'
 import ContactUs from './Components/Contact.jsx'
-import List1 from './Components/List1.jsx'
 import AddressPage from './Components/Address.jsx'
 import Checkout from './Components/Checkout.jsx'
+
 
 
 const route = createBrowserRouter([
@@ -157,22 +157,6 @@ const route = createBrowserRouter([
       {
         path: "/contact" ,
         element : <ContactUs />
-      },
-      {
-        path: "/list1" ,
-        element : <List1 />
-      },
-      {
-        path: "/list2" ,
-        element : <List1 />
-      },
-      {
-        path: "/list3" ,
-        element : <List1 />
-      },
-      {
-        path: "/list4" ,
-        element : <List1 />
       },
       {
         path: "/address" ,

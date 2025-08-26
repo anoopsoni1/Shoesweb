@@ -1,19 +1,25 @@
 import {
   FaHome,
   FaShoppingCart,
-  FaRupeeSign,
+  FaBoxOpen,
+  FaPhoneAlt,
+  FaCog,
   FaSignOutAlt,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { clearUser, setUser } from "../Feature/Slicetwo.jsx";
-import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user.userData);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Fetch user profile
   useEffect(() => {
@@ -45,58 +51,123 @@ const Dashboard = () => {
     }
   };
 
-  // Redirect to login if not logged in
-  const handlenav = () => {
-    navigate("/login");
-  };
+  const handlenav = () => navigate("/login");
 
-  const user = useSelector((state) => state.user.userData);
+  const navItems = [
+    { label: "Home", icon: <FaHome />, path: "/" },
+    { label: "Cart", icon: <FaShoppingCart />, path: "/cart" },
+    { label: "Orders", icon: <FaBoxOpen />, path: "/orders" },
+    { label: "Contact", icon: <FaPhoneAlt />, path: "/contact" },
+    { label: "Settings", icon: <FaCog />, path: "/setting" },
+  ];
 
   return (
-    <div className="">
+    <div className="min-h-screen flex bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 relative">
       {user ? (
-        <div className="min-h-screen flex justify-between bg-gradient-to-br from-orange-100 to-purple-100 p-6">
-          <aside className="w-[40vh] bg-white rounded-2xl p-6 shadow-lg flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <img
-                  src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user.user}`}
-                  alt="User Avatar"
-                  className="w-16 h-16 rounded-full border-2 border-purple-500 object-cover"
-                />
-                <div>
-                  <h2 className="font-bold">
-                    {user.FirstName} {user.LastName}
-                  </h2>
-                  <p className="text-sm text-gray-500">{user.email}</p>
-                </div>
-              </div>
-              <nav className="mt-4">
-                <ul className="grid gap-6 font-bold">
-                  <Link to="/" className="hover:text-yellow-500">1. Home</Link>
-                  <Link to="/cart" className="hover:text-yellow-500">2. Cart</Link>
-                  <Link to="/cart" className="hover:text-yellow-500">3. Orders</Link>
-                  <Link to="/contact" className="hover:text-yellow-500">4. Contact</Link>
-                  <Link to="/setting" className="hover:text-yellow-500">5. Setting</Link>
-                </ul>
-              </nav>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-red-500 mt-6 hover:text-red-700"
-            >
-              <FaSignOutAlt /> Logout
+        <>
+          {/* Mobile Header */}
+          <div className="md:hidden fixed top-0 left-0 w-full flex items-center justify-between bg-white/60 backdrop-blur-lg px-4 py-3 shadow-md z-20">
+            <h1 className="text-lg font-bold text-purple-700">Dashboard</h1>
+            <button onClick={() => setSidebarOpen(true)}>
+              <FaBars size={22} className="text-gray-700" />
             </button>
-          </aside>
-        </div>
+          </div>
+
+          {/* Sidebar (desktop + mobile) */}
+          <AnimatePresence>
+            {(sidebarOpen || window.innerWidth >= 768) && (
+              <>
+                {/* Overlay for mobile */}
+                {sidebarOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.5 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setSidebarOpen(false)}
+                    className="fixed inset-0 bg-black z-30 md:hidden"
+                  />
+                )}
+
+                {/* Sidebar */}
+                <motion.aside
+                  initial={{ x: -250 }}
+                  animate={{ x: 0 }}
+                  exit={{ x: -250 }}
+                  transition={{ duration: 0.4 }}
+                  className="fixed md:relative top-0 left-0 h-full md:h-auto w-[260px] bg-white/30 backdrop-blur-lg shadow-xl rounded-r-3xl p-6 flex flex-col justify-between border border-white/40 z-40"
+                >
+                  {/* Close Button (mobile only) */}
+                  <div className="md:hidden flex justify-end">
+                    <button onClick={() => setSidebarOpen(false)}>
+                      <FaTimes size={22} className="text-gray-700" />
+                    </button>
+                  </div>
+
+                  {/* Profile Section */}
+                  <div>
+                    <div className="flex items-center gap-4 mb-8">
+                      <img
+                        src={`https://picsum.photos/seed/picsum/200/300`}
+                        alt="User Avatar"
+                        className="w-16 h-16 rounded-full border-2 border-purple-500 shadow-md"
+                      />
+                      <div>
+                        <h2 className="font-bold text-lg text-gray-800">
+                          {user.FirstName} {user.LastName}
+                        </h2>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <nav>
+                      <ul className="grid gap-4 font-semibold">
+                        {navItems.map((item, i) => (
+                          <motion.li
+                            key={i}
+                            whileHover={{ scale: 1.05, x: 6 }}
+                            className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-700 hover:text-purple-600 hover:bg-purple-100 transition"
+                          >
+                            {item.icon}
+                            <Link to={item.path}>{item.label}</Link>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </nav>
+                  </div>
+
+                  {/* Logout Button */}
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleLogout}
+                    className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-red-500 to-pink-500 shadow-lg hover:opacity-90 transition mt-6"
+                  >
+                    <FaSignOutAlt /> Logout
+                  </motion.button>
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Main Content (placeholder) */}
+          <div className="flex-1 md:ml-[260px] p-6 mt-12 md:mt-0">
+            <h1 className="text-2xl font-bold text-gray-700">
+              Welcome, {user.FirstName}
+            </h1>
+            <p className="mt-3 text-gray-600">
+              This is your personalized dashboard. You can add main content
+              here (products, charts, etc.).
+            </p>
+          </div>
+        </>
       ) : (
-        <div className="grid gap-2 place-items-center min-h-screen">
-          <h1 className="text-xl font-bold">Please Login</h1>
+        <div className="grid gap-3 place-items-center w-full h-[40vh]">
+          <h1 className="text-2xl font-bold text-gray-700"> Please Login</h1>
           <button
             onClick={handlenav}
-            className="border-2 px-4 py-2 bg-black text-amber-50 rounded-lg hover:bg-gray-800"
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl font-semibold shadow-md hover:opacity-90 transition"
           >
-            Login
+            Go to Login
           </button>
         </div>
       )}

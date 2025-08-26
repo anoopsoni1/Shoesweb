@@ -34,13 +34,7 @@ function Home() {
 
           <div className="sm:block hidden">
             <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5 text-white">
-              <li>Featured</li>
-              <li>Men</li>
-              <li>Women</li>
-              <li>Kids</li>
-              <li>Accessories</li>
-              <li>Sale</li>
-
+              
               <li className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaRegHeart />
               </li>

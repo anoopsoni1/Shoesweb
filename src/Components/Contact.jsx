@@ -51,72 +51,43 @@ const dispatch = useDispatch()
   }
   return (
     <>
-    <header className="relative" >
-          <nav className=" ml-5 flex  justify-between">
-            <div>
-              <Link to="/" className="text-2xl font-medium">SoleMate</Link>
-            </div>
-  
-            <div className="sm:block hidden">
-              <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5">
-  
-                <Link to="/" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaRegHeart />
-                </Link>
-                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaShoppingBag />
-                </Link>
-  
-                {user ? (
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
-                    <FaRegUserCircle />
-                  </Link>
-                )}
-              </ul>
-            </div>
-  
-            <div className="flex sm:hidden list-none gap-1">
-              <Link className="bg-amber-100 p-3 rounded-[5px]">
-                <FaRegHeart />
+     <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
+        <nav className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+          <Link to="/" className="text-2xl font-extrabold tracking-wide">SoleMate</Link>
+          <div className="flex gap-5 items-center">
+            <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+              <FaRegHeart />
+            </Link>
+            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+              <FaShoppingBag />
+            </Link>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/login" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+                <FaRegUserCircle />
               </Link>
-              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
-                <FaShoppingBag />
-              </Link>
-  
-              {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaRegUserCircle />
-                </Link>
-              )}
-            </div>
-          </nav>
-        </header>
-    <div className="h-[94vh] flex flex-col md:flex-row bg-gray-50">
+            )}
+          </div>
+        </nav>
+      </header>
+    <div className="h-[94vh] flex flex-col md:flex-row bg-white">
      
-      <div className="w-full md:w-1/3 bg-black text-white p-8 flex flex-col justify-between">
+      <div className="w-full md:w-1/3 bg-[url('./cona.jpg')] bg-cover p-8 flex flex-col justify-between">
         <div>
-          <h2 className="text-3xl font-bold mb-6">Contact Info</h2>
-          <p className="mb-4 flex items-center gap-2">
-            <FaPhoneAlt /> +917748801549
+          <h2 className="text-3xl font-bold mb-6 text-black">Contact Info</h2>
+          <p className="mb-4 text-black flex items-center gap-2 font-bold">
+            <FaPhoneAlt /> +919981872497
           </p>
-          <p className="mb-4 flex items-center gap-2">
+          <p className="mb-4 flex items-center gap-2 font-bold">
             <FaEnvelope /> support@shoestore.com
           </p>
-          <p className="mb-4 flex items-center gap-2">
+          <p className="mb-4 flex items-center gap-2 font-bold">
             <FaMapMarkerAlt /> Bhopal, India
           </p>
         </div>

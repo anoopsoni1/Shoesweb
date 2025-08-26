@@ -27,8 +27,13 @@ const One = () => {
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
     const dispatch = useDispatch();
     const handleAddToCart = (product) => {
-       dispatch(addtocart(product));
+      if(!user){
+        toast.warning("Please login !")
+      }
+      else{
+          dispatch(addtocart(product));
        toast.success(`${product.name} added successfully`);
+      }
   };
 
   const user = useSelector((state) => state.user.userData);

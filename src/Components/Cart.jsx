@@ -6,12 +6,15 @@ import { Link } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
+import { setCheckoutData } from "../Feature/Slicethree.jsx";
 
 function Cart() {
   const dispatch = useDispatch();
-  const payal = useNavigate() ;
-  const cart = useSelector((state) => state.cart.cartitem);
 
+
+  const payal = useNavigate() ;
+
+  const cart = useSelector((state) => state.cart.cartitem);
   const user = useSelector((state) => state.user.userData);
 
   const handleAdd = (item) => {
@@ -28,9 +31,22 @@ function Cart() {
 
   const subtotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+     0
   );
 
+  const handlecheckout = ()=>{
+dispatch(
+      setCheckoutData({
+        name: user.FirstName,
+        email: user.email,
+        amount: subtotal,
+      })
+    );
+      console.log(subtotal);
+      
+       payal("/checkout")
+  }
+  
     const handleLogout = async() => {
       try {
       await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
@@ -40,72 +56,33 @@ function Cart() {
       console.error("Logout failed", error);
     }
   };
-
-   const handlenavigate = ()=>{
-      payal("/checkout")
-   }
-
-   const handlenavi = ()=>{
-     payal("/login")
-   }
-
   return (
     <>
-    <header className="relative" >
-          <nav className=" ml-5 flex  justify-between">
-            <div>
-              <Link to="/" className="text-2xl font-medium">SoleMate</Link>
-            </div>
-  
-            <div className="sm:block hidden">
-              <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5">
-  
-                <Link to="/" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaRegHeart />
-                </Link>
-                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaShoppingBag />
-                </Link>
-  
-                {user ? (
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
-                    <FaRegUserCircle />
-                  </Link>
-                )}
-              </ul>
-            </div>
-  
-            <div className="flex sm:hidden list-none gap-1">
-              <Link className="bg-amber-100 p-3 rounded-[5px]">
-                <FaRegHeart />
+    <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
+        <nav className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+          <Link to="/" className="text-2xl font-semibold tracking-wide">SoleMate</Link>
+          <div className="flex gap-5 items-center">
+            <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+              <FaRegHeart />
+            </Link>
+            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+              <FaShoppingBag />
+            </Link>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/login" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+                <FaRegUserCircle />
               </Link>
-              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
-                <FaShoppingBag />
-              </Link>
-  
-              {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaRegUserCircle />
-                </Link>
-              )}
-            </div>
-          </nav>
-        </header>
-   
+            )}
+          </div>
+        </nav>
+      </header>
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
       <div className="flex items-center gap-2 mb-6">
         <ShoppingCart className="w-6 h-6 text-indigo-600" />
@@ -179,10 +156,10 @@ function Cart() {
             >
               <Trash2 className="w-5 h-5" /> Clear Cart
             </button>
-            {user ? (  <button onClick={handlenavigate}
+            {user ? (  <button onClick={handlecheckout}
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Checkout
-            </button>) : (  <button onClick={handlenavi}
+            </button>) : (  <button 
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Login
             </button>)}
