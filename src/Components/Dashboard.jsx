@@ -13,7 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { clearUser, setUser } from "../Feature/Slicetwo.jsx";
-import { motion, AnimatePresence } from "framer-motion";
+import {motion , AnimatePresence } from "framer-motion";
+import { clearCart } from "../Feature/slice.jsx";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,8 @@ const Dashboard = () => {
           withCredentials: true,
         });
         dispatch(setUser(res.data.user));
-      } catch (err) {
+      } catch (errr) {
+        console.log(errr);
         dispatch(clearUser());
       }
     };
@@ -45,6 +47,7 @@ const Dashboard = () => {
         { withCredentials: true }
       );
       dispatch(clearUser());
+       dispatch(clearCart())
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);

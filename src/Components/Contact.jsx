@@ -8,6 +8,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useDispatch , useSelector } from "react-redux";
 import { useNavigate , Link} from "react-router-dom";
 import { clearUser } from "../Feature/Slicetwo";
+import { clearCart } from "../Feature/slice";
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -23,7 +24,8 @@ const dispatch = useDispatch()
       try {
       await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
         dispatch(clearUser())
-         navigate("/login");
+         dispatch(clearCart())
+         navigate("/login")
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -37,12 +39,11 @@ const dispatch = useDispatch()
       if (!formData.name || !formData.email || !formData.message) {
         return toast.error("Please fill in all required fields");
       }
-      
       const res = await axios.post("http://localhost:5000/api/v1/user/contact", formData);
       toast.success("Message sent successfully");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (err) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong", err);
     }
   };
 

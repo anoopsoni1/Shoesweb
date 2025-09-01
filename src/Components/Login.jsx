@@ -5,6 +5,7 @@ import { setUser } from "../Feature/Slicetwo.jsx";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
+ 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,8 +26,9 @@ export default function LoginPage() {
   };
 
   let userid;
-
+   let anoop ;
   const handleLogin = async (e) => {
+   
     e.preventDefault();
     const { email, password } = formData;
 
@@ -42,11 +44,13 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
-
+     
       if (res.ok) {
         dispatch(setUser(data.data.user));
         userid = { id: data.data.user._id };
-
+        anoop = data.data.user.refreshtoken ;
+    localStorage.setItem("anoop", JSON.stringify(anoop));
+     
         setMessage(" Login Successful");
         await Getcart(userid.id);
 
@@ -63,6 +67,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
 
   const Getcart = async (id) => {
     try {

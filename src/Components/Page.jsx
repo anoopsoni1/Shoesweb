@@ -8,18 +8,18 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import Model from './model';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
+
 
 
 function Page() {
-const ref = useRef()
+
 const navi = useNavigate()
 
 const swipe = [
-{img:"./01.png"},
+{img:"./img.png"},
 {img:"./02.png"},
 {img:"./03.png" },
-{img:"./04.png" },
+{img:"./im.png" },
 {img:"./05.png" },
 {img:"./06.png" },
 {img:"./07.png" },

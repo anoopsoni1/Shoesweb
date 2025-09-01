@@ -10,9 +10,9 @@ import { clearUser } from "../Feature/Slicetwo";
 
 export const products = [
   { id: 1, name: "Nike Air Max", price: 1, image: "./List01.jpg" },
-  { id: 2, name: "Adidas Ultraboost", price: 12999, image: "./List02.jpeg" },
-  { id: 3, name: "Puma RS-X", price: 9999, image: "./List03.jpg" },
-  { id: 4, name: "Reebok Classic", price: 7999, image: "./List04.jpg" },
+  { id: 2, name: "Nike Air Jordan 1", price: 1299, image: "./List02.jpeg" },
+  { id: 3, name: "Nike Air Max Mesh Runner", price: 1599, image: "./List03.jpg" },
+  { id: 4, name: "Reebok Classic", price: 1399, image: "./List04.jpg" },
   { id: 5, name: "Jordan 1 Retro", price: 17999, image: "./List05.jpeg" },
   { id: 6, name: "New Balance 574", price: 8999, image: "./List06.jpeg" },
   { id: 18, name: "NB Sneaker", price: 8999, image: "./List18.jpeg", category: "Sneaker" },

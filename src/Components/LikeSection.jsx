@@ -6,15 +6,10 @@ import { Link } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
-import { setCheckoutData } from "../Feature/Slicethree.jsx";
-import {clearUser} from "../Feature/Slicetwo.jsx"
-import axios from "axios";
+
 
 function Cart() {
   const dispatch = useDispatch();
-
-  const payal = useNavigate() ;
-
   const cart = useSelector((state) => state.cart.cartitem);
   const user = useSelector((state) => state.user.userData);
 
@@ -30,30 +25,11 @@ function Cart() {
     dispatch(clearCart());
   };
 
-  const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-     0
-  );
-
-  const handlecheckout = ()=>{
-dispatch(
-      setCheckoutData({
-        name: user.FirstName,
-        email: user.email,
-        amount: subtotal,
-      })
-    );
-      console.log(subtotal);
-       payal("/checkout")
-  }
-  
-
     const handleLogout = async() => {
       try {
       await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
         dispatch(clearUser())
-        dispatch(clearCart())
-            payal("/login");
+         navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -64,7 +40,7 @@ dispatch(
         <nav className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
           <Link to="/" className="text-2xl font-semibold tracking-wide">SoleMate</Link>
           <div className="flex gap-5 items-center">
-            <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Link to="/likes" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>
             <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
@@ -93,7 +69,7 @@ dispatch(
 
       {cart.length === 0 ? (
         <p className="text-gray-500 text-center py-6">
-          Your cart is empty 🛒
+        Your Liked Shoes
         </p>
       ) : (
         <div className="space-y-4">
@@ -161,10 +137,10 @@ dispatch(
             {user ? (  <button onClick={handlecheckout}
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Checkout
-            </button>) : (  <Link to="/login"
+            </button>) : (  <button 
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Login
-            </Link>)}
+            </button>)}
           
           </div>
         </div>

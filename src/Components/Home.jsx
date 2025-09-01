@@ -55,7 +55,7 @@ function Home() {
                 </Link>
                 </>
               ) : (
-                <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
+                <Link to="/login" className="bg-amber-100 p-3 rounded-[5px] text-black">
                   <FaRegUserCircle />
                 </Link>
               )}

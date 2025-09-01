@@ -30,12 +30,13 @@ import Fifteen from './ProductsList/Fifteen.jsx'
 import Fourteen from './ProductsList/Fouteen.jsx'
 import Eleven from './ProductsList/Eleven.jsx'
 import Twentyone from './ProductsList/Twentyone.jsx'
-import { useEffect } from 'react'
 import Dashboard from './Components/Dashboard.jsx'
 import ChatBot from './Components/Chatservices.jsx'
 import ContactUs from './Components/Contact.jsx'
 import AddressPage from './Components/Address.jsx'
 import Checkout from './Components/Checkout.jsx'
+import PaymentResult from './Components/Paymentresult.jsx'
+// import Update from './Components/Update.jsx'
 
 
 
@@ -166,6 +167,14 @@ const route = createBrowserRouter([
         path: "/checkout" ,
         element : <Checkout />
       },
+       {
+        path: "/payment" ,
+        element : <PaymentResult />
+      },
+      //  {
+      //   path: "/update" ,
+      //   element : <Update/>
+      // },
     ]
   }
 ])

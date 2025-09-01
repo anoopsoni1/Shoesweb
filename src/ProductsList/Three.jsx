@@ -11,15 +11,16 @@ import { useSelector } from "react-redux";
 
 export const product = {
   id : 3 ,
-  name: "Nike Air Max 2025",
-  price: 149.99,
+  name: "Nike Air Max Mesh Runner",
+  price: 1599,
   description:
-    "Experience ultimate comfort and sleek design with the latest Nike Air Max 2025. Engineered for performance and style.",
+    "Shoe features a clean white mesh upper with a prominent black Nike swoosh logo, complemented by flat white laces for a sleek and modern look.",
   sizes: ["6", "7", "8", "9", "10", "11"],
   images: [
-    "https://www.asics.co.in/media/catalog/product/1/0/1011b974_001_sr_rt_glb-base.jpg?optimize=high&bg-color=255%2C255%2C255&fit=cover&height=375&width=500&auto=webp&format=pjpg", // front
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS76qCk_aFsvo99GdxCQAKqpgsssaLcOijaIg&s", // side
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff",    // top
+    "./Addi01.png",
+    "./List03.jpg", 
+    "./Addi03.png", 
+    "./Addi04.png"   
   ],
 };
 const Three = () => {

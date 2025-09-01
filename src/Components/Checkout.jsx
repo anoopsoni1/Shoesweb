@@ -1,93 +1,59 @@
-import { useState } from 'react'
-import axios from "axios"
-import {load} from '@cashfreepayments/cashfree-js'
+import React, { useState } from "react";
+import { load } from "@cashfreepayments/cashfree-js";
 
 
-function Checkout() {
+const Checkout = () => {
+  const [loading, setLoading] = useState(false);
 
-  let cashfree;
+  const initiatePayment = async () => {
+    setLoading(true);
 
-  let insitialzeSDK = async function () {
-
-    cashfree = await load({
-      mode: "sandbox",
-    })
-  }
-
-  insitialzeSDK()
-
-  const [orderId, setOrderId] = useState("")
-
-
-
-  const getSessionId = async () => {
     try {
-      let res = await axios.get("http://localhost:8000/payment")
-      
-      if(res.data && res.data.payment_session_id){
+  
+      const res = await fetch("http://localhost:5000/api/v1/user/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 5,
+           name: "Anoop Soni",
+           email: "anoop@example.com",
+           phone: "9876543210",
+        }),
+      });
 
-        console.log(res.data)
-        setOrderId(res.data.order_id)
-        return res.data.payment_session_id
-      }
+      const data = await res.json();
+        localStorage.setItem("orderId", data.order_id);
+      console.log("Order created:", data);
 
-
-    } catch (error) {
-      console.log(error)
+      const sessionId = data.payment_session_id;
+      const cashfree = await load({ mode: "sandbox" });
+    
+      cashfree.checkout({
+        paymentSessionId: sessionId,
+        redirectTarget: "_self", 
+      });
+    } catch (err) {
+      console.error("Payment error:", err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  const verifyPayment = async () => {
-    try {
-      
-      let res = await axios.post("http://localhost:8000/verify", {
-        orderId: orderId
-      })
-
-      if(res && res.data){
-        alert("payment verified")
-      }
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const handleClick = async (e) => {
-    e.preventDefault()
-    try {
-
-      let sessionId = await getSessionId()
-      let checkoutOptions = {
-        paymentSessionId : sessionId,
-        redirectTarget:"_modal",
-      }
-
-      cashfree.checkout(checkoutOptions).then((res) => {
-        console.log("payment initialized")
-
-        verifyPayment(orderId)
-      })
-
-
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
   return (
-    <>
+  
 
-      <h1>Cashfree payment getway</h1>
-      <div className="card">
-        <button onClick={handleClick}>
-          Pay now
-        </button>
 
-      </div>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-2xl font-bold mb-4">Cashfree Payment</h1>
+      <button
+        onClick={initiatePayment}
+        disabled={loading}
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+      >
+        {loading ? "Processing..." : "Pay ₹500"}
+      </button>
+    </div>
+  );
+};
 
-    </>
-  )
-}
-
-export default Checkout
+export default Checkout;
