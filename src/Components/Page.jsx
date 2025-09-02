@@ -80,7 +80,7 @@ const handlepage = function(){
          </div>
         </div>
       </div>
-<div className='sm:h-[100vh] h-[50vh] bg-cover bg-[url("./bg99.png")] flex place-item-center'>
+<div className='sm:h-[100vh] h-[50vh]  bg-cover bg-[url("./bg99.png")] flex place-item-center'>
            <Model  />
         </div>
        

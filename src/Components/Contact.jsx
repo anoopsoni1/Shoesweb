@@ -42,6 +42,8 @@ const dispatch = useDispatch()
       const res = await axios.post("http://localhost:5000/api/v1/user/contact", formData);
       toast.success("Message sent successfully");
       setFormData({ name: "", email: "", phone: "", message: "" });
+      console.log(res);
+      
     } catch (err) {
       toast.error("Something went wrong", err);
     }
@@ -53,9 +55,9 @@ const dispatch = useDispatch()
   return (
     <>
      <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
-        <nav className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+        <nav className="flex justify-between items-center sm:px-6 px-2 sm:py-4 py-2 max-w-7xl mx-auto">
           <Link to="/" className="text-2xl font-extrabold tracking-wide">SoleMate</Link>
-          <div className="flex gap-5 items-center">
+          <div className="flex sm:gap-5 gap-2 items-center">
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>

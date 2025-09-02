@@ -93,9 +93,9 @@ export default function List() {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow">
-        <nav className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-          <Link to="/" className="text-2xl font-semibold tracking-wide">SoleMate</Link>
-          <div className="flex gap-5 items-center">
+        <nav className="flex justify-between items-center sm:px-6  px-2 sm:py-4 py-2 max-w-7xl mx-auto">
+          <Link to="/" className="text-2xl sm:mr-0 mr-4 font-semibold tracking-wide">SoleMate</Link>
+          <div className="flex sm:gap-5 gap-4  items-center">
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>
@@ -105,7 +105,7 @@ export default function List() {
             {user ? (
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+                className="px-2 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
               >
                 Logout
               </button>
@@ -199,8 +199,8 @@ export default function List() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Customer Service</h3>
             <ul className="grid gap-2 text-sm">
-              <Link to="/chat" className="hover:text-white">FAQs</Link>
-              <li className="hover:text-white">Returns</li>
+        {user ? (<Link to="/chat" className="hover:text-white">FAQ</Link>) : (<Link to="/login" className="hover:text-white">FAQ</Link>) }
+              <li className="hover:text-white">Returns</li> 
               <li className="hover:text-white">Shipping</li>
               <li className="hover:text-white">Order Tracking</li>
             </ul>
@@ -208,10 +208,10 @@ export default function List() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Follow Us</h3>
             <div className="flex space-x-4 text-xl">
-              <a href="#" className="hover:text-white"><FaInstagram /></a>
-              <a href="#" className="hover:text-white"><FaFacebook /></a>
-              <a href="#" className="hover:text-white"><FaTwitter /></a>
-              <a href="#" className="hover:text-white"><FaLinkedin /></a>
+              <a  className="hover:text-white"><FaInstagram /></a>
+              <a  className="hover:text-white"><FaFacebook /></a>
+              <a  className="hover:text-white"><FaTwitter /></a>
+              <a  className="hover:text-white"><FaLinkedin /></a>
             </div>
           </div>
         </div>

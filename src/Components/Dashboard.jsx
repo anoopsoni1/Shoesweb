@@ -68,7 +68,6 @@ const Dashboard = () => {
     <div className="min-h-screen flex bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 relative">
       {user ? (
         <>
-          {/* Mobile Header */}
           <div className="md:hidden fixed top-0 left-0 w-full flex items-center justify-between bg-white/60 backdrop-blur-lg px-4 py-3 shadow-md z-20">
             <h1 className="text-lg font-bold text-purple-700">Dashboard</h1>
             <button onClick={() => setSidebarOpen(true)}>
@@ -76,11 +75,9 @@ const Dashboard = () => {
             </button>
           </div>
 
-          {/* Sidebar (desktop + mobile) */}
           <AnimatePresence>
             {(sidebarOpen || window.innerWidth >= 768) && (
               <>
-                {/* Overlay for mobile */}
                 {sidebarOpen && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -90,8 +87,6 @@ const Dashboard = () => {
                     className="fixed inset-0 bg-black z-30 md:hidden"
                   />
                 )}
-
-                {/* Sidebar */}
                 <motion.aside
                   initial={{ x: -250 }}
                   animate={{ x: 0 }}
@@ -99,14 +94,11 @@ const Dashboard = () => {
                   transition={{ duration: 0.4 }}
                   className="fixed md:relative top-0 left-0 h-full md:h-auto w-[260px] bg-white/30 backdrop-blur-lg shadow-xl rounded-r-3xl p-6 flex flex-col justify-between border border-white/40 z-40"
                 >
-                  {/* Close Button (mobile only) */}
                   <div className="md:hidden flex justify-end">
                     <button onClick={() => setSidebarOpen(false)}>
                       <FaTimes size={22} className="text-gray-700" />
                     </button>
                   </div>
-
-                  {/* Profile Section */}
                   <div>
                     <div className="flex items-center gap-4 mb-8">
                       <img
@@ -121,8 +113,6 @@ const Dashboard = () => {
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
                     </div>
-
-                    {/* Navigation */}
                     <nav>
                       <ul className="grid gap-4 font-semibold">
                         {navItems.map((item, i) => (
@@ -138,8 +128,6 @@ const Dashboard = () => {
                       </ul>
                     </nav>
                   </div>
-
-                  {/* Logout Button */}
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={handleLogout}
@@ -151,8 +139,6 @@ const Dashboard = () => {
               </>
             )}
           </AnimatePresence>
-
-          {/* Main Content (placeholder) */}
           <div className="flex-1 md:ml-[260px] p-6 mt-12 md:mt-0">
             <h1 className="text-2xl font-bold text-gray-700">
               Welcome, {user.FirstName}

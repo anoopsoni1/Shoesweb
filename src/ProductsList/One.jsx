@@ -8,6 +8,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { clearUser } from "../Feature/Slicetwo.jsx";
+import axios from "axios";
 export const product = {
   id : 1 ,
   name: "Nike Air Max 2025",
@@ -26,6 +28,8 @@ const One = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
+
     const handleAddToCart = (product) => {
       if(!user){
         toast.warning("Please login !")
@@ -125,9 +129,6 @@ const One = () => {
             />
           ))}
         </div>
-        {/* <div className="absolute bottom-70 ml-13 ">
-          <Model2 />
-        </div> */}
       </div>
 
       <div className="flex flex-col justify-between">

@@ -42,7 +42,7 @@ export default function SignupPage() {
         alert(`${data.message}`);
       }
     } catch (err) {
-      alert(" Error connecting to server");
+      alert("Error connecting to server" , err);
     }
   };
 

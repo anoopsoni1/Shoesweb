@@ -1,7 +1,10 @@
 import { PiShieldStarFill } from "react-icons/pi";
 import { MdOutlineDocumentScanner } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 function Footer() {
+ const user = useSelector((state) => state.user.userData);
+
   return (
     <>
 <div className="sm:ml-6 ml-2 mt-10 sm:flex justify-between ">
@@ -37,7 +40,7 @@ function Footer() {
                 </div>
                 <div>
                     <ul className="grid gap-2 font-semibold">
-                    <li className="hover:text-black text-gray-700 hover:underline">FAQ</li>
+                    {user ? (<><Link to="/chat" className="hover:text-black text-gray-700">FAQ</Link></>) : (<><Link to="/login" className="hover:text-black text-gray-700">FAQ</Link></>) }
                     <Link to="/contact" className="hover:text-black text-gray-700 hover:underline">Contact Us</Link>
                     <li className="hover:text-black text-gray-700 hover:underline">Careers</li>
                     <li className="hover:text-black text-gray-700 hover:underline"> Instagram</li>
@@ -64,15 +67,15 @@ function Footer() {
                 </div>
                 <div>
                     <ul className="grid gap-6 font-semibold">
-                    <li className="hover:text-black text-gray-700">FAQ</li>
+                   {user ? (<><Link to="/chat" className="hover:text-black text-gray-700">FAQ</Link></>) : (<><Link to="/login" className="hover:text-black text-gray-700">FAQ</Link></>) }
                     <Link to="/contact" className="hover:text-black text-gray-700">Contact Us</Link>
                     <li className="hover:text-black text-gray-700">Careers</li>
-                    <li className="hover:text-black text-gray-700"> Instagram</li>
+                    <a href="" className="hover:text-black text-gray-700"> Instagram</a>
                     </ul>
                 </div>
             </div>
             <div className="sm:hidden block">
-                        <h1 className="sm:text-6xl text-[12px] font-bold sm:mt-0 ml-5 mt-10">&copy; 2025 SoleMate Shoes.All rights reserved.</h1>
+                        <h1 className="sm:text-6xl text-[14px] text-center font-bold sm:mt-0 sm:ml-5 mt-10">&copy; 2025 SoleMate Shoes.All rights reserved.</h1>
              </div>
        </div>
        </div>

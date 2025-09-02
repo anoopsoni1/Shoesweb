@@ -48,15 +48,9 @@ export default function LoginPage() {
       if (res.ok) {
         dispatch(setUser(data.data.user));
         userid = { id: data.data.user._id };
-        anoop = data.data.user.refreshtoken ;
-    localStorage.setItem("anoop", JSON.stringify(anoop));
-     
         setMessage(" Login Successful");
-        await Getcart(userid.id);
-
-        setTimeout(() => {
           navdata("/dashboard");
-        }, 800);
+     
       } else {
         setMessage(data.message || " Login failed");
       }

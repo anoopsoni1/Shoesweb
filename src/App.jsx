@@ -3,7 +3,6 @@ import Header from './Components/Header'
 import Heading from './Components/Heading'
 import Home from './Components/Home'
 import Lower from './Components/Lower'
-import { useEffect } from 'react'
 import Paragraph from './Components/Paragraph'
 
 function App() {

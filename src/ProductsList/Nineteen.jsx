@@ -8,6 +8,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { clearUser } from "../Feature/Slicetwo";
 
 export const product = {
   id : 19 ,
@@ -26,6 +28,7 @@ const Nineteen = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
     const dispatch = useDispatch();
+    const navigate = useNavigate() ;
   const handleAddToCart = (product) => {
     dispatch(addtocart(product));
     toast.success(`${product.name} added successfully`);
