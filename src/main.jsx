@@ -185,5 +185,10 @@ createRoot(document.getElementById('root')).render(
       <ToastContainer autoClose={1000} pauseOnHover={false}  /> 
     <RouterProvider router = {route} />
      </Provider>
-
 )
+
+ if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(console.error)
+  })
+}

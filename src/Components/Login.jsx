@@ -25,8 +25,6 @@ export default function LoginPage() {
     });
   };
 
-  let userid;
-   let anoop ;
   const handleLogin = async (e) => {
    
     e.preventDefault();
@@ -47,7 +45,6 @@ export default function LoginPage() {
      
       if (res.ok) {
         dispatch(setUser(data.data.user));
-        userid = { id: data.data.user._id };
         setMessage(" Login Successful");
           navdata("/dashboard");
      
