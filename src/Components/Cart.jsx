@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addtocart, removefromcart, clearCart } from "../Feature/slice.jsx";
+import { clearCart } from "../Feature/slice.jsx";
 import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import {useNavigate} from "react-router-dom"
 import { Link } from "react-router-dom";
@@ -9,31 +9,82 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { setCheckoutData } from "../Feature/Slicethree.jsx";
 import {clearUser} from "../Feature/Slicetwo.jsx"
 import axios from "axios";
+import { useEffect } from "react";
+import { setCart } from "../Feature/slice.jsx";
+
 
 function Cart() {
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch(); 
   const payal = useNavigate() ;
 
   const cart = useSelector((state) => state.cart.cartitem);
   const user = useSelector((state) => state.user.userData);
 
-  const handleAdd = (item) => {
-    dispatch(addtocart(item));
-  };
 
-  const handleRemove = (id) => {
-    dispatch(removefromcart(id));
-  };
-
-  const handleClear = () => {
-    dispatch(clearCart());
+ const Addtocart = async (e , item) => {
+        e.preventDefault();
+        const cartPayload = {
+         userId: user?.user, 
+         
+      items: [
+        { id: item.id , name : item.name ,price : item.price ,quantity: 1 }
+      ]
+    };
+    try {
+       const cartdata = await fetch('http://localhost:5000/api/v1/user/cart', {
+          method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+          body : JSON.stringify(cartPayload) ,
+      });
+      
+    if (!cartdata.ok) {
+      throw new Error("Failed to add to cart");
+    }
+    const data = await cartdata.json();
+         dispatch(setCart(data.items));
+    } catch (error) {
+      console.error("Add to cart is failed", error);
+    }
   };
 
   const subtotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
      0
   );
+
+   useEffect(()=>{
+    const Getcart = async () => {
+    try {
+     
+       const cartdata = await fetch(`http://localhost:5000/api/v1/user/getcart/${user._id}`, {
+          method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+    const data = await cartdata.json();
+     if (data.items) dispatch(setCart(data.items));
+    } catch (error) {
+      console.error("Fetch to cart is failed", error);
+    }
+  };
+ 
+   if (user._id) {
+      Getcart();
+    }
+  }, [user]);
+
+
+const handleRemove = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:5000/api/v1/user/cart/${user._id}/${id}`
+    );
+    dispatch(setCart(response.data.items));
+  } catch (err) {
+    console.error("Failed to remove item", err);
+  }
+};
+
 
   const handlecheckout = ()=>{
 dispatch(
@@ -43,8 +94,7 @@ dispatch(
         amount: subtotal,
       })
     );
-      console.log(subtotal);
-       payal("/checkout")
+       payal("/address/:userid")
   }
   
 
@@ -62,7 +112,7 @@ dispatch(
     <>
     <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
         <nav className="flex justify-between items-center sm:px-6 px-2 sm:py-4 py-2 max-w-7xl mx-auto">
-          <Link to="/" className="text-2xl font-semibold tracking-wide">SoleMate</Link>
+          <Link to="/" className="text-2xl font-semibold tracking-wide ">SoleMate</Link>
           <div className="flex sm:gap-5 gap-2 items-center">
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
@@ -129,7 +179,7 @@ dispatch(
                   {item.quantity}
                 </span>
                 <button
-                  onClick={() => handleAdd(item)}
+                  onClick={(e) => Addtocart(e,item)}
                   className="p-2 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition"
                 >
                   <Plus className="w-4 h-4" />
@@ -152,12 +202,6 @@ dispatch(
             Subtotal: ₹{subtotal}
           </h3>
           <div className="flex gap-3">
-            <button
-              onClick={handleClear}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition"
-            >
-              <Trash2 className="w-5 h-5" /> Clear Cart
-            </button>
             {user ? (  <button onClick={handlecheckout}
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Checkout

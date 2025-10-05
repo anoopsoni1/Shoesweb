@@ -1,15 +1,16 @@
 import { FaRegHeart, FaShoppingBag, FaRegUserCircle } from "react-icons/fa";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { addtocart } from "../Feature/slice";
+// import { addtocart } from "../Feature/slice";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { clearUser } from "../Feature/Slicetwo";
+import { setCart } from "../Feature/slice";
 
 export const products = [
-  { id: 1, name: "Nike Air Max", price: 1, image: "./List01.jpg" },
+  { id: 1, name: "Nike Air Max", price: 1050, image: "./List01.jpg" },
   { id: 2, name: "Nike Air Jordan 1", price: 1299, image: "./List02.jpeg" },
   { id: 3, name: "Nike Air Max Mesh Runner", price: 1599, image: "./List03.jpg" },
   { id: 4, name: "Reebok Classic", price: 1399, image: "./List04.jpg" },
@@ -70,14 +71,34 @@ export default function List() {
     }
   };
 
-  const handleAddToCart = (product) => {
-    if (!user) {
-      toast.warning("Please Login!");
-    } else {
-      dispatch(addtocart(product));
+   const Addtocart = async (e, product) => {
+        e.preventDefault();
+        const cartPayload = {
+         userId: user?._id, 
+         
+         
+      items: [
+        { id: product.id , name : product.name ,price : product.price ,quantity: 1 }
+      ]
+    };
+    try {
+       const cartdata = await fetch('http://localhost:5000/api/v1/user/cart', {
+          method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+          body : JSON.stringify(cartPayload) ,
+      });
+      
+    if (!cartdata.ok) {
+      throw new Error("Failed to add to cart");
+    }
+    const data = await cartdata.json();
       toast.success(`${product.name} added successfully`);
+        dispatch(setCart(data.items)) 
+    } catch (error) {
+      console.error("Add to cart is failed", error);
     }
   };
+
 
   const bigger = (e) => {
   const path = routes[e];
@@ -99,7 +120,7 @@ export default function List() {
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>
-            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Link to="/cart/:UserId" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaShoppingBag />
             </Link>
             {user ? (
@@ -159,7 +180,7 @@ export default function List() {
                   <p className="text-gray-600 mb-4">₹{product.price}</p>
                   <div className="flex gap-3">
                     <button
-                      onClick={() => handleAddToCart(product)}
+                      onClick={((e)=>Addtocart(e ,product))}
                       className="flex-1 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
                     >
                       Add to Cart

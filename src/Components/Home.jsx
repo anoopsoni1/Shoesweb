@@ -11,13 +11,12 @@ function Home() {
   const user = useSelector((state) => state.user.userData);
    const navigate = useNavigate();
  const dispatch = useDispatch() ;
-   const handleLogout = async() => {
+   
+ const handleLogout = async() => {
         dispatch(clearUser())
-        
       try {
       await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true })
           dispatch(clearUser())
-          console.log("hello");
           navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
@@ -38,7 +37,7 @@ function Home() {
               <li className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaRegHeart />
               </li>
-              <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
+              <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaShoppingBag />
               </Link>
 
@@ -66,7 +65,7 @@ function Home() {
             <Link className="bg-amber-100 p-3 rounded-[5px]">
               <FaRegHeart />
             </Link>
-            <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
+            <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px]">
               <FaShoppingBag />
             </Link>
 

@@ -31,21 +31,18 @@ import Fourteen from './ProductsList/Fouteen.jsx'
 import Eleven from './ProductsList/Eleven.jsx'
 import Twentyone from './ProductsList/Twentyone.jsx'
 import Dashboard from './Components/Dashboard.jsx'
-import ChatBot from './Components/Chatservices.jsx'
 import ContactUs from './Components/Contact.jsx'
-import AddressPage from './Components/Address.jsx'
-import Checkout from './Components/Checkout.jsx'
 import PaymentResult from './Components/Paymentresult.jsx'
+import Chatbot from './Components/Chatservices.jsx'
+import CheckoutWithAddress from './Components/Address.jsx'
 // import Update from './Components/Update.jsx'
-
-
 
 const route = createBrowserRouter([
   {
     path: "/" ,
     children : [
       {
-        path : "/",
+        path : `/`,
         element : <App />
       },
       {
@@ -144,7 +141,7 @@ const route = createBrowserRouter([
         element : <List />
       },
       {
-        path: "/cart" ,
+        path: "/cart/:UserId" ,
         element : <Cart />
       },
       {
@@ -153,20 +150,20 @@ const route = createBrowserRouter([
       },
        {
         path: "/chat" ,
-        element : <ChatBot />
+        element : <Chatbot />
       },
       {
         path: "/contact" ,
         element : <ContactUs />
       },
       {
-        path: "/address" ,
-        element : <AddressPage />
+        path: "/address/:userid" ,
+        element : <CheckoutWithAddress />,
       },
-       {
-        path: "/checkout" ,
-        element : <Checkout />
-      },
+      //  {
+      //   path: "/checkout" ,
+      //   element : <Checkout />
+      // },
        {
         path: "/payment" ,
         element : <PaymentResult />
@@ -186,9 +183,3 @@ createRoot(document.getElementById('root')).render(
     <RouterProvider router = {route} />
      </Provider>
 )
-
- if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(console.error)
-  })
-}

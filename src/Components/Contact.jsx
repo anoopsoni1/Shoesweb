@@ -61,7 +61,7 @@ const dispatch = useDispatch()
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>
-            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Link to="/cart/:UserId" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaShoppingBag />
             </Link>
             {user ? (

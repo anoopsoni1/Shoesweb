@@ -11,14 +11,15 @@ function Model() {
   const canvasRef = useRef();
   gsap.registerPlugin(useGSAP);
 
-  if(window.clientWidth<="760px"){
-        anoop = 15 ;
+ 
+  useEffect(() => {
+ 
+ if(window.clientWidth>="760px"){
+        anoop = 12 ;
   }
   else{
      anoop = 18
   }
-  useEffect(() => {
- 
     const scene = new THREE.Scene();
    
     const camera = new THREE.PerspectiveCamera(

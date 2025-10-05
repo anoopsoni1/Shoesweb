@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Load cart from localStorage
 const loadCartFromStorage = () => {
   try {
     const data = localStorage.getItem("cart");
@@ -52,8 +51,12 @@ const cartSlice = createSlice({
       state.cartitem = [];
       saveCartToStorage([]);
     },
+
+    setCart: (state, action) => {
+    state.cartitem = action.payload;
+}
   },
 });
 
-export const { addtocart, removefromcart, clearCart } = cartSlice.actions;
+export const { addtocart, removefromcart, clearCart , setCart} = cartSlice.actions;
 export default cartSlice.reducer;

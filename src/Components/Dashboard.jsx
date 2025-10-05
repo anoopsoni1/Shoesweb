@@ -32,7 +32,6 @@ const Dashboard = () => {
         dispatch(setUser(res.data.user));
       } catch (errr) {
         console.log(errr);
-        dispatch(clearUser());
       }
     };
     fetchUser();

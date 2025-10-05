@@ -1,32 +1,104 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Loader2, CreditCard, Truck, Home } from "lucide-react";
 
 function PaymentResult() {
+  const navigate = useNavigate();
   const [status, setStatus] = useState("Verifying...");
+  const [loading, setLoading] = useState(true);
+  const [paymentData, setPaymentData] = useState(null);
 
   useEffect(() => {
     const order_id = localStorage.getItem("orderId");
-      console.log(order_id);
 
-   fetch("http://localhost:5000/api/v1/user/verifypayment", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ order_id }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "SUCCESS") {
-          setStatus("✅ Payment Successful!");
+    const payment = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/v1/user/verifypayment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_id }),
+        });
+
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setPaymentData(data[0]);
+          setStatus(data[0].payment_status || "Unknown");
         } else {
-          setStatus("Payment Failed or Pending.");
+          setStatus("No payment data found");
         }
-      })
-      .catch((e) => setStatus(" Error verifying payment" ,e));
+      } catch (error) {
+        console.error(error);
+        setStatus("Error verifying payment");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    payment();
   }, []);
 
+  const renderValue = (value) => {
+    if (typeof value === "object" && value !== null) {
+      return JSON.stringify(value, null, 2);
+    }
+    return value ?? "N/A";
+  };
+
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h2>Payment Status</h2>
-      <p>{status}</p>
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg text-center animate-fadeIn">
+        <CreditCard className="mx-auto mb-4 text-blue-500 w-16 h-16" />
+        <h2 className="text-2xl font-bold mb-2">Payment Status</h2>
+
+        {loading ? (
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            <p className="text-gray-500">Verifying your payment...</p>
+          </div>
+        ) : (
+          <div>
+            <p
+              className={`text-xl font-semibold mb-4 ${
+                status.toLowerCase() === "success"
+                  ? "text-green-600"
+                  : status.toLowerCase() === "failed"
+                  ? "text-red-600"
+                  : "text-yellow-600"
+              }`}
+            >
+              {status}
+            </p>
+
+            {paymentData && (
+              <div className="text-left space-y-2 bg-gray-50 p-4 rounded-lg shadow-inner">
+                <p><span className="font-semibold">Order ID:</span> {renderValue(paymentData.order_id)}</p>
+                <p><span className="font-semibold">Transaction ID:</span> {renderValue(paymentData.cf_payment_id)}</p>
+                <p><span className="font-semibold">Bank Reference:</span> {renderValue(paymentData.bank_reference)}</p>
+                <p><span className="font-semibold">Amount:</span> ₹{renderValue(paymentData.payment_amount)}</p>
+                <p><span className="font-semibold">Currency:</span> {renderValue(paymentData.payment_currency)}</p>
+                <p><span className="font-semibold">Payment Gateway:</span> {renderValue(paymentData.payment_gateway_details?.gateway_name)}</p>
+                <p><span className="font-semibold">Payment Method:</span> {renderValue(paymentData.payment_method?.upi?.channel || paymentData.payment_method)}</p>
+                <p><span className="font-semibold">Payment Time:</span> {new Date(paymentData.payment_time).toLocaleString()}</p>
+                <p><span className="font-semibold">Payment Message:</span> {renderValue(paymentData.payment_message)}</p>
+                <p><span className="font-semibold">Payment Group:</span> {renderValue(paymentData.payment_group)}</p>
+
+                <p className="flex items-center gap-2 mt-4 text-gray-700 font-semibold">
+                  <Truck className="w-5 h-5 text-blue-500" /> Estimated Delivery: 5 Days
+                </p>
+              </div>
+            )}
+
+            {/* Return to homepage button */}
+            <button
+              onClick={() => navigate("/")}
+              className="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded flex items-center justify-center mx-auto gap-2"
+            >
+              <Home className="w-5 h-5" />
+              Return to Homepage
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
