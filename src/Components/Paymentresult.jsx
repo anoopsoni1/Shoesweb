@@ -13,7 +13,7 @@ function PaymentResult() {
 
     const payment = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/user/verifypayment", {
+        const res = await fetch("https://shoesbackend-2-xrez.onrender.com/api/v1/user/verifypayment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ order_id }),

@@ -26,7 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/v1/user/profile", {
+        const res = await axios.get("https://shoesbackend-2-xrez.onrender.com/api/v1/user/profile", {
           withCredentials: true,
         });
         dispatch(setUser(res.data.user));
@@ -41,7 +41,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/v1/user/logout",
+        "https://shoesbackend-2-xrez.onrender.com/api/v1/user/logout",
         {},
         { withCredentials: true }
       );

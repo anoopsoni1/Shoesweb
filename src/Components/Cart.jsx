@@ -31,7 +31,7 @@ function Cart() {
       ]
     };
     try {
-       const cartdata = await fetch('http://localhost:5000/api/v1/user/cart', {
+       const cartdata = await fetch('https://shoesbackend-2-xrez.onrender.com/api/v1/user/cart', {
           method: 'POST',
         headers: { 'Content-Type': 'application/json' },
           body : JSON.stringify(cartPayload) ,
@@ -56,7 +56,7 @@ function Cart() {
     const Getcart = async () => {
     try {
      
-       const cartdata = await fetch(`http://localhost:5000/api/v1/user/getcart/${user._id}`, {
+       const cartdata = await fetch(`https://shoesbackend-2-xrez.onrender.com/api/v1/user/getcart/${user._id}`, {
           method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -77,7 +77,7 @@ function Cart() {
 const handleRemove = async (id) => {
   try {
     const response = await axios.delete(
-      `http://localhost:5000/api/v1/user/cart/${user._id}/${id}`
+      `https://shoesbackend-2-xrez.onrender.com/api/v1/user/cart/${user._id}/${id}`
     );
     dispatch(setCart(response.data.items));
   } catch (err) {
@@ -100,7 +100,7 @@ dispatch(
 
     const handleLogout = async() => {
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("https://shoesbackend-2-xrez.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
         dispatch(clearUser())
         dispatch(clearCart())
             payal("/login");

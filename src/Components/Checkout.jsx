@@ -22,7 +22,7 @@ const Checkout = () => {
   const initiatePayment = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/v1/user/payment", {
+      const res = await fetch("https://shoesbackend-2-xrez.onrender.com/api/v1/user/payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -55,7 +55,7 @@ const Checkout = () => {
    const handleLogout = async() => {
         dispatch(clearUser())
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true })
+      await axios.post("https://shoesbackend-2-xrez.onrender.com/api/v1/user/logout", {}, { withCredentials: true })
           dispatch(clearUser())
           navigate("/login");
     } catch (error) {
