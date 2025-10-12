@@ -13,13 +13,15 @@ function PaymentResult() {
 
     const payment = async () => {
       try {
-        const res = await fetch("https://shoesbackend-2-xrez.onrender.com/api/v1/user/verifypayment", {
+        const res = await fetch("http://localhost:5000/api/v1/user/verifypayment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ order_id }),
         });
 
         const data = await res.json();
+        
+        
         if (Array.isArray(data) && data.length > 0) {
           setPaymentData(data[0]);
           setStatus(data[0].payment_status || "Unknown");
@@ -43,6 +45,19 @@ function PaymentResult() {
     }
     return value ?? "N/A";
   };
+
+
+   const today = new Date();
+
+  const estimated = new Date(today);
+  estimated.setDate(today.getDate() + 5);
+
+ 
+  const formatted = estimated.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
@@ -80,15 +95,14 @@ function PaymentResult() {
                 <p><span className="font-semibold">Payment Method:</span> {renderValue(paymentData.payment_method?.upi?.channel || paymentData.payment_method)}</p>
                 <p><span className="font-semibold">Payment Time:</span> {new Date(paymentData.payment_time).toLocaleString()}</p>
                 <p><span className="font-semibold">Payment Message:</span> {renderValue(paymentData.payment_message)}</p>
+               
                 <p><span className="font-semibold">Payment Group:</span> {renderValue(paymentData.payment_group)}</p>
-
-                <p className="flex items-center gap-2 mt-4 text-gray-700 font-semibold">
-                  <Truck className="w-5 h-5 text-blue-500" /> Estimated Delivery: 5 Days
-                </p>
+         <p className="flex items-center gap-2 mt-4 text-gray-700 font-semibold">
+              <Truck className="w-5 h-5 text-blue-500" /> Estimated Delivery: {formatted}
+           </p>
               </div>
             )}
 
-            {/* Return to homepage button */}
             <button
               onClick={() => navigate("/")}
               className="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded flex items-center justify-center mx-auto gap-2"

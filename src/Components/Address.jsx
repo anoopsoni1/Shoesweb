@@ -99,7 +99,7 @@ export default function CheckoutWithAddress() {
       const saved = await res.json();
       console.log("Address saved successfully", saved);
       setSavedAddress(saved.address);
-      setAddressSaved(true); // allow payment
+      setAddressSaved(true); 
     } catch (err) {
       console.error(err);
     }
@@ -119,6 +119,8 @@ export default function CheckoutWithAddress() {
         }),
       });
       const data = await res.json();
+      console.log(data);
+      
       localStorage.setItem("orderId", data.order_id);
 
       const cashfree = await load({ mode: "sandbox" });
@@ -301,7 +303,6 @@ export default function CheckoutWithAddress() {
           </div>
         )}
 
-        {/* Payment Section */}
         {addressSaved && (
           <div className="shadow-2xl rounded-2xl p-8 w-full max-w-md transition-transform transform hover:scale-[1.01]">
             <div className="flex flex-col items-center text-center">

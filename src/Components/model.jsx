@@ -18,7 +18,7 @@ function Model() {
         anoop = 12 ;
   }
   else{
-     anoop = 18
+     anoop = 15
   }
     const scene = new THREE.Scene();
    
@@ -72,8 +72,8 @@ useGSAP(()=>{
 
   return (
    <>
- <div className='sm:mt-24  overflow-hidden'>
-  <canvas ref={canvasRef} id="one" className='sm:h-[80vh] sm:w-[100vw] w-[50vh] h-[50vh] z-50 '/>
+ <div className=' overflow-hidden'>
+  <canvas ref={canvasRef} id="one" className='sm:h-[65vh] sm:w-[90vh] rounded-full w-[50vh] h-[50vh] z-50 '/>
  </div>
 </>
    )

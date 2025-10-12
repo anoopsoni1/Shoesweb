@@ -15,19 +15,6 @@ function Page() {
 
 const navi = useNavigate()
 
-const swipe = [
-{img:"./img.png"},
-{img:"./02.png"},
-{img:"./03.png" },
-{img:"./im.png" },
-{img:"./05.png" },
-{img:"./06.png" },
-{img:"./07.png" },
-{img:"./08.png" },
-{img:"./09.png" },
-{img:"./10.png" },
-{img:"./11.png" },
-]
 
 const handlepage = function(){
       setTimeout(()=>{
@@ -52,26 +39,10 @@ const handlepage = function(){
          </div>
          </div>
       </div>
-    <div className="sm:w-[90vh] sm:h-[65vh] sm:mt-14 w-[40vh] h-[30vh] mt-7 sm:ml-0 ml-6">
-        <Swiper
-        modules={[Autoplay]}
-        autoplay={{ delay: 2000, disableOnInteraction: false }}
-         loop={true}
-         effect="coverflow"
-        className="h-full"
-      >
-        {swipe.map((slider, idx) => (
-          <SwiperSlide key={idx}>
-            <div
-              className="h-full bg-cover bg-center relative rounded-2xl"
-            >
-              <img 
-              loading='lazy'
-              src={slider.img} alt="" />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[40vh] h-[30vh] mt-7 sm:ml-0 ml-6 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
+      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")]  '>
+           <Model  />
+        </div>
         </div>
         <div  className='sm:hidden block ml-5 '>
           <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-black flex justify-between place-items-center'>
@@ -80,9 +51,7 @@ const handlepage = function(){
          </div>
         </div>
       </div>
-<div className='sm:h-[100vh] h-[50vh]  bg-cover bg-[url("./bg99.png")] flex place-item-center'>
-           <Model  />
-        </div>
+
        
    </>
   )

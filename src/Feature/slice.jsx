@@ -35,8 +35,6 @@ const cartSlice = createSlice({
       } else {
         state.cartitem.push({ ...item, quantity: 1 });
       }
-
-      saveCartToStorage(state.cartitem);
     },
 
     removefromcart(state, action) {
@@ -44,7 +42,6 @@ const cartSlice = createSlice({
         (item) => item.id !== action.payload
       );
 
-      saveCartToStorage(state.cartitem);
     },
 
     clearCart(state) {

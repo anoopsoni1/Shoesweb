@@ -32,7 +32,7 @@ export default function LoginPage() {
 
     try {
       setLoading(true);
-      const res = await fetch("https://shoesbackend-2-xrez.onrender.com/api/v1/user/login", {
+      const res = await fetch("http://localhost:5000/api/v1/user/login", {
         method: "POST",
         credentials: "include",
         headers: {

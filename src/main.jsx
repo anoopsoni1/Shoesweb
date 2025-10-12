@@ -35,6 +35,7 @@ import ContactUs from './Components/Contact.jsx'
 import PaymentResult from './Components/Paymentresult.jsx'
 import Chatbot from './Components/Chatservices.jsx'
 import CheckoutWithAddress from './Components/Address.jsx'
+import OrderHistory from './Components/Order.jsx'
 // import Update from './Components/Update.jsx'
 
 const route = createBrowserRouter([
@@ -42,7 +43,7 @@ const route = createBrowserRouter([
     path: "/" ,
     children : [
       {
-        path : `/`,
+        path : '/',
         element : <App />
       },
       {
@@ -160,18 +161,16 @@ const route = createBrowserRouter([
         path: "/address/:userid" ,
         element : <CheckoutWithAddress />,
       },
-      //  {
-      //   path: "/checkout" ,
-      //   element : <Checkout />
-      // },
+   
        {
         path: "/payment" ,
         element : <PaymentResult />
       },
-      //  {
-      //   path: "/update" ,
-      //   element : <Update/>
-      // },
+      {
+        path : "/Order" , 
+        element : <OrderHistory />
+      }
+   
     ]
   }
 ])

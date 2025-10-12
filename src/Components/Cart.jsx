@@ -24,23 +24,24 @@ function Cart() {
  const Addtocart = async (e , item) => {
         e.preventDefault();
         const cartPayload = {
-         userId: user?.user, 
+         userId: user?._id, 
          
       items: [
-        { id: item.id , name : item.name ,price : item.price ,quantity: 1 }
+        { id: item.id , name : item.name ,price : item.price , quantity: 1 }
       ]
     };
     try {
-       const cartdata = await fetch('https://shoesbackend-2-xrez.onrender.com/api/v1/user/cart', {
+       const cartdata = await fetch('http://localhost:5000/api/v1/user/cart', {
           method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
           body : JSON.stringify(cartPayload) ,
       });
       
     if (!cartdata.ok) {
       throw new Error("Failed to add to cart");
     }
-    const data = await cartdata.json();
+        const data = await cartdata.json();
+        
          dispatch(setCart(data.items));
     } catch (error) {
       console.error("Add to cart is failed", error);
@@ -56,7 +57,7 @@ function Cart() {
     const Getcart = async () => {
     try {
      
-       const cartdata = await fetch(`https://shoesbackend-2-xrez.onrender.com/api/v1/user/getcart/${user._id}`, {
+       const cartdata = await fetch(`http://localhost:5000/api/v1/user/getcart/${user._id}`, {
           method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -77,7 +78,7 @@ function Cart() {
 const handleRemove = async (id) => {
   try {
     const response = await axios.delete(
-      `https://shoesbackend-2-xrez.onrender.com/api/v1/user/cart/${user._id}/${id}`
+      `http://localhost:5000/api/v1/user/cart/${user._id}/${id}`
     );
     dispatch(setCart(response.data.items));
   } catch (err) {
@@ -100,7 +101,7 @@ dispatch(
 
     const handleLogout = async() => {
       try {
-      await axios.post("https://shoesbackend-2-xrez.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
         dispatch(clearUser())
         dispatch(clearCart())
             payal("/login");
