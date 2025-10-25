@@ -8,6 +8,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import Model from './model';
 import { useNavigate } from 'react-router-dom';
+import InstallPrompt from './Installprompt';
 
 
 
@@ -35,12 +36,12 @@ const handlepage = function(){
          <div className='sm:block hidden'>
          <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-gradient-to-r from-yellow-300 to-yellow-600 flex justify-between place-items-center '>
         <button  className='ml-4 text-[18px] mb-1 font-bold'>Explore</button>
-            <div className='rounded-full bg-amber-50 mr-1'><MdArrowOutward  size={35}/></div>
+         <div className='rounded-full bg-amber-50 mr-1'><MdArrowOutward  size={35}/></div>
          </div>
          </div>
       </div>
-    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[48.5vh] h-[40vh] mt-7 sm:ml-0 ml-1 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
-      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")] sm-mt-0 sm:mb-0 sm:ml-0 ml-12 mt-2 '>
+    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[42vh] h-[40vh] mt-7 sm:ml-0 ml-5 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
+      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")] sm-mt-0 sm:mb-0 sm:ml-0 p-5 ml-3  '>
            <Model  />
         </div>
         </div>

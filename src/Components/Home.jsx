@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector ,useDispatch } from "react-redux";
 import Page from "./Page";
 import { clearUser } from "../Feature/Slicetwo.jsx";
+import InstallPrompt from "./Installprompt.jsx";
 
 function Home() {
   const user = useSelector((state) => state.user.userData);
@@ -29,6 +30,7 @@ function Home() {
         <nav className="pt-2 ml-5 flex justify-between">
           <div>
             <p className="text-2xl font-medium text-white">SoleMate</p>
+            <InstallPrompt />
           </div>
 
           <div className="sm:block hidden">
