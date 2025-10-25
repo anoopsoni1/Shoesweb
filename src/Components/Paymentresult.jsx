@@ -21,10 +21,10 @@ function PaymentResult() {
 
         const data = await res.json();
         
-        
         if (Array.isArray(data) && data.length > 0) {
           setPaymentData(data[0]);
           setStatus(data[0].payment_status || "Unknown");
+                 navigate("/Order")
         } else {
           setStatus("No payment data found");
         }
@@ -38,6 +38,9 @@ function PaymentResult() {
 
     payment();
   }, []);
+
+
+  
 
   const renderValue = (value) => {
     if (typeof value === "object" && value !== null) {

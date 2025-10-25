@@ -98,6 +98,7 @@ export default function CheckoutWithAddress() {
 
       const saved = await res.json();
       console.log("Address saved successfully", saved);
+      localStorage.setItem("Address" , saved)
       setSavedAddress(saved.address);
       setAddressSaved(true); 
     } catch (err) {
@@ -119,7 +120,7 @@ export default function CheckoutWithAddress() {
         }),
       });
       const data = await res.json();
-      console.log(data);
+         console.log(data);
       
       localStorage.setItem("orderId", data.order_id);
 

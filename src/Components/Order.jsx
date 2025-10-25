@@ -2,31 +2,61 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Truck,
-  PackageCheck,
-  CreditCard,
   MapPin,
-  Clock,
-  CheckCircle2,
   XCircle,
+  Trash2,
+  Loader2,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
-  const userId = "670a9c22b1234567890abcde";
+  const [orders, setOrders] = useState();
+  const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(null); 
+ const user = useSelector((state) => state.user.userData);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/v1/order/getorder/${userId}`
-        );
-        setOrders(res.data);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
+
+useEffect(() => {
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/user/getorder/${user._id}`
+      );
+
+      const data = res.data;
+      if (Array.isArray(data)) {
+        setOrders(data);
+      } else if (data.orders && Array.isArray(data.orders)) {
+        setOrders(data.orders);
+      } else {
+        setOrders([]);
       }
-    };
-    fetchOrders();
-  }, []);
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchOrders();
+}, []);
+
+
+
+  const handleDelete = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    setDeleting(orderId);
+    try {
+      await axios.delete(`http://localhost:5000/api/v1/user/deleteorder/${orderId}`);
+      setOrders((prev) => prev.filter((order) => order._id !== orderId));
+    } catch (err) {
+      console.error("Error deleting order:", err);
+      alert("Failed to cancel the order. Please try again.");
+    } finally {
+      setDeleting(null);
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -43,21 +73,28 @@ const Orders = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-10 text-center">
         My Orders
       </h1>
 
-      {orders.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">No orders yet 🛍️</p>
-      ) : (
+      {Array.isArray(orders) && orders.length > 0 ?  (
         <div className="max-w-5xl mx-auto space-y-8">
-          {orders.map((order, index) => (
+          {orders.map((order) => (
             <div
-              key={index}
+              key={order._id}
               className="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
             >
+             
               <div className="flex flex-wrap justify-between items-center p-6 border-b border-gray-100">
                 <div>
                   <p className="text-sm text-gray-500">Order ID</p>
@@ -83,7 +120,7 @@ const Orders = () => {
                     {order.paymentStatus}
                   </p>
                 </div>
-                <div>
+                <div className="flex items-center gap-3">
                   <span
                     className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(
                       order.orderStatus
@@ -91,6 +128,21 @@ const Orders = () => {
                   >
                     {order.orderStatus}
                   </span>
+
+                  <button
+                    onClick={() => handleDelete(order._id)}
+                    className="flex items-center gap-1 text-red-600 hover:text-red-700 transition-all"
+                    disabled={deleting === order._id}
+                  >
+                    {deleting === order._id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
+                    <span className="text-sm font-medium">
+                      {deleting === order._id ? "Deleting..." : "Cancel"}
+                    </span>
+                  </button>
                 </div>
               </div>
 
@@ -120,16 +172,18 @@ const Orders = () => {
                 ))}
               </div>
 
+            
               <div className="p-6 bg-gray-50 rounded-b-2xl grid sm:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                     <MapPin className="w-5 h-5 text-blue-600" /> Shipping Address
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {order.shippingAddress.name} <br />
-                    {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
-                    - {order.shippingAddress.pincode} <br />
-                    📞 {order.shippingAddress.phone}
+                    {order.shippingAddress?.name} <br />
+                    {order.shippingAddress?.city},{" "}
+                    {order.shippingAddress?.state} -{" "}
+                    {order.shippingAddress?.pincode} <br />
+                    📞 {order.shippingAddress?.phone}
                   </p>
                 </div>
 
@@ -152,7 +206,9 @@ const Orders = () => {
             </div>
           ))}
         </div>
-      )}
+      ) : (
+        <p className="text-center text-gray-500 text-lg">No orders yet 🛍️</p>
+      ) }
     </div>
   );
 };

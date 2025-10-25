@@ -7,7 +7,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
 function Model() {
-  let anoop ;
+  let anoop = 0;
   const canvasRef = useRef();
   gsap.registerPlugin(useGSAP);
 
@@ -18,7 +18,7 @@ function Model() {
         anoop = 12 ;
   }
   else{
-     anoop = 15
+     anoop = 15 ;
   }
     const scene = new THREE.Scene();
    
@@ -73,7 +73,7 @@ useGSAP(()=>{
   return (
    <>
  <div className=' overflow-hidden'>
-  <canvas ref={canvasRef} id="one" className='sm:h-[65vh] sm:w-[90vh] rounded-full w-[50vh] h-[50vh] z-50 '/>
+  <canvas ref={canvasRef} id="one" className='sm:h-[65vh] sm:w-[90vh] rounded-full w-[30vh] h-[30vh] z-50 '/>
  </div>
 </>
    )
