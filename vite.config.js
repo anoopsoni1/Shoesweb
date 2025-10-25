@@ -16,17 +16,17 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlfmerbm43zspPhb5nx11BN2ql3ojAv2wEkQ&s',
+            src: 'https://assets.simon.com/tenantlogos/34449.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlfmerbm43zspPhb5nx11BN2ql3ojAv2wEkQ&s',
+            src: 'https://assets.simon.com/tenantlogos/34449.png',
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlfmerbm43zspPhb5nx11BN2ql3ojAv2wEkQ&s',
+            src: 'https://assets.simon.com/tenantlogos/34449.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
