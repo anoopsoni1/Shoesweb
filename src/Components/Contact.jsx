@@ -22,7 +22,7 @@ const user = useSelector((state) => state.user.userData);
 const dispatch = useDispatch()
   const handleLogout = async() => {
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
         dispatch(clearUser())
          dispatch(clearCart())
          navigate("/login")
@@ -39,7 +39,7 @@ const dispatch = useDispatch()
       if (!formData.name || !formData.email || !formData.message) {
         return toast.error("Please fill in all required fields");
       }
-      const res = await axios.post("http://localhost:5000/api/v1/user/contact", formData);
+      const res = await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/contact", formData);
       toast.success("Message sent successfully");
       setFormData({ name: "", email: "", phone: "", message: "" });
       console.log(res);

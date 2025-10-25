@@ -16,7 +16,7 @@ function Home() {
  const handleLogout = async() => {
         dispatch(clearUser())
       try {
-      await axios.post("https://shoesbackend-2-xrez.onrender.com/api/v1/user/logout", {}, { withCredentials: true })
+      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true })
           dispatch(clearUser())
           navigate("/login");
     } catch (error) {

@@ -23,7 +23,7 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:5000/api/v1/user/register",
+        "https://shoesbackend-4.onrender.com/api/v1/user/register",
         {
           method: "POST",
           headers: {

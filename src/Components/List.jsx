@@ -63,7 +63,7 @@ export default function List() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
       dispatch(clearUser());
       navigate("/login");
     } catch (error) {
@@ -82,7 +82,7 @@ export default function List() {
       ]
     };
     try {
-       const cartdata = await fetch('http://localhost:5000/api/v1/user/cart', {
+       const cartdata = await fetch('https://shoesbackend-4.onrender.com/api/v1/user/cart', {
           method: 'POST',
         headers: { 'Content-Type': 'application/json' },
           body : JSON.stringify(cartPayload) ,

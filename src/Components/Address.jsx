@@ -46,7 +46,7 @@ export default function CheckoutWithAddress() {
     const fetchAddress = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/user/getaddress/${user?._id}` ,{
+          `https://shoesbackend-4.onrender.com/api/v1/user/getaddress/${user?._id}` ,{
            method :  "GET" ,
             headers: { 'Content-Type': 'application/json' },
           }
@@ -76,7 +76,7 @@ export default function CheckoutWithAddress() {
     dispatch(clearUser());
     try {
       await axios.post(
-        "http://localhost:5000/api/v1/user/logout",
+        "https://shoesbackend-4.onrender.com/api/v1/user/logout",
         {},
         { withCredentials: true }
       );
@@ -89,7 +89,7 @@ export default function CheckoutWithAddress() {
   const saveAddress = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/v1/user/address", {
+      const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/address", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user?._id, formData }),
@@ -109,7 +109,7 @@ export default function CheckoutWithAddress() {
   const initiatePayment = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/v1/user/payment", {
+      const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

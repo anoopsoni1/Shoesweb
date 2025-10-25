@@ -21,7 +21,7 @@ useEffect(() => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/v1/user/getorder/${user._id}`
+        `https://shoesbackend-4.onrender.com/api/v1/user/getorder/${user._id}`
       );
 
       const data = res.data;
@@ -48,7 +48,7 @@ useEffect(() => {
     if (!window.confirm("Are you sure you want to cancel this order?")) return;
     setDeleting(orderId);
     try {
-      await axios.delete(`http://localhost:5000/api/v1/user/deleteorder/${orderId}`);
+      await axios.delete(`https://shoesbackend-4.onrender.com/api/v1/user/deleteorder/${orderId}`);
       setOrders((prev) => prev.filter((order) => order._id !== orderId));
     } catch (err) {
       console.error("Error deleting order:", err);

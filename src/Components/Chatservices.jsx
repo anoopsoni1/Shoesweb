@@ -55,7 +55,7 @@ const dispatch = useDispatch()
     setError(null);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/user/chat", {
+      const res = await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/chat", {
         name,
         question,
         products,
@@ -96,7 +96,7 @@ const dispatch = useDispatch()
 
   const handleLogout = async() => {
       try {
-      await axios.post("http://localhost:5000/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
          dispatch(clearUser())
          dispatch(clearCart())
          navigate("/login")
