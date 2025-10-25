@@ -38,6 +38,20 @@ import CheckoutWithAddress from './Components/Address.jsx'
 import OrderHistory from './Components/Order.jsx'
 // import Update from './Components/Update.jsx'
 
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm("New content available. Reload?")) {
+      updateSW()
+    }
+  },
+  onOfflineReady() {
+    console.log("App ready to work offline")
+  },
+})
+
+
 const route = createBrowserRouter([
   {
     path: "/" ,

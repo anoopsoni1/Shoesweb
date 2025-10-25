@@ -39,8 +39,8 @@ const handlepage = function(){
          </div>
          </div>
       </div>
-    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[48.5vh] h-[30vh] mt-7 sm:ml-0 ml-0 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
-      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")] sm-mt-0 sm:mb-0 mb-14 sm:ml-0 ml-14 '>
+    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[48.5vh] h-[40vh] mt-7 sm:ml-0 ml-1 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
+      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")] sm-mt-0 sm:mb-0 sm:ml-0 ml-12 mt-2 '>
            <Model  />
         </div>
         </div>
