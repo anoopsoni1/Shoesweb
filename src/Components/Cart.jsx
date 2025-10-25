@@ -118,7 +118,7 @@ dispatch(
             <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaRegHeart />
             </Link>
-            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <Link className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaShoppingBag />
             </Link>
             {user ? (

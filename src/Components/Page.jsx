@@ -1,64 +1,76 @@
-import React from 'react'
+import React from 'react';
 import { MdArrowOutward } from "react-icons/md";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-coverflow';
 import Model from './model';
 import { useNavigate } from 'react-router-dom';
 import InstallPrompt from './Installprompt';
 
-
-
 function Page() {
+  const navi = useNavigate();
 
-const navi = useNavigate()
-
-
-const handlepage = function(){
-      setTimeout(()=>{
-        navi("/list")
-      },500)
-}
-
+  const handlepage = () => {
+    setTimeout(() => {
+      navi("/list");
+    }, 500);
+  };
 
   return (
-   <>
-    <div className=' sm:flex grid justify-between mr-10 pb-[15.52vh]'>
-      <div className='sm:mt-32 sm:ml-10 mt-16 ml-5 grid'>
-       <p className='sm:text-7xl text-2xl font-bold text-white'>Discover</p>
-       <p className='sm:text-7xl text-2xl font-bold text-white'>Comfort and Style for</p>
-       <p className='sm:text-7xl text-2xl font-bold text-white'>Every Occasion</p>
-       <p className='mt-2 sm:text-[20px] text-[14px] w-[50vh] sm:w-full text-gray-300'>Discover the perfect balance of comfort,durability,and style for every</p> 
-       <p className='text-gray-300 sm:text-[20px] text-[14px] w-[50vh] sm:w-full'>occasion with our versatile,high-quality footwear collection</p>
-         <div className='sm:block hidden'>
-         <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-gradient-to-r from-yellow-300 to-yellow-600 flex justify-between place-items-center '>
-        <button  className='ml-4 text-[18px] mb-1 font-bold'>Explore</button>
-         <div className='rounded-full bg-amber-50 mr-1'><MdArrowOutward  size={35}/></div>
-         </div>
-         </div>
-      </div>
-    <div className="sm:w-[90vh] sm:h-[70vh] sm:mt-14 w-[42vh] h-[40vh] mt-7 sm:ml-0 ml-5 border-8 rounded-[15vh] border-y-neutral-50  border-e-amber-300 border-l-amber-300 border-s-stone-50 ">
-      <div className=' flex place-items-center bg-cover bg-[url("./bg99.png")] sm-mt-0 sm:mb-0 sm:ml-0 p-5 ml-3  '>
-           <Model  />
-        </div>
-        </div>
-        <div  className='sm:hidden block ml-5 '>
-          <div onClick={handlepage} className='mt-16 ml-10 h-11 w-[200px] rounded-3xl bg-black flex justify-between place-items-center'>
-        <button  className='ml-4 text-[18px] mb-1 text-white'>Explore</button>
-          <div className='rounded-full bg-amber-50 mr-1'><MdArrowOutward  size={35}/></div>
-         </div>
-        </div>
-      </div>
+    <>
+      <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start px-5 sm:px-10 pb-[15.52vh]">
+        {/* Left Section */}
+        <div className="flex flex-col sm:w-1/2 gap-3 sm:gap-4 mt-16 sm:mt-32">
+          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
+            Discover
+          </p>
+          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
+            Comfort and Style for
+          </p>
+          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
+            Every Occasion
+          </p>
 
-       
-   </>
-  )
+          <p className="mt-2 text-gray-300 text-sm sm:text-base max-w-[90%] sm:max-w-full">
+            Discover the perfect balance of comfort, durability, and style for every
+          </p>
+          <p className="text-gray-300 text-sm sm:text-base max-w-[90%] sm:max-w-full">
+            occasion with our versatile, high-quality footwear collection
+          </p>
+
+          {/* Desktop Explore Button */}
+          <div className="hidden sm:flex mt-6">
+            <div
+              onClick={handlepage}
+              className="h-12 w-52 rounded-3xl bg-gradient-to-r from-yellow-300 to-yellow-600 flex items-center justify-between px-4 cursor-pointer hover:scale-105 transition-transform"
+            >
+              <button className="text-lg font-bold">Explore</button>
+              <div className="rounded-full bg-amber-50 p-1">
+                <MdArrowOutward size={30} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="mt-8 sm:mt-14 sm:w-1/2 flex justify-center">
+          <div className="w-[90vw] max-w-[90vh] h-[40vh] sm:h-[70vh] rounded-[3rem] border-8 border-y-neutral-50 border-l-amber-300 border-e-amber-300 overflow-hidden flex items-center justify-center bg-cover bg-center bg-[url('./bg99.png')] shadow-lg">
+            <Model />
+          </div>
+        </div>
+
+        {/* Mobile Explore Button */}
+        <div className="sm:hidden flex justify-center w-full mt-6">
+          <div
+            onClick={handlepage}
+            className="h-12 w-52 rounded-3xl bg-black flex items-center justify-between px-4 cursor-pointer hover:scale-105 transition-transform"
+          >
+            <button className="text-lg font-bold text-white">Explore</button>
+            <div className="rounded-full bg-amber-50 p-1">
+              <MdArrowOutward size={30} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default Page
-
-
-
+export default Page;

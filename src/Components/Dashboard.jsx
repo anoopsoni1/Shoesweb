@@ -22,7 +22,6 @@ const Dashboard = () => {
   const user = useSelector((state) => state.user.userData);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Fetch user profile
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -37,7 +36,7 @@ const Dashboard = () => {
     fetchUser();
   }, [dispatch]);
 
-  // Logout handler
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -57,7 +56,7 @@ const Dashboard = () => {
 
   const navItems = [
     { label: "Home", icon: <FaHome />, path: "/" },
-    { label: "Cart", icon: <FaShoppingCart />, path: "/cart" },
+    { label: "Cart", icon: <FaShoppingCart />, path: "/cart/:UserId" },
     { label: "Orders", icon: <FaBoxOpen />, path: "/orders" },
     { label: "Contact", icon: <FaPhoneAlt />, path: "/contact" },
     { label: "Settings", icon: <FaCog />, path: "/setting" },
@@ -91,7 +90,7 @@ const Dashboard = () => {
                   animate={{ x: 0 }}
                   exit={{ x: -250 }}
                   transition={{ duration: 0.4 }}
-                  className="fixed md:relative top-0 left-0 h-full md:h-auto w-[260px] bg-white/30 backdrop-blur-lg shadow-xl rounded-r-3xl p-6 flex flex-col justify-between border border-white/40 z-40"
+                  className="fixed md:relative top-0 left-0 h-full md:h-auto w-[260px] bg-white/100 backdrop-blur-lg shadow-xl rounded-r-3xl p-6 flex flex-col justify-between border border-white/40 z-40"
                 >
                   <div className="md:hidden flex justify-end">
                     <button onClick={() => setSidebarOpen(false)}>
