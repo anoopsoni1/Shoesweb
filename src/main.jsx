@@ -37,7 +37,7 @@ import Chatbot from './Components/Chatservices.jsx'
 import CheckoutWithAddress from './Components/Address.jsx'
 import OrderHistory from './Components/Order.jsx'
 // import Update from './Components/Update.jsx'
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 import { registerSW } from 'virtual:pwa-register'
 
