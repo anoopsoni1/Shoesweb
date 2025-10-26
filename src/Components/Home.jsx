@@ -7,6 +7,7 @@ import { useSelector ,useDispatch } from "react-redux";
 import Page from "./Page";
 import { clearUser } from "../Feature/Slicetwo.jsx";
 import InstallPrompt from "./Installprompt.jsx";
+import { HiOutlineLogout } from "react-icons/hi";
 
 function Home() {
   const user = useSelector((state) => state.user.userData);
@@ -49,7 +50,7 @@ function Home() {
                   onClick={handleLogout}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                 >
-                  Logout
+                 <HiOutlineLogout />
                 </button>
                 <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
                   <FaRegUserCircle />
