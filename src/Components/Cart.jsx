@@ -41,8 +41,8 @@ function Cart() {
       throw new Error("Failed to add to cart");
     }
         const data = await cartdata.json();
-        
          dispatch(setCart(data.items));
+        
     } catch (error) {
       console.error("Add to cart is failed", error);
     }
@@ -64,6 +64,7 @@ function Cart() {
       
     const data = await cartdata.json();
      if (data.items) dispatch(setCart(data.items));
+      localStorage.setItem("Cart" , JSON.stringify(data.items) )
     } catch (error) {
       console.error("Fetch to cart is failed", error);
     }
@@ -81,6 +82,7 @@ const handleRemove = async (id) => {
       `https://shoesbackend-4.onrender.com/api/v1/user/cart/${user._id}/${id}`
     );
     dispatch(setCart(response.data.items));
+    localStorage.removeItem("cart");
   } catch (err) {
     console.error("Failed to remove item", err);
   }

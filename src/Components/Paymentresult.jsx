@@ -9,10 +9,10 @@ function PaymentResult() {
   const [loading, setLoading] = useState(true);
   const [paymentData, setPaymentData] = useState(null);
   const user = useSelector((state) => state.user.userData);
-   const cart = useSelector((state) => state.cart.cartitem);
 
   useEffect(() => {
     const order_id = localStorage.getItem("orderId");
+  const cart = localStorage.getItem("Cart") ;
 
     const payment = async () => {
       try {
@@ -28,7 +28,8 @@ function PaymentResult() {
           setPaymentData(data[0]);
           setStatus(data[0].payment_status || "Unknown");
      if (data[0].payment_status?.toLowerCase() === "success") {
- 
+    
+      
       const orderPayload = {
     userId: user._id , 
     items: cart ,
@@ -36,14 +37,16 @@ function PaymentResult() {
     address: localStorage.getItem("savedAddress") ,
     paymentStatus: "Success",
          };
-
-  await fetch("https://shoesbackend-4.onrender.com/api/v1/user/saveorder", {
+      
+ const response =  await fetch("https://shoesbackend-4.onrender.com/api/v1/user/saveorder", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderPayload),
   });
+
+      console.log(response.json());
 }
-    // navigate("/Order")
+     navigate("/Order")
         } else {
           setStatus("No payment data found");
         }
