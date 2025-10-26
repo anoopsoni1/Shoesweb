@@ -19,7 +19,7 @@ export const product = {
   sizes: ["6", "7", "8", "9", "10", "11"],
   images: [
     "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/f6ab642d-c6d0-4a99-b2d8-b582cc99576f/NIKE+AIR+MAX+1+%2786+OG.png ", // front
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj3a4O9pcaumww-n2NFThWA9w4yl_5aMlbhg&s", // side
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj3a4O9pcaumww-n2NFThWA9w4yl_5aMlbhg&s", 
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmGzUQheUOLHRZSoFCNBM1QxPBoY6_3AhUlQ&s"   
  ],
 };
