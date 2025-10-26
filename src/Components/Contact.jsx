@@ -81,7 +81,7 @@ const dispatch = useDispatch()
       </header>
     <div className="h-[94vh] flex flex-col md:flex-row bg-white">
      
-      <div className="w-full md:w-1/3 bg-[url('./cona.jpg')] bg-cover p-8 flex flex-col justify-between">
+      <div className="w-full md:w-1/3 bg-[url('/cona.jpg')] bg-cover p-8 flex flex-col justify-between">
         <div>
           <h2 className="text-3xl font-bold mb-6 text-black">Contact Info</h2>
           <p className="mb-4 text-black flex items-center gap-2 font-bold">
