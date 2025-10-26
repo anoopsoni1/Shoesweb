@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { load } from "@cashfreepayments/cashfree-js";
 import { CreditCard, Loader2 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { clearUser } from "../Feature/Slicetwo";
 import { FaRegHeart, FaShoppingBag, FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const FormInput = ({ id, placeholder, fullWidth = false, ...props }) => (
@@ -39,37 +38,47 @@ export default function CheckoutWithAddress() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [addressSaved, setAddressSaved] = useState(false); 
-  const [savedAddress, setSavedAddress] = useState(null); 
+  const [addressSaved, setAddressSaved] = useState(false);
+  const [savedAddress, setSavedAddress] = useState(null);
 
+  // Fetch saved address from backend or localStorage
   useEffect(() => {
     const fetchAddress = async () => {
       try {
         const res = await fetch(
-          `https://shoesbackend-4.onrender.com/api/v1/user/getaddress/${user?._id}` ,{
-           method :  "GET" ,
-            headers: { 'Content-Type': 'application/json' },
-          }
+          `https://shoesbackend-4.onrender.com/api/v1/user/getaddress/${user?._id}`,
+          { headers: { "Content-Type": "application/json" } }
         );
         if (!res.ok) throw new Error("Failed to fetch saved address");
         const data = await res.json();
-       
-        
+
         if (data.addresses) {
           setSavedAddress(data.addresses);
-          setFormData(data.addresses); 
+          setFormData(data.addresses);
+          localStorage.setItem("savedAddress", JSON.stringify(data.addresses));
         }
       } catch (err) {
         console.error(err);
       }
     };
 
-    if (user?._id) fetchAddress();
+    const localAddress = localStorage.getItem("savedAddress");
+    if (localAddress) {
+      const parsed = JSON.parse(localAddress);
+      setFormData(parsed);
+      setSavedAddress(parsed);
+    } else if (user?._id) {
+      fetchAddress();
+    }
   }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+      localStorage.setItem("savedAddress", JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const handleLogout = async () => {
@@ -89,18 +98,20 @@ export default function CheckoutWithAddress() {
   const saveAddress = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/address", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user?._id, formData }),
-      });
+      const res = await fetch(
+        "https://shoesbackend-4.onrender.com/api/v1/user/address",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?._id, ...formData }),
+        }
+      );
       if (!res.ok) throw new Error("Failed to save address");
 
       const saved = await res.json();
-      console.log("Address saved successfully", saved);
-      localStorage.setItem("Address" , saved)
-      setSavedAddress(saved.address);
-      setAddressSaved(true); 
+      setSavedAddress(saved.data);
+      setAddressSaved(true);
+      localStorage.setItem("savedAddress", JSON.stringify(saved.data));
     } catch (err) {
       console.error(err);
     }
@@ -109,19 +120,22 @@ export default function CheckoutWithAddress() {
   const initiatePayment = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: checkoutData.amount,
-          name: checkoutData.name,
-          email: checkoutData.email,
-          phone: "9876543210",
-        }),
-      });
+      const res = await fetch(
+        "https://shoesbackend-4.onrender.com/api/v1/user/payment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: checkoutData.amount,
+            name: checkoutData.name,
+            email: checkoutData.email,
+            phone: "9876543210",
+          }),
+        }
+      );
       const data = await res.json();
-         console.log(data);
-      
+      console.log(data);
+
       localStorage.setItem("orderId", data.order_id);
 
       const cashfree = await load({ mode: "sandbox" });
@@ -185,9 +199,11 @@ export default function CheckoutWithAddress() {
       </header>
 
       <div className="flex flex-col items-center min-h-screen p-6 gap-8 w-full">
-        {savedAddress && (
+        {savedAddress && !addressSaved && (
           <div className="w-full max-w-3xl bg-green-100 p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Saved Address</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">
+              Saved Address
+            </h2>
             <div className="text-gray-700">
               <p>
                 <strong>Name:</strong> {savedAddress.firstName}{" "}
@@ -200,8 +216,10 @@ export default function CheckoutWithAddress() {
                 <strong>Phone:</strong> {savedAddress.phoneNumber}
               </p>
               <p>
-                <strong>Address:</strong> {savedAddress.streetAddress}, {savedAddress.area},{" "}
-                {savedAddress.city}, {savedAddress.country}, {savedAddress.postalCode}
+                <strong>Address:</strong>{" "}
+                {savedAddress.streetAddress}, {savedAddress.area},{" "}
+                {savedAddress.city}, {savedAddress.country},{" "}
+                {savedAddress.postalCode}
               </p>
             </div>
             <button
@@ -213,7 +231,6 @@ export default function CheckoutWithAddress() {
           </div>
         )}
 
-        {/* Address Form */}
         {!addressSaved && (
           <div className="w-full max-w-3xl bg-white p-6 rounded-xl shadow-lg">
             <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">

@@ -50,7 +50,7 @@ function Home() {
                   onClick={handleLogout}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                 >
-                 <HiOutlineLogout />
+                 <HiOutlineLogout size={21} />
                 </button>
                 <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
                   <FaRegUserCircle />
@@ -81,7 +81,7 @@ function Home() {
                 onClick={handleLogout}
                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-[10px]"
               >
-                Logout
+                <HiOutlineLogout />
               </button>
               
               </>
