@@ -106,46 +106,35 @@ export default function CheckoutWithAddress() {
     }
   };
 
- const initiatePayment = async () => {
-  setLoading(true);
-  try {
-    const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: checkoutData.amount,
-        name: checkoutData.name,
-        email: checkoutData.email,
-        phone: "9876543210",
-      }),
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    localStorage.setItem("orderId", data.order_id);
-
-    const cashfree = await load({ mode: "sandbox" });
-
-    cashfree.checkout({
-      paymentSessionId: data.payment_session_id,
+  const initiatePayment = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: checkoutData.amount,
+          name: checkoutData.name,
+          email: checkoutData.email,
+          phone: "9876543210",
+        }),
+      });
+      const data = await res.json();
+         console.log(data);
       
-      onSuccess: (paymentData) => {
-        console.log("Payment successful", paymentData);
-        navigate("/payment");
-      },
-      onFailure: (paymentData) => {
-        console.log("Payment failed", paymentData);
-        navigate("/payment");
-      },
-    });
-  } catch (err) {
-    console.error("Payment error:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+      localStorage.setItem("orderId", data.order_id);
 
+      const cashfree = await load({ mode: "sandbox" });
+      cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_self",
+      });
+    } catch (err) {
+      console.error("Payment error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
