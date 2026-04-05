@@ -144,7 +144,7 @@ export const products = [
     id: 19,
     name: "Skechers Go Walk Arch",
     price: 6999,
-    image: shoeImageForProduct(19),
+    image: "https://images.unsplash.com/photo-1560762484-813fc976a56e?q=80&w=2070&auto=format&fit=crby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Casual Shoes",
   },
   {
