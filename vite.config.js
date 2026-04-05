@@ -6,6 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [react() ,tailwindcss(),
      VitePWA({
+      workbox: {
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/assets\//, /^\/[^?]*\.[a-zA-Z0-9]{2,4}(\?.*)?$/],
+      },
       manifest: {
         name: 'Solemate',
         short_name: 'Solemate',
