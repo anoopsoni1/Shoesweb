@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2, CreditCard, Truck, Home } from "lucide-react";
-import { useSelector } from "react-redux";
+import { store } from "../Store/Store.js";
 
 function PaymentResult() {
   const navigate = useNavigate();
   const [status, setStatus] = useState("Verifying...");
   const [loading, setLoading] = useState(true);
   const [paymentData, setPaymentData] = useState(null);
-  const user = useSelector((state) => state.user.userData);
 
   useEffect(() => {
     const order_id = localStorage.getItem("orderId");
-  const cart = localStorage.getItem("Cart") ;
+
+    const loadCartItems = () => {
+      try {
+        const raw = localStorage.getItem("cart");
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    };
 
     const payment = async () => {
       try {
@@ -28,23 +37,27 @@ function PaymentResult() {
           setPaymentData(data[0]);
           setStatus(data[0].payment_status || "Unknown");
      if (data[0].payment_status?.toLowerCase() === "success") {
-    
-      
-      const orderPayload = {
-    userId: user._id , 
-    items: cart ,
-    totalAmount: data[0].payment_amount,
-    address: localStorage.getItem("savedAddress") ,
-    paymentStatus: "Success",
-         };
-      
- const response =  await fetch("https://shoesbackend-4.onrender.com/api/v1/user/saveorder", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderPayload),
-  });
+      const cartItems = loadCartItems();
+      const userId = store.getState().user.userData?._id;
+      if (userId && cartItems.length > 0) {
+        const orderPayload = {
+          userId,
+          items: cartItems,
+          totalAmount: data[0].payment_amount,
+          address: localStorage.getItem("savedAddress"),
+          paymentStatus: "Success",
+        };
 
-      console.log(response.json());
+        const response = await fetch(
+          "https://shoesbackend-4.onrender.com/api/v1/user/saveorder",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderPayload),
+          }
+        );
+        await response.json().catch(() => null);
+      }
 }
      navigate("/Order")
         } else {

@@ -56,7 +56,7 @@ const Dashboard = () => {
 
   const navItems = [
     { label: "Home", icon: <FaHome />, path: "/" },
-    { label: "Cart", icon: <FaShoppingCart />, path: "/cart/:UserId" },
+    { label: "Cart", icon: <FaShoppingCart />, path: "/cart" },
     { label: "Orders", icon: <FaBoxOpen />, path: "/orders" },
     { label: "Contact", icon: <FaPhoneAlt />, path: "/contact" },
     { label: "Settings", icon: <FaCog />, path: "/setting" },

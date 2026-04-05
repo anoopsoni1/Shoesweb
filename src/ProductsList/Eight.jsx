@@ -59,7 +59,7 @@ const Eight = () => {
                 <Link to="/" className="bg-amber-100 p-3 rounded-[5px]">
                   <FaRegHeart />
                 </Link>
-                <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px]">
+                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
                   <FaShoppingBag />
                 </Link>
   

@@ -6,6 +6,7 @@ import LoginPage from './Components/Login.jsx'
 import SignupPage from './Components/Signup.jsx'
 import List from './Components/List.jsx'
 import Cart from './Components/Cart.jsx'
+import CartRedirect from './Components/CartRedirect.jsx'
 import { Provider } from 'react-redux'
 import { store } from './Store/Store.js'
 import { ToastContainer } from 'react-toastify'
@@ -38,8 +39,9 @@ import CheckoutWithAddress from './Components/Address.jsx'
 import OrderHistory from './Components/Order.jsx'
 // import Update from './Components/Update.jsx'
 import { SpeedInsights } from "@vercel/speed-insights/react"
-
+import Nfkjaef from './Components/nfkjaef.jsx'
 import { registerSW } from 'virtual:pwa-register'
+import WithoutloginCart from './Components/WithoutloginCart.jsx'
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -157,6 +159,10 @@ const route = createBrowserRouter([
         element : <List />
       },
       {
+        path: "/cart",
+        element: <CartRedirect />,
+      },
+      {
         path: "/cart/:UserId" ,
         element : <Cart />
       },
@@ -182,8 +188,20 @@ const route = createBrowserRouter([
         element : <PaymentResult />
       },
       {
-        path : "/Order" , 
-        element : <OrderHistory />
+        path: "/Order",
+        element: <OrderHistory />,
+      },
+      {
+        path: "/orders",
+        element: <OrderHistory />,
+      },
+      {
+       path : "/Cart" ,
+       element : <WithoutloginCart />
+      },
+      {
+       path : "/shubham" ,
+       element : <Nfkjaef />
       }
    
     ]

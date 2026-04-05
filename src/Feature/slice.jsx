@@ -28,20 +28,23 @@ const cartSlice = createSlice({
   reducers: {
     addtocart(state, action) {
       const item = action.payload;
-      const existingItem = state.cartitem.find((i) => i.id === item.id);
+      const existingItem = state.cartitem.find(
+        (i) => String(i.id) === String(item.id)
+      );
 
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
         state.cartitem.push({ ...item, quantity: 1 });
       }
+      saveCartToStorage(state.cartitem);
     },
 
     removefromcart(state, action) {
       state.cartitem = state.cartitem.filter(
-        (item) => item.id !== action.payload
+        (item) => String(item.id) !== String(action.payload)
       );
-
+      saveCartToStorage(state.cartitem);
     },
 
     clearCart(state) {
@@ -50,8 +53,9 @@ const cartSlice = createSlice({
     },
 
     setCart: (state, action) => {
-    state.cartitem = action.payload;
-}
+      state.cartitem = Array.isArray(action.payload) ? action.payload : [];
+      saveCartToStorage(state.cartitem);
+    },
   },
 });
 

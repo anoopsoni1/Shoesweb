@@ -47,9 +47,21 @@ export default function List() {
 
   const Addtocart = async (e, product) => {
     e.preventDefault();
+    if (!user?._id) {
+      toast.error("Please log in to add items to your cart");
+      return;
+    }
     const cartPayload = {
-      userId: user?._id,
-      items: [{ id: product.id, name: product.name, price: product.price, quantity: 1 }],
+      userId: user._id,
+      items: [
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          image: product.image ?? "",
+        },
+      ],
     };
     try {
       const cartdata = await fetch("https://shoesbackend-4.onrender.com/api/v1/user/cart", {
@@ -130,10 +142,12 @@ export default function List() {
             )}
           </div>
 
-          <div className="flex gap-3 items-center">
-            <Link to="/cart/:UserId" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-              <FaShoppingBag />
-            </Link>
+          <div className="flex gap-3 items-center ">
+             {user ? ( <Link to="/cart" className=" px-2 py-2 rounded-xl bg-gray-100 text-black">
+                <FaShoppingBag />
+              </Link>) : (<Link className=" px-2 py-2 rounded-xl text-black bg-gray-100 " to="/Cart">
+                   <FaShoppingBag />
+              </Link>)}
             {user ? (
               <button
                 onClick={handleLogout}

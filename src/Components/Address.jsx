@@ -7,6 +7,31 @@ import { clearUser } from "../Feature/Slicetwo";
 import { FaRegHeart, FaShoppingBag, FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
 
+const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
+
+const emptyAddressForm = () => ({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  country: "",
+  city: "",
+  streetAddress: "",
+  area: "",
+  postalCode: "",
+});
+
+/** MongoDB docs include _id, userId, etc. — keep only fields bound to inputs */
+function pickAddressFields(src) {
+  if (!src || typeof src !== "object") return emptyAddressForm();
+  const base = emptyAddressForm();
+  for (const key of Object.keys(base)) {
+    const v = src[key];
+    base[key] = v != null && v !== "" ? String(v) : "";
+  }
+  return base;
+}
+
 const FormInput = ({ id, placeholder, fullWidth = false, ...props }) => (
   <div className={fullWidth ? "md:col-span-2" : ""}>
     <input
@@ -25,37 +50,29 @@ export default function CheckoutWithAddress() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    country: "",
-    city: "",
-    streetAddress: "",
-    area: "",
-    postalCode: "",
-  });
+  const [formData, setFormData] = useState(emptyAddressForm);
 
   const [loading, setLoading] = useState(false);
   const [addressSaved, setAddressSaved] = useState(false);
   const [savedAddress, setSavedAddress] = useState(null);
+  const [saveError, setSaveError] = useState("");
 
   // Fetch saved address from backend or localStorage
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const res = await fetch(
-          `https://shoesbackend-4.onrender.com/api/v1/user/getaddress/${user?._id}`,
-          { headers: { "Content-Type": "application/json" } }
-        );
+        const res = await fetch(`${API_USER}/getaddress/${user?._id}`, {
+          headers: { "Content-Type": "application/json" },
+        });
+        if (res.status === 404) return;
         if (!res.ok) throw new Error("Failed to fetch saved address");
         const data = await res.json();
 
         if (data.addresses) {
-          setSavedAddress(data.addresses);
-          setFormData(data.addresses);
-          localStorage.setItem("savedAddress", JSON.stringify(data.addresses));
+          const fields = pickAddressFields(data.addresses);
+          setSavedAddress(fields);
+          setFormData(fields);
+          localStorage.setItem("savedAddress", JSON.stringify(fields));
         }
       } catch (err) {
         console.error(err);
@@ -64,9 +81,14 @@ export default function CheckoutWithAddress() {
 
     const localAddress = localStorage.getItem("savedAddress");
     if (localAddress) {
-      const parsed = JSON.parse(localAddress);
-      setFormData(parsed);
-      setSavedAddress(parsed);
+      try {
+        const parsed = JSON.parse(localAddress);
+        const fields = pickAddressFields(parsed);
+        setFormData(fields);
+        setSavedAddress(fields);
+      } catch {
+        localStorage.removeItem("savedAddress");
+      }
     } else if (user?._id) {
       fetchAddress();
     }
@@ -74,6 +96,7 @@ export default function CheckoutWithAddress() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setSaveError("");
     setFormData((prev) => {
       const updated = { ...prev, [name]: value };
       localStorage.setItem("savedAddress", JSON.stringify(updated));
@@ -85,7 +108,7 @@ export default function CheckoutWithAddress() {
     dispatch(clearUser());
     try {
       await axios.post(
-        "https://shoesbackend-4.onrender.com/api/v1/user/logout",
+        `${API_USER}/logout`,
         {},
         { withCredentials: true }
       );
@@ -97,23 +120,35 @@ export default function CheckoutWithAddress() {
 
   const saveAddress = async (e) => {
     e.preventDefault();
+    setSaveError("");
+    if (!user?._id) {
+      setSaveError("Please log in to save your address.");
+      return;
+    }
     try {
-      const res = await fetch(
-        "https://shoesbackend-4.onrender.com/api/v1/user/address",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user?._id, ...formData }),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to save address");
+      const res = await fetch(`${API_USER}/address`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user._id, formData }),
+      });
+      const payload = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setSaveError(
+          payload.message ||
+            payload.error ||
+            "Could not save address. Check all fields and try again."
+        );
+        return;
+      }
 
-      const saved = await res.json();
-      setSavedAddress(saved.data);
+      const normalized = pickAddressFields(payload.data ?? formData);
+      setSavedAddress(normalized);
+      setFormData(normalized);
       setAddressSaved(true);
-      localStorage.setItem("savedAddress", JSON.stringify(saved.data));
+      localStorage.setItem("savedAddress", JSON.stringify(normalized));
     } catch (err) {
       console.error(err);
+      setSaveError("Network error while saving address.");
     }
   };
 
@@ -121,7 +156,7 @@ export default function CheckoutWithAddress() {
     setLoading(true);
     try {
       const res = await fetch(
-        "https://shoesbackend-4.onrender.com/api/v1/user/payment",
+        `${API_USER}/payment`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -164,7 +199,7 @@ export default function CheckoutWithAddress() {
                 <FaRegHeart />
               </li>
               <Link
-                to="/cart/:UserId"
+                to="/cart"
                 className="bg-amber-100 p-3 rounded-[5px] text-black"
               >
                 <FaShoppingBag />
@@ -240,6 +275,11 @@ export default function CheckoutWithAddress() {
               onSubmit={saveAddress}
               className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
+              {saveError && (
+                <p className="md:col-span-2 p-3 rounded-lg bg-red-50 text-red-700 text-sm text-center">
+                  {saveError}
+                </p>
+              )}
               <FormInput
                 id="firstName"
                 placeholder="First Name"
@@ -358,3 +398,5 @@ export default function CheckoutWithAddress() {
     </>
   );
 }
+
+

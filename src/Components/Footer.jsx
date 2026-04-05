@@ -2,6 +2,7 @@ import { PiShieldStarFill } from "react-icons/pi";
 import { MdOutlineDocumentScanner } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { BsSubstack } from "react-icons/bs";
 
 function Footer() {
   const user = useSelector((state) => state.user.userData);
@@ -27,6 +28,7 @@ function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 sm:w-1/3 w-full">
+        <BsSubstack  size={30}/>
           <h1 className="text-xl sm:text-2xl font-semibold">Subscribe</h1>
           <p className="text-gray-800 text-sm sm:text-base font-semibold">
             Subscribe to our newsletter for early access and exclusive content.

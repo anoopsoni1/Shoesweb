@@ -10,8 +10,6 @@ const InstallPrompt = () => {
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-
-      // Show prompt only if not dismissed before
       const dismissed = localStorage.getItem("solemate_pwa_dismissed");
       if (!dismissed) setVisible(true);
     };
@@ -23,7 +21,6 @@ const InstallPrompt = () => {
   useEffect(() => {
     let timer;
     if (visible) {
-      // Auto-hide after 10 seconds
       timer = setTimeout(() => {
         setVisible(false);
       }, 10000);
@@ -37,9 +34,9 @@ const InstallPrompt = () => {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === "accepted") {
-      console.log("✅ User installed SoleMate");
+      console.log("User installed SoleMate");
     } else {
-      console.log("❌ User dismissed install");
+      console.log("User dismissed install");
       localStorage.setItem("solemate_pwa_dismissed", "true");
     }
 

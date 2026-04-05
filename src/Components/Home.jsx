@@ -6,8 +6,9 @@ import axios from "axios";
 import { useSelector ,useDispatch } from "react-redux";
 import Page from "./Page";
 import { clearUser } from "../Feature/Slicetwo.jsx";
-import InstallPrompt from "./Installprompt.jsx";
 import { HiOutlineLogout } from "react-icons/hi";
+import { GiConverseShoe } from "react-icons/gi";
+import { BsSubstack } from "react-icons/bs";
 
 function Home() {
   const user = useSelector((state) => state.user.userData);
@@ -28,10 +29,10 @@ function Home() {
   return (
     <div className="bg-[url('/imagesss.png')] bg-cover bg-center">
       <header className="relative">
-        <nav className="pt-2 ml-5 flex justify-between">
-          <div>
+        <nav className="pt-2 sm:ml-5 ml-1 flex justify-between">
+          <div className="flex place-items-center sm:gap-3 gap-1">
             <p className="text-2xl font-medium text-white">SoleMate</p>
-            <InstallPrompt />
+                <GiConverseShoe color="white" size={30} />
           </div>
 
           <div className="sm:block hidden">
@@ -40,9 +41,12 @@ function Home() {
               <li className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaRegHeart />
               </li>
-              <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px] text-black">
+              {user ? ( <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
                 <FaShoppingBag />
-              </Link>
+              </Link>) : (<Link className="bg-amber-100 p-3 rounded-[5px] text-black" to="/Cart">
+                   <FaShoppingBag />
+              </Link>)}
+             
 
               {user ? (
                 <>
@@ -68,9 +72,12 @@ function Home() {
             <Link className="bg-amber-100 p-3 rounded-[5px]">
               <FaRegHeart />
             </Link>
-            <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px]">
-              <FaShoppingBag />
-            </Link>
+            {user ? ( <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
+                <FaShoppingBag />
+              </Link>) : (<Link className="bg-amber-100 p-3 rounded-[5px] text-black" to="/Cart">
+                   <FaShoppingBag />
+              </Link>)}
+
 
             {user ? (
               <>

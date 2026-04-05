@@ -12,6 +12,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { setCart } from "../Feature/slice.jsx";
 
+const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
 
 function Cart() {
   const dispatch = useDispatch(); 
@@ -23,15 +24,22 @@ function Cart() {
 
  const Addtocart = async (e , item) => {
         e.preventDefault();
+        if (!user?._id) return;
         const cartPayload = {
-         userId: user?._id, 
+         userId: user._id, 
          
       items: [
-        { id: item.id , name : item.name ,price : item.price , quantity: 1 }
+        {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+          image: item.image ?? "",
+        },
       ]
     };
     try {
-       const cartdata = await fetch('https://shoesbackend-4.onrender.com/api/v1/user/cart', {
+       const cartdata = await fetch(`${API_USER}/cart`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body : JSON.stringify(cartPayload) ,
@@ -57,32 +65,31 @@ function Cart() {
     const Getcart = async () => {
     try {
      
-       const cartdata = await fetch(`https://shoesbackend-4.onrender.com/api/v1/user/getcart/${user._id}`, {
+       const cartdata = await fetch(`${API_USER}/getcart/${user._id}`, {
           method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
       
     const data = await cartdata.json();
-     if (data.items) dispatch(setCart(data.items));
-      localStorage.setItem("Cart" , JSON.stringify(data.items) )
+     if (Array.isArray(data.items)) dispatch(setCart(data.items));
     } catch (error) {
       console.error("Fetch to cart is failed", error);
     }
   };
  
-   if (user._id) {
+   if (user?._id) {
       Getcart();
     }
-  }, [user]);
+  }, [user, dispatch]);
 
 
 const handleRemove = async (id) => {
+  if (!user?._id) return;
   try {
     const response = await axios.delete(
-      `https://shoesbackend-4.onrender.com/api/v1/user/cart/${user._id}/${id}`
+      `${API_USER}/cart/${user._id}/${encodeURIComponent(id)}`
     );
-    dispatch(setCart(response.data.items));
-    localStorage.removeItem("cart");
+    dispatch(setCart(response.data.items ?? []));
   } catch (err) {
     console.error("Failed to remove item", err);
   }
@@ -90,6 +97,10 @@ const handleRemove = async (id) => {
 
 
   const handlecheckout = ()=>{
+    if (!user?._id) {
+      payal("/login");
+      return;
+    }
 dispatch(
       setCheckoutData({
         name: user.FirstName,
@@ -97,13 +108,13 @@ dispatch(
         amount: subtotal,
       })
     );
-       payal("/address/:userid")
+       payal(`/address/${user._id}`)
   }
   
 
     const handleLogout = async() => {
       try {
-      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true });
+      await axios.post(`${API_USER}/logout`, {}, { withCredentials: true });
         dispatch(clearUser())
         dispatch(clearCart())
             payal("/login");
@@ -152,14 +163,14 @@ dispatch(
         <div className="space-y-4">
           {cart.map((item) => (
             <div
-              key={item.id}
+              key={String(item.id)}
               className="flex items-center justify-between bg-gray-50 p-4 rounded-xl shadow-sm"
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={item.image}
+                  src={item.image || ""}
                   alt={item.name}
-                  className="w-16 h-16 object-cover rounded-lg border"
+                  className="w-16 h-16 object-cover rounded-lg border bg-gray-100"
                 />
                 <div>
                   <p className="text-lg font-medium text-gray-800">

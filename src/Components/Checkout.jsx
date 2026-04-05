@@ -78,7 +78,7 @@ const Checkout = () => {
                   <li className="bg-amber-100 p-3 rounded-[5px] text-black">
                     <FaRegHeart />
                   </li>
-                  <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px] text-black">
+                  <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
                     <FaShoppingBag />
                   </Link>
     
@@ -106,7 +106,7 @@ const Checkout = () => {
                 <Link className="bg-amber-100 p-3 rounded-[5px]">
                   <FaRegHeart />
                 </Link>
-                <Link to="/cart/:UserId" className="bg-amber-100 p-3 rounded-[5px]">
+                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
                   <FaShoppingBag />
                 </Link>
     
