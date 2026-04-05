@@ -3,6 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Truck, MapPin, Trash2, Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
+import {
+  resolveCartItemImage,
+  CART_IMAGE_FALLBACK,
+} from "../utils/cartImage.js";
 
 const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
 
@@ -221,15 +225,15 @@ const Orders = () => {
                     className="flex flex-wrap justify-between items-center border-b pb-4 last:border-none gap-4"
                   >
                     <div className="flex items-center gap-4 min-w-0">
-                      {item.image ? (
-                        <img
-                          src={item.image}
-                          alt={item.name || "Product"}
-                          className="w-16 h-16 object-cover rounded-lg border shrink-0 bg-gray-100"
-                        />
-                      ) : (
-                        <div className="w-16 h-16 rounded-lg border bg-gray-100 shrink-0" />
-                      )}
+                      <img
+                        src={resolveCartItemImage(item.image, item.id)}
+                        alt={item.name || "Product"}
+                        className="w-16 h-16 object-cover rounded-lg border shrink-0 bg-gray-100"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = CART_IMAGE_FALLBACK;
+                        }}
+                      />
                       <div className="min-w-0">
                         <p className="font-medium text-gray-800 truncate">
                           {item.name || "Item"}

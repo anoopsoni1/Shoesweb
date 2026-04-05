@@ -8,18 +8,186 @@ import { useState } from "react";
 import { clearUser } from "../Feature/Slicetwo";
 import { setCart } from "../Feature/slice";
 import { HiOutlineLogout } from "react-icons/hi";
+import {
+  shoeImageForProduct,
+  shoeImageFallbackForProduct,
+} from "../utils/productImages.js";
 
 export const products = [
-  { id: 1, name: "Nike Air Max", price: 1050, image: "./List01.jpg" },
-  { id: 2, name: "Nike Air Jordan 1", price: 1299, image: "./List02.jpeg" },
-  { id: 3, name: "Nike Air Max Mesh Runner", price: 1599, image: "./List03.jpg" },
-  { id: 4, name: "Reebok Classic", price: 1399, image: "./List04.jpg" },
-  { id: 5, name: "Jordan 1 Retro", price: 17999, image: "./List05.jpeg" },
-  { id: 6, name: "New Balance 574", price: 8999, image: "./List06.jpeg" },
-  { id: 18, name: "NB Sneaker", price: 8999, image: "./List18.jpeg", category: "Sneaker" },
+  {
+    id: 1,
+    name: "Nike Air Max",
+    price: 1050,
+    image: shoeImageForProduct(1),
+    category: "Sportswear",
+  },
+  {
+    id: 2,
+    name: "Nike Air Jordan 1",
+    price: 1299,
+    image: shoeImageForProduct(2),
+    category: "Sneaker",
+  },
+  {
+    id: 3,
+    name: "Nike Air Max Mesh Runner",
+    price: 1599,
+    image: shoeImageForProduct(3),
+    category: "Sportswear",
+  },
+  {
+    id: 4,
+    name: "Reebok Classic",
+    price: 1399,
+    image: shoeImageForProduct(4),
+    category: "Casual Shoes",
+  },
+  {
+    id: 5,
+    name: "Jordan 1 Retro",
+    price: 17999,
+    image: shoeImageForProduct(5),
+    category: "Sneaker",
+  },
+  {
+    id: 6,
+    name: "New Balance 574",
+    price: 8999,
+    image: shoeImageForProduct(6),
+    category: "Casual Shoes",
+  },
+  {
+    id: 7,
+    name: "Adidas Ultraboost Light",
+    price: 16999,
+    image: shoeImageForProduct(7),
+    category: "Sportswear",
+  },
+  {
+    id: 8,
+    name: "Puma RS-X Bold",
+    price: 8499,
+    image: shoeImageForProduct(8),
+    category: "Sneaker",
+  },
+  {
+    id: 9,
+    name: "Asics Gel-Kayano Trail",
+    price: 14299,
+    image: shoeImageForProduct(9),
+    category: "Sportswear",
+  },
+  {
+    id: 10,
+    name: "Converse Chuck 70 High",
+    price: 6499,
+    image: shoeImageForProduct(10),
+    category: "Casual Shoes",
+  },
+  {
+    id: 11,
+    name: "Vans Old Skool Pro",
+    price: 5999,
+    image: shoeImageForProduct(11),
+    category: "Sneaker",
+  },
+  {
+    id: 12,
+    name: "Brooks Ghost Max",
+    price: 13499,
+    image: shoeImageForProduct(12),
+    category: "Sportswear",
+  },
+  {
+    id: 13,
+    name: "Hoka Clifton 9",
+    price: 14999,
+    image: shoeImageForProduct(13),
+    category: "Sportswear",
+  },
+  {
+    id: 14,
+    name: "Clarks Desert Boot",
+    price: 9999,
+    image: shoeImageForProduct(14),
+    category: "Boots",
+  },
+  {
+    id: 15,
+    name: "Cole Haan Grand Wingtip",
+    price: 18999,
+    image: shoeImageForProduct(15),
+    category: "Dress Shoes",
+  },
+  {
+    id: 16,
+    name: "Birkenstock Arizona EVA",
+    price: 4999,
+    image: shoeImageForProduct(16),
+    category: "Sandals",
+  },
+  {
+    id: 17,
+    name: "Crocs Classic Clog",
+    price: 3499,
+    image: shoeImageForProduct(17),
+    category: "Slippers",
+  },
+  {
+    id: 18,
+    name: "NB Fresh Foam X",
+    price: 11299,
+    image: shoeImageForProduct(18),
+    category: "Sneaker",
+  },
+  {
+    id: 19,
+    name: "Skechers Go Walk Arch",
+    price: 6999,
+    image: shoeImageForProduct(19),
+    category: "Casual Shoes",
+  },
+  {
+    id: 20,
+    name: "Under Armour HOVR Phantom",
+    price: 12499,
+    image: shoeImageForProduct(20),
+    category: "Sportswear",
+  },
+  {
+    id: 21,
+    name: "Salomon XT-6 GTX",
+    price: 16499,
+    image: shoeImageForProduct(21),
+    category: "Sportswear",
+  },
 ];
 
-const routes = { 1: "/one", 2: "/two", 3: "/three", 4: "/four", 5: "/five", 6: "/six", 18: "/eighteen" };
+export const productRoutes = {
+  1: "/one",
+  2: "/two",
+  3: "/three",
+  4: "/four",
+  5: "/five",
+  6: "/six",
+  7: "/seven",
+  8: "/eight",
+  9: "/nine",
+  10: "/ten",
+  11: "/eleven",
+  12: "/twelve",
+  13: "/thirteen",
+  14: "/fourteen",
+  15: "/fifteen",
+  16: "/sixteen",
+  17: "/seventeen",
+  18: "/eighteen",
+  19: "/nineteen",
+  20: "/twenty",
+  21: "/twentyone",
+};
+
+const routes = productRoutes;
 
 const categories = [
   "All", "Sneaker", "Sportswear", "Dress Shoes", "Casual Shoes", "Boots", "Sandals", "Slippers",
@@ -77,11 +245,6 @@ export default function List() {
     } catch (error) {
       console.error("Add to cart failed", error);
     }
-  };
-
-  const bigger = (e) => {
-    const path = routes[e];
-    if (path) window.location.href = path;
   };
 
   const handleSearch = (e) => {
@@ -207,7 +370,17 @@ export default function List() {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-64 object-cover rounded-t-xl"
+                    className="w-full h-64 object-cover rounded-t-xl bg-gray-100"
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      const fb = shoeImageFallbackForProduct(product.id);
+                      if (e.currentTarget.src !== fb) {
+                        e.currentTarget.src = fb;
+                      }
+                    }}
                   />
                   <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:scale-110 transition">
                     <FaRegHeart />
@@ -224,7 +397,7 @@ export default function List() {
                       Add to Cart
                     </button>
                     <Link
-                      onClick={() => bigger(product.id)}
+                      to={routes[product.id] ?? "/list"}
                       className="flex-1 border py-2 rounded-lg hover:bg-gray-100 text-center"
                     >
                       View

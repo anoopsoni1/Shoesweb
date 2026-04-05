@@ -11,6 +11,10 @@ import {clearUser} from "../Feature/Slicetwo.jsx"
 import axios from "axios";
 import { useEffect } from "react";
 import { setCart } from "../Feature/slice.jsx";
+import {
+  resolveCartItemImage,
+  CART_IMAGE_FALLBACK,
+} from "../utils/cartImage.js";
 
 const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
 
@@ -168,9 +172,13 @@ dispatch(
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={item.image || ""}
+                  src={resolveCartItemImage(item.image, item.id)}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded-lg border bg-gray-100"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = CART_IMAGE_FALLBACK;
+                  }}
                 />
                 <div>
                   <p className="text-lg font-medium text-gray-800">
