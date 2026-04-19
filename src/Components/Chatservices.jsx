@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Loader2 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { products } from "./List";
-import { FaRegHeart, FaShoppingBag, FaRegUserCircle } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SiteHeader from "./SiteHeader.jsx";
 import { clearUser } from "../Feature/Slicetwo";
 import { clearCart } from "../Feature/slice";
 
@@ -126,34 +126,7 @@ export default function Chatbot() {
         transition={{ duration: 0.4 }}
         className="w-full h-[99.8vh] backdrop-blur-md bg-white/70 border border-white/30 shadow-2xl flex flex-col overflow-hidden"
       >
-        {/* Navbar */}
-        <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
-          <nav className="flex justify-between items-center sm:px-6 sm:py-4 px-2 py-2 max-w-7xl mx-auto">
-            <Link to="/" className="text-2xl font-extrabold tracking-wide">
-              SoleMate
-            </Link>
-            <div className="flex sm:gap-5 gap-2 items-center">
-              <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                <FaRegHeart />
-              </Link>
-              <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                <FaShoppingBag />
-              </Link>
-              {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link to="/login" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                  <FaRegUserCircle />
-                </Link>
-              )}
-            </div>
-          </nav>
-        </header>
+        <SiteHeader onLogout={handleLogout} />
 
         {/* Messages */}
         <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-white to-blue-50/50">

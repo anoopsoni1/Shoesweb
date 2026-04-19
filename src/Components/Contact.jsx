@@ -2,11 +2,9 @@ import { useState } from "react";
 import { FaInstagram, FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FaRegHeart } from "react-icons/fa";
-import { FaShoppingBag } from "react-icons/fa";
-import { FaRegUserCircle } from "react-icons/fa";
-import { useDispatch , useSelector } from "react-redux";
-import { useNavigate , Link} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import SiteHeader from "./SiteHeader.jsx";
 import { clearUser } from "../Feature/Slicetwo";
 import { clearCart } from "../Feature/slice";
 const ContactUs = () => {
@@ -54,31 +52,7 @@ const dispatch = useDispatch()
   }
   return (
     <>
-     <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
-        <nav className="flex justify-between items-center sm:px-6 px-2 sm:py-4 py-2 max-w-7xl mx-auto">
-          <Link to="/" className="text-2xl font-extrabold tracking-wide">SoleMate</Link>
-          <div className="flex sm:gap-5 gap-2 items-center">
-            <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-              <FaRegHeart />
-            </Link>
-            <Link to="/cart" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-              <FaShoppingBag />
-            </Link>
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
-              >
-                Logout
-              </button>
-            ) : (
-              <Link to="/login" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                <FaRegUserCircle />
-              </Link>
-            )}
-          </div>
-        </nav>
-      </header>
+      <SiteHeader onLogout={handleLogout} />
     <div className="h-[94vh] flex flex-col md:flex-row bg-white">
      
       <div className="w-full md:w-1/3 bg-[url('/cona.jpg')] bg-cover p-8 flex flex-col justify-between">

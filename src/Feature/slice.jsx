@@ -56,8 +56,32 @@ const cartSlice = createSlice({
       state.cartitem = Array.isArray(action.payload) ? action.payload : [];
       saveCartToStorage(state.cartitem);
     },
+
+    /** Updates quantity from latest state (avoids stale closures in cart UI). */
+    setCartItemQuantity(state, action) {
+      const { id, quantity } = action.payload;
+      if (id == null) return;
+      const sid = String(id);
+      const idx = state.cartitem.findIndex(
+        (i) => String(i.id ?? i._id) === sid
+      );
+      if (idx === -1) return;
+      const q = Number(quantity);
+      if (!Number.isFinite(q) || q <= 0) {
+        state.cartitem.splice(idx, 1);
+      } else {
+        state.cartitem[idx].quantity = q;
+      }
+      saveCartToStorage(state.cartitem);
+    },
   },
 });
 
-export const { addtocart, removefromcart, clearCart , setCart} = cartSlice.actions;
+export const {
+  addtocart,
+  removefromcart,
+  clearCart,
+  setCart,
+  setCartItemQuantity,
+} = cartSlice.actions;
 export default cartSlice.reducer;

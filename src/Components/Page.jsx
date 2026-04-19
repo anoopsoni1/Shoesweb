@@ -1,74 +1,84 @@
-import React from 'react';
+import { Link } from "react-router-dom";
 import { MdArrowOutward } from "react-icons/md";
-import Model from './model';
-import { useNavigate } from 'react-router-dom';
-import InstallPrompt from './Installprompt';
+import { Sparkles } from "lucide-react";
+import Model from "./model";
+import InstallPrompt from "./Installprompt";
 
 function Page() {
-  const navi = useNavigate();
-
-  const handlepage = () => {
-    setTimeout(() => {
-      navi("/list");
-    }, 500);
-  };
-
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start px-5 sm:px-10 pb-[15.52vh]">
-        {/* Left Section */}
-        <div className="flex flex-col sm:w-1/2 gap-3 sm:gap-4 mt-16 sm:mt-32">
-          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
-            Discover
-          </p>
-          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
-            Comfort and Style for
-          </p>
-          <p className="text-3xl sm:text-7xl font-bold text-white leading-tight">
-            Every Occasion
-          </p>
+      <section className="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-12 pt-8 sm:pt-14 lg:pt-20">
+          <div className="flex flex-col gap-5 sm:gap-6 lg:max-w-xl text-left">
+            <p className="inline-flex items-center gap-2 self-start rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-200 backdrop-blur-sm">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
+              New season
+            </p>
 
-          <p className="mt-2 text-gray-300 text-sm sm:text-base max-w-[90%] sm:max-w-full">
-            Discover the perfect balance of comfort, durability, and style for every
-          </p>
-          <p className="text-gray-300 text-sm sm:text-base max-w-[90%] sm:max-w-full">
-            occasion with our versatile, high-quality footwear collection
-          </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)]">
+              Comfort and style for every step
+            </h1>
 
-          {/* Desktop Explore Button */}
-          <div className="hidden sm:flex mt-6">
+            <p className="text-base sm:text-lg text-zinc-200/95 max-w-lg leading-relaxed drop-shadow-md">
+              Premium picks built for long days—cushioning that holds up, silhouettes
+              that work everywhere, and details you will notice every time you lace up.
+            </p>
+
+            <div className="flex flex-col flex-wrap items-stretch gap-3 pt-2 sm:flex-row sm:items-center sm:gap-4">
+              <Link
+                to="/list"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-amber-500 px-7 py-3.5 text-base font-bold text-zinc-900 shadow-lg shadow-amber-900/30 transition hover:brightness-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              >
+                Shop collection
+                <MdArrowOutward
+                  className="text-xl transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden
+                />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                Contact us
+              </Link>
+            </div>
+
+            <dl className="mt-4 grid grid-cols-3 gap-3 sm:gap-4 max-w-md border-t border-white/15 pt-6">
+              <div>
+                <dt className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                  Styles
+                </dt>
+                <dd className="text-lg sm:text-xl font-bold text-white">120+</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                  Brands
+                </dt>
+                <dd className="text-lg sm:text-xl font-bold text-white">Top picks</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                  Support
+                </dt>
+                <dd className="text-lg sm:text-xl font-bold text-white">24/7</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="relative w-full max-w-xl mx-auto lg:mx-0 lg:max-w-none lg:w-[min(52vw,640px)] shrink-0">
             <div
-              onClick={handlepage}
-              className="h-12 w-52 rounded-3xl bg-gradient-to-r from-yellow-300 to-yellow-600 flex items-center justify-between px-4 cursor-pointer hover:scale-105 transition-transform"
+              className="relative mx-auto flex max-h-[min(70vh,560px)] min-h-[320px] w-full flex-col overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-900/40 p-1 shadow-2xl shadow-black/50 backdrop-blur-sm sm:min-h-[380px] sm:rounded-[2.5rem] lg:aspect-square lg:max-h-[min(72vh,600px)]"
+              aria-hidden
             >
-              <button className="text-lg font-bold">Explore</button>
-              <div className="rounded-full bg-amber-50 p-1">
-                <MdArrowOutward size={30} />
+              <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-amber-400/15 via-transparent to-indigo-500/10" />
+              <div className="relative flex min-h-0 flex-1 flex-col rounded-[inherit] bg-cover bg-center bg-[url('./bg99.png')] px-2 pb-6 pt-2 sm:px-4 sm:pb-8 sm:pt-3">
+                <Model />
               </div>
             </div>
           </div>
         </div>
-
-        {/* Right Section */}
-        <div className="mt-8 sm:mt-14 sm:w-1/2 flex justify-center">
-          <div className="w-[90vw] max-w-[90vh] h-[40vh] sm:h-[70vh] rounded-[3rem] border-8 border-y-neutral-50 border-l-amber-300 border-e-amber-300 overflow-hidden flex items-center justify-center bg-cover bg-center bg-[url('./bg99.png')] shadow-lg">
-            <Model />
-          </div>
-        </div>
-
-        {/* Mobile Explore Button */}
-        <div className="sm:hidden flex justify-center w-full mt-6">
-          <div
-            onClick={handlepage}
-            className="h-12 w-52 rounded-3xl bg-black flex items-center justify-between px-4 cursor-pointer hover:scale-105 transition-transform"
-          >
-            <button className="text-lg font-bold text-white">Explore</button>
-            <div className="rounded-full bg-amber-50 p-1">
-              <MdArrowOutward size={30} />
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
+      <InstallPrompt />
     </>
   );
 }

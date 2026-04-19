@@ -1,7 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Loader2, CreditCard, Truck, Home, Package } from "lucide-react";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import {
+  Loader2,
+  ChevronRight,
+  Home,
+  Package,
+  ShoppingBag,
+  CheckCircle2,
+  XCircle,
+  Truck,
+} from "lucide-react";
 import { store } from "../Store/Store.js";
+import { clearCheckoutData } from "../Feature/Slicethree.jsx";
+import { useTheme } from "../context/ThemeContext.jsx";
+import SiteHeader from "./SiteHeader.jsx";
 
 const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
 const RECEIPT_KEY = "solemate_payment_receipt";
@@ -36,7 +48,6 @@ function writeReceipt(orderId, payment, extra = {}) {
   }
 }
 
-/** Cashfree verify may return an array, or an object with nested payments */
 function extractPaymentRow(data) {
   if (!data) return null;
   if (Array.isArray(data) && data.length > 0) return data[0];
@@ -59,6 +70,7 @@ function resolveOrderId(searchParams) {
 function PaymentResult() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { isDark } = useTheme();
   const [status, setStatus] = useState("Verifying...");
   const [loading, setLoading] = useState(true);
   const [paymentData, setPaymentData] = useState(null);
@@ -121,6 +133,7 @@ function PaymentResult() {
         await response.json().catch(() => null);
         if (response.ok) {
           writeReceipt(order_id, row, { savedToBackend: true });
+          store.dispatch(clearCheckoutData());
         }
       } catch (e) {
         console.error("saveorder", e);
@@ -179,128 +192,212 @@ function PaymentResult() {
   const today = new Date();
   const estimated = new Date(today);
   estimated.setDate(today.getDate() + 5);
-  const formatted = estimated.toLocaleDateString("en-IN", {
+  const formattedEta = estimated.toLocaleDateString("en-IN", {
+    weekday: "short",
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 
+  const success =
+    !loading &&
+    !missingRef &&
+    status.toLowerCase() === "success" &&
+    paymentData;
+  const failed =
+    !loading &&
+    !missingRef &&
+    (status.toLowerCase() === "failed" ||
+      status.toLowerCase() === "error verifying payment");
+
+  const shell = isDark ? "bg-zinc-950" : "bg-[#f1f3f6]";
+  const card = isDark
+    ? "bg-zinc-900 border border-zinc-800"
+    : "bg-zinc-50 border border-zinc-200 shadow-sm";
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg text-center animate-fadeIn">
-        <CreditCard className="mx-auto mb-4 text-blue-500 w-16 h-16" />
-        <h2 className="text-2xl font-bold mb-2">Payment Status</h2>
+    <div className={`min-h-screen ${shell} pb-10 flex flex-col`}>
+      <SiteHeader />
+      <div className="max-w-lg mx-auto px-3 sm:px-4 pt-4 sm:pt-6 flex-1 w-full">
+        <nav
+          className="flex items-center gap-1 text-xs text-zinc-800 dark:text-zinc-400 mb-4"
+          aria-label="Breadcrumb"
+        >
+          <Link
+            to="/"
+            className="inline-flex items-center gap-0.5 text-zinc-800 dark:text-zinc-300 hover:text-[#2874f0] dark:hover:text-blue-400"
+          >
+            <Home className="w-3.5 h-3.5" />
+            Home
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-500 shrink-0" />
+          <span className="text-zinc-800 dark:text-zinc-200 font-medium">
+            Payment
+          </span>
+        </nav>
 
-        {loading ? (
-          <div className="flex flex-col items-center gap-2">
-            <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
-            <p className="text-gray-500">Verifying your payment...</p>
+        <div className={`rounded-sm overflow-hidden ${card}`}>
+          <div
+            className={`px-5 py-6 text-center border-b ${
+              isDark ? "border-zinc-800 bg-zinc-800/30" : "border-zinc-100 bg-[#fbfdff]"
+            }`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-12 h-12 mx-auto text-[#2874f0] animate-spin mb-3" />
+                <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                  Verifying payment
+                </h1>
+                <p className="text-sm text-zinc-800 dark:text-zinc-400 mt-1">
+                  Please wait…
+                </p>
+              </>
+            ) : success ? (
+              <>
+                <div className="mx-auto w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center mb-3">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  Your order has been placed
+                </h1>
+                <p className="text-sm text-zinc-800 dark:text-zinc-300 mt-2 leading-relaxed">
+                  Thank you for shopping with Solemate. We have sent the
+                  confirmation to your registered details.
+                </p>
+              </>
+            ) : failed || missingRef ? (
+              <>
+                <div className="mx-auto w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/40 flex items-center justify-center mb-3">
+                  <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
+                </div>
+                <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  {missingRef ? "Could not verify checkout" : "Payment not completed"}
+                </h1>
+                <p className="text-sm text-zinc-800 dark:text-zinc-300 mt-2">
+                  {missingRef
+                    ? "This page needs a valid order reference. If you already paid, check My orders or your bank SMS."
+                    : "If money was debited, it is usually reversed within a few days."}
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="mx-auto w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center mb-3">
+                  <Package className="w-9 h-9 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  Payment status
+                </h1>
+                <p
+                  className={`text-sm font-semibold mt-2 ${
+                    status.toLowerCase() === "success"
+                      ? "text-emerald-600"
+                      : status.toLowerCase() === "failed"
+                      ? "text-red-600"
+                      : "text-amber-600"
+                  }`}
+                >
+                  {status}
+                </p>
+              </>
+            )}
           </div>
-        ) : (
-          <div>
-            {missingRef && (
-              <p className="text-sm text-gray-600 mb-4">
-                We could not find this checkout session (missing order id). If
-                you already paid, open{" "}
-                <span className="font-medium">My Orders</span> or check your
-                email. Starting a new payment sets a new order reference.
-              </p>
-            )}
 
-            {fromCache && paymentData && (
-              <p className="text-xs text-gray-500 mb-2">
-                Showing saved receipt for this browser session (refresh-safe).
-              </p>
-            )}
-
-            <p
-              className={`text-xl font-semibold mb-4 ${
-                status.toLowerCase() === "success"
-                  ? "text-green-600"
-                  : status.toLowerCase() === "failed"
-                  ? "text-red-600"
-                  : "text-yellow-600"
-              }`}
-            >
-              {status}
-            </p>
-
-            {paymentData && (
-              <div className="text-left space-y-2 bg-gray-50 p-4 rounded-lg shadow-inner">
-                <p>
-                  <span className="font-semibold">Order ID:</span>{" "}
+          {!loading && paymentData && (
+            <div className="px-5 py-4 space-y-3 text-sm border-b border-zinc-100 dark:border-zinc-800">
+              {fromCache && (
+                <p className="text-[11px] text-zinc-800 dark:text-zinc-400 -mt-1 mb-2">
+                  Receipt saved in this browser (safe to refresh).
+                </p>
+              )}
+              <div className="flex justify-between gap-4">
+                <span className="text-zinc-800 dark:text-zinc-400">
+                  Order ID
+                </span>
+                <span className="font-mono text-xs text-right text-zinc-900 dark:text-zinc-100 break-all max-w-[60%]">
                   {renderValue(paymentData.order_id)}
-                </p>
-                <p>
-                  <span className="font-semibold">Transaction ID:</span>{" "}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-zinc-800 dark:text-zinc-400">
+                  Transaction ID
+                </span>
+                <span className="font-mono text-xs text-right text-zinc-800 dark:text-zinc-200 break-all max-w-[60%]">
                   {renderValue(paymentData.cf_payment_id)}
-                </p>
-                <p>
-                  <span className="font-semibold">Bank Reference:</span>{" "}
-                  {renderValue(paymentData.bank_reference)}
-                </p>
-                <p>
-                  <span className="font-semibold">Amount:</span> ₹
-                  {renderValue(paymentData.payment_amount)}
-                </p>
-                <p>
-                  <span className="font-semibold">Currency:</span>{" "}
-                  {renderValue(paymentData.payment_currency)}
-                </p>
-                <p>
-                  <span className="font-semibold">Payment Gateway:</span>{" "}
-                  {renderValue(
-                    paymentData.payment_gateway_details?.gateway_name
-                  )}
-                </p>
-                <p>
-                  <span className="font-semibold">Payment Method:</span>{" "}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-zinc-800 dark:text-zinc-400">Amount</span>
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  ₹{renderValue(paymentData.payment_amount)}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-zinc-800 dark:text-zinc-400">Method</span>
+                <span className="text-right text-zinc-800 dark:text-zinc-200 text-xs max-w-[60%]">
                   {renderValue(
                     paymentData.payment_method?.upi?.channel ||
                       paymentData.payment_method
                   )}
-                </p>
-                <p>
-                  <span className="font-semibold">Payment Time:</span>{" "}
-                  {paymentData.payment_time
-                    ? new Date(paymentData.payment_time).toLocaleString()
-                    : "N/A"}
-                </p>
-                <p>
-                  <span className="font-semibold">Payment Message:</span>{" "}
-                  {renderValue(paymentData.payment_message)}
-                </p>
-                <p>
-                  <span className="font-semibold">Payment Group:</span>{" "}
-                  {renderValue(paymentData.payment_group)}
-                </p>
-                <p className="flex items-center gap-2 mt-4 text-gray-700 font-semibold">
-                  <Truck className="w-5 h-5 text-blue-500" /> Estimated
-                  delivery: {formatted}
+                </span>
+              </div>
+              {paymentData.payment_time && (
+                <div className="flex justify-between gap-4">
+                  <span className="text-zinc-800 dark:text-zinc-400">Paid on</span>
+                  <span className="text-xs text-right text-zinc-700 dark:text-zinc-300">
+                    {new Date(paymentData.payment_time).toLocaleString("en-IN")}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!loading && success && (
+            <div
+              className={`px-5 py-3 flex items-start gap-2 text-sm ${
+                isDark ? "bg-zinc-800/40" : "bg-[#f8f9fa]"
+              }`}
+            >
+              <Truck className="w-5 h-5 text-[#2874f0] shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  Delivery expected by {formattedEta}
+                </span>
+                <p className="text-xs text-zinc-800 dark:text-zinc-400 mt-0.5">
+                  You can track shipment details from My orders.
                 </p>
               </div>
-            )}
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <button
-                type="button"
-                onClick={() => navigate("/orders")}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded flex items-center justify-center gap-2"
-              >
-                <Package className="w-5 h-5" />
-                My orders
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate("/")}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded flex items-center justify-center gap-2"
-              >
-                <Home className="w-5 h-5" />
-                Home
-              </button>
             </div>
+          )}
+
+          <div className="p-5 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => navigate("/orders")}
+              className="w-full py-3 bg-[#2874f0] hover:bg-[#1a5dcc] text-white text-sm font-bold uppercase tracking-wide rounded-sm shadow transition-colors flex items-center justify-center gap-2"
+            >
+              <Package className="w-5 h-5" />
+              View orders
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/list")}
+              className="w-full py-3 border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-[#2874f0] dark:text-blue-400 text-sm font-bold uppercase tracking-wide rounded-sm hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors flex items-center justify-center gap-2"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              Continue shopping
+            </button>
           </div>
-        )}
+        </div>
+
+        <p className="text-center text-xs text-zinc-700 dark:text-zinc-500 mt-6">
+          Need help?{" "}
+          <Link
+            to="/contact"
+            className="text-[#2874f0] dark:text-blue-400 font-medium hover:underline"
+          >
+            Contact us
+          </Link>
+        </p>
       </div>
     </div>
   );

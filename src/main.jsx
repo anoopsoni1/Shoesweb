@@ -42,6 +42,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react"
 import Nfkjaef from './Components/nfkjaef.jsx'
 import { registerSW } from 'virtual:pwa-register'
 import WithoutloginCart from './Components/WithoutloginCart.jsx'
+import ThemeToggle from './Components/ThemeToggle.jsx'
+import { ThemeProvider } from './context/ThemeContext.jsx'
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -210,9 +212,12 @@ const route = createBrowserRouter([
 
 
 createRoot(document.getElementById('root')).render(
-      <Provider store={store}>
-      <ToastContainer autoClose={1000} pauseOnHover={false}  /> 
-    <RouterProvider router = {route} />
-       <SpeedInsights />
-     </Provider>
+  <Provider store={store}>
+    <ThemeProvider>
+      <ToastContainer autoClose={1000} pauseOnHover={false} />
+      <RouterProvider router={route} />
+      <ThemeToggle />
+      <SpeedInsights />
+    </ThemeProvider>
+  </Provider>
 )

@@ -1,9 +1,5 @@
-import React from 'react'
+import Cart from "./Cart";
 
-const WithoutloginCart = () => {
-  return (
-    <div>WithoutloginCart</div>
-  )
+export default function WithoutloginCart() {
+  return <Cart />;
 }
-
-export default WithoutloginCart

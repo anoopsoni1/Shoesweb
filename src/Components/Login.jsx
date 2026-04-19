@@ -41,15 +41,20 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
-     
-      if (res.ok) {
-        dispatch(setUser(data.data.user));
+      const data = await res.json().catch(() => ({}));
+      const userPayload = data?.data?.user ?? data?.user;
+
+      if (res.ok && userPayload) {
+        dispatch(setUser(userPayload));
         setMessage(" Login Successful");
-          navdata("/dashboard");
-     
+        navdata("/dashboard");
+      } else if (res.ok) {
+        setMessage("Login succeeded but user data was missing. Check API response.");
       } else {
-        setMessage(data.message || " Login failed");
+        setMessage(
+          data?.message ||
+            (res.status === 401 ? "Invalid email or password." : "Login failed.")
+        );
       }
     } catch (err) {
       console.error(err);

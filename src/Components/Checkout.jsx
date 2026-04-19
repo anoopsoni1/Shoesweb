@@ -5,17 +5,13 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearUser } from "../Feature/Slicetwo";
-import { FaRegHeart } from "react-icons/fa";
-import { FaShoppingBag } from "react-icons/fa";
-import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import SiteHeader from "./SiteHeader.jsx";
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
-    const user = useSelector((state) => state.user.userData);
-   const navigate = useNavigate();
- const dispatch = useDispatch() ;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { name, email, amount } = useSelector((state) => state.checkout);
 
@@ -53,87 +49,26 @@ const Checkout = () => {
     }
   };
 
-   const handleLogout = async() => {
-        dispatch(clearUser())
-      try {
-      await axios.post("https://shoesbackend-4.onrender.com/api/v1/user/logout", {}, { withCredentials: true })
-          dispatch(clearUser())
-          navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "https://shoesbackend-4.onrender.com/api/v1/user/logout",
+        {},
+        { withCredentials: true }
+      );
     } catch (error) {
       console.error("Logout failed", error);
     }
+    dispatch(clearUser());
+    navigate("/login");
   };
 
   return (
     <>
-        <header className="relative">
-            <nav className="pt-2 ml-5 flex justify-between">
-              <div>
-                <p className="text-2xl font-medium text-black">SoleMate</p>
-              </div>
-    
-              <div className="sm:block hidden">
-                <ul className="flex gap-8 mt-1 font-semibold place-items-center mr-5 text-white">
-                  
-                  <li className="bg-amber-100 p-3 rounded-[5px] text-black">
-                    <FaRegHeart />
-                  </li>
-                  <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px] text-black">
-                    <FaShoppingBag />
-                  </Link>
-    
-                  {user ? (
-                    <>
-                    <button
-                      onClick={handleLogout}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    >
-                      Logout
-                    </button>
-                    <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px] text-black">
-                      <FaRegUserCircle />
-                    </Link>
-                    </>
-                  ) : (
-                    <Link to="/login" className="bg-amber-100 p-3 rounded-[5px] text-black">
-                      <FaRegUserCircle />
-                    </Link>
-                  )}
-                </ul>
-              </div>
-    
-              <div className="flex sm:hidden list-none gap-1">
-                <Link className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaRegHeart />
-                </Link>
-                <Link to="/cart" className="bg-amber-100 p-3 rounded-[5px]">
-                  <FaShoppingBag />
-                </Link>
-    
-                {user ? (
-                  <>
-                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
-                    <FaRegUserCircle />
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-[10px]"
-                  >
-                    Logout
-                  </button>
-                  
-                  </>
-                ) : (
-                  <Link to="/dashboard" className="bg-amber-100 p-3 rounded-[5px]">
-                    <FaRegUserCircle />
-                  </Link>
-                )}
-              </div>
-            </nav>
-          </header>
-  
-    <div className="flex items-center justify-center min-h-screen p-6">
-      <div className=" shadow-2xl rounded-2xl p-8 w-full max-w-md transition-transform transform hover:scale-[1.01]">
+      <SiteHeader onLogout={handleLogout} />
+    <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="flex flex-1 items-center justify-center p-6">
+      <div className="shadow-2xl rounded-2xl p-8 w-full max-w-md transition-transform transform hover:scale-[1.01] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
         <div className="flex flex-col items-center text-center">
           <CreditCard className="w-14 h-14 text-blue-600 mb-4" />
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -164,9 +99,7 @@ const Checkout = () => {
           </p>
         </div>
       </div>
-       <div>
-          hello
-       </div>
+    </div>
     </div>
       </>
   );

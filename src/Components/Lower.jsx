@@ -2,19 +2,17 @@ import React from "react";
 
 function Lower() {
   return (
-    <div className="mt-12 mx-4 sm:mx-7 relative">
-
+    <section className="relative mx-4 mt-4 mb-8 sm:mx-6 sm:mb-12 lg:mx-8">
       <img
         src="./image.png"
-        alt="Dropset 3"
-        className="hidden sm:block w-full h-[80vh] object-cover rounded-lg"
+        alt="Featured training footwear banner"
+        className="hidden h-[min(80vh,720px)] w-full rounded-2xl object-cover shadow-lg sm:block"
       />
-
 
       <img
         src="./mobile.png"
-        alt="Dropset 3 Mobile"
-        className="block sm:hidden w-full h-[60vh] object-cover rounded-lg"
+        alt="Featured training footwear banner"
+        className="block h-[min(60vh,520px)] w-full rounded-2xl object-cover shadow-md sm:hidden"
       />
 
 
@@ -40,7 +38,7 @@ function Lower() {
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

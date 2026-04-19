@@ -3,14 +3,16 @@ import { clearCart } from "../Feature/slice.jsx";
 import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import {useNavigate} from "react-router-dom"
 import { Link } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
-import { FaShoppingBag } from "react-icons/fa";
-import { FaRegUserCircle } from "react-icons/fa";
-import { setCheckoutData } from "../Feature/Slicethree.jsx";
+import SiteHeader from "./SiteHeader.jsx";
+import {
+  setCheckoutData,
+  clearCheckoutData,
+  ADDRESS_CONFIRMED_KEY,
+} from "../Feature/Slicethree.jsx";
 import {clearUser} from "../Feature/Slicetwo.jsx"
 import axios from "axios";
 import { useEffect } from "react";
-import { setCart } from "../Feature/slice.jsx";
+import { setCart, setCartItemQuantity } from "../Feature/slice.jsx";
 import {
   resolveCartItemImage,
   CART_IMAGE_FALLBACK,
@@ -26,37 +28,45 @@ function Cart() {
   const user = useSelector((state) => state.user.userData);
 
 
- const Addtocart = async (e , item) => {
-        e.preventDefault();
-        if (!user?._id) return;
-        const cartPayload = {
-         userId: user._id, 
-         
-      items: [
-        {
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: 1,
-          image: item.image ?? "",
-        },
-      ]
-    };
+  const cartItemKey = (item) => String(item.id ?? item._id ?? "");
+
+  const refetchServerCart = async () => {
+    if (!user?._id) return;
     try {
-       const cartdata = await fetch(`${API_USER}/cart`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body : JSON.stringify(cartPayload) ,
+      const cartdata = await fetch(`${API_USER}/getcart/${user._id}`, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
       });
-      
-    if (!cartdata.ok) {
-      throw new Error("Failed to add to cart");
-    }
-        const data = await cartdata.json();
-         dispatch(setCart(data.items));
-        
+      const data = await cartdata.json();
+      if (Array.isArray(data.items)) dispatch(setCart(data.items));
     } catch (error) {
-      console.error("Add to cart is failed", error);
+      console.error("Failed to refresh cart", error);
+    }
+  };
+
+  const increaseQuantity = async (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const key = cartItemKey(item);
+    const currentQty = Number(item.quantity) || 1;
+    const nextQty = currentQty + 1;
+    if (!key) return;
+
+    dispatch(setCartItemQuantity({ id: key, quantity: nextQty }));
+
+    if (!user?._id) return;
+
+    try {
+      const response = await axios.patch(
+        `${API_USER}/cart/${user._id}/${encodeURIComponent(key)}`,
+        { quantity: nextQty },
+        { withCredentials: true }
+      );
+      dispatch(setCart(response.data.items ?? []));
+    } catch (error) {
+      console.error("Failed to increase quantity", error);
+      await refetchServerCart();
     }
   };
 
@@ -70,8 +80,9 @@ function Cart() {
     try {
      
        const cartdata = await fetch(`${API_USER}/getcart/${user._id}`, {
-          method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
       });
       
     const data = await cartdata.json();
@@ -87,92 +98,115 @@ function Cart() {
   }, [user, dispatch]);
 
 
-const handleRemove = async (id) => {
-  if (!user?._id) return;
-  try {
-    const response = await axios.delete(
-      `${API_USER}/cart/${user._id}/${encodeURIComponent(id)}`
-    );
-    dispatch(setCart(response.data.items ?? []));
-  } catch (err) {
-    console.error("Failed to remove item", err);
-  }
-};
-
-
-  const handlecheckout = ()=>{
+  const handleRemove = async (id) => {
+    const sid = String(id);
     if (!user?._id) {
-      payal("/login");
+      dispatch(setCartItemQuantity({ id: sid, quantity: 0 }));
       return;
     }
-dispatch(
+    try {
+      const response = await axios.delete(
+        `${API_USER}/cart/${user._id}/${encodeURIComponent(sid)}`,
+        { withCredentials: true }
+      );
+      dispatch(setCart(response.data.items ?? []));
+    } catch (err) {
+      console.error("Failed to remove item", err);
+      await refetchServerCart();
+    }
+  };
+
+  const handleDecrease = async (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const key = cartItemKey(item);
+    const currentQty = Number(item.quantity) || 1;
+    const nextQty = currentQty - 1;
+    if (!key) return;
+
+    if (nextQty <= 0) {
+      await handleRemove(key);
+      return;
+    }
+
+    dispatch(setCartItemQuantity({ id: key, quantity: nextQty }));
+
+    if (!user?._id) return;
+
+    try {
+      const response = await axios.patch(
+        `${API_USER}/cart/${user._id}/${encodeURIComponent(key)}`,
+        { quantity: nextQty },
+        { withCredentials: true }
+      );
+      dispatch(setCart(response.data.items ?? []));
+    } catch (error) {
+      console.error("Failed to decrease quantity", error);
+      await refetchServerCart();
+    }
+  };
+
+
+  const handlecheckout = () => {
+    try {
+      localStorage.removeItem(ADDRESS_CONFIRMED_KEY);
+    } catch {
+      /* ignore */
+    }
+    dispatch(
       setCheckoutData({
-        name: user.FirstName,
-        email: user.email,
+        name: user?.FirstName || "Guest User",
+        email: user?.email || "guest@solemate.local",
+        subtotal: subtotal,
+        discount: 0,
+        couponCode: "",
+        couponType: "",
+        couponValue: 0,
         amount: subtotal,
       })
     );
-       payal(`/address/${user._id}`)
-  }
+    payal(`/address/${user?._id || "guest"}`);
+  };
   
 
-    const handleLogout = async() => {
-      try {
+  const handleLogout = async () => {
+    try {
       await axios.post(`${API_USER}/logout`, {}, { withCredentials: true });
-        dispatch(clearUser())
-        dispatch(clearCart())
-            payal("/login");
+      dispatch(clearUser());
+      dispatch(clearCart());
+      dispatch(clearCheckoutData());
+      payal("/login");
     } catch (error) {
       console.error("Logout failed", error);
     }
   };
   return (
     <>
-    <header className="h-[8.5vh] z-50 bg-white/80 backdrop-blur-md shadow">
-        <nav className="flex justify-between items-center sm:px-6 px-2 sm:py-4 py-2 max-w-7xl mx-auto">
-          <Link to="/" className="text-2xl font-semibold tracking-wide ">SoleMate</Link>
-          <div className="flex sm:gap-5 gap-2 items-center">
-            <Link to="/" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-              <FaRegHeart />
-            </Link>
-            <Link className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-              <FaShoppingBag />
-            </Link>
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
-              >
-                Logout
-              </button>
-            ) : (
-              <Link to="/login" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                <FaRegUserCircle />
-              </Link>
-            )}
-          </div>
-        </nav>
-      </header>
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
+      <SiteHeader onLogout={handleLogout} />
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
       <div className="flex items-center gap-2 mb-6">
         <ShoppingCart className="w-6 h-6 text-indigo-600" />
         <h2 className="text-2xl font-bold text-gray-800">My Cart</h2>
       </div>
 
       {cart.length === 0 ? (
-        <p className="text-gray-500 text-center py-6">
+        <p className="text-gray-700 dark:text-gray-400 text-center py-6">
           Your cart is empty 🛒
         </p>
       ) : (
         <div className="space-y-4">
-          {cart.map((item) => (
+          {cart.map((item, rowIndex) => (
             <div
-              key={String(item.id)}
-              className="flex items-center justify-between bg-gray-50 p-4 rounded-xl shadow-sm"
+              key={cartItemKey(item) || `cart-row-${rowIndex}`}
+              className="bg-gray-50 p-4 rounded-xl shadow-sm"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center gap-4">
                 <img
-                  src={resolveCartItemImage(item.image, item.id)}
+                  src={resolveCartItemImage(
+                    item.image,
+                    item.id ?? item._id
+                  )}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded-lg border bg-gray-100"
                   onError={(e) => {
@@ -184,34 +218,49 @@ dispatch(
                   <p className="text-lg font-medium text-gray-800">
                     {item.name}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    ₹{item.price} x {item.quantity}
+                  <p className="text-sm text-gray-700 dark:text-gray-400">
+                    ₹{item.price} each
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleRemove(item.id)}
-                  className="p-2 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-3 text-gray-800 font-semibold">
-                  {item.quantity}
-                </span>
-                <button
-                  onClick={(e) => Addtocart(e,item)}
-                  className="p-2 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => handleDecrease(e, item)}
+                      className="p-2 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="px-3 text-gray-800 font-semibold">
+                      {item.quantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => increaseQuantity(e, item)}
+                      className="p-2 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
 
-              <div className="text-right">
-                <p className="text-lg font-semibold text-gray-800">
-                  ₹{item.price * item.quantity}
-                </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-lg font-semibold text-gray-800">
+                      ₹{item.price * item.quantity}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(cartItemKey(item))}
+                      className="p-2 rounded-full bg-white text-red-600 hover:bg-red-50 transition border border-red-100"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
@@ -224,13 +273,10 @@ dispatch(
             Subtotal: ₹{subtotal}
           </h3>
           <div className="flex gap-3">
-            {user ? (  <button onClick={handlecheckout}
+            <button onClick={handlecheckout}
              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
               Checkout
-            </button>) : (  <Link to="/login"
-             className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
-              Login
-            </Link>)}
+            </button>
           
           </div>
         </div>
