@@ -89,15 +89,9 @@ function SiteFooter() {
             </ul>
 
             <ul className={`flex flex-col gap-2.5 text-sm font-medium ${card}`}>
-              {user ? (
-                <Link to="/chat" className={link}>
-                  FAQ / Help
-                </Link>
-              ) : (
-                <Link to="/login" className={link}>
-                  FAQ / Help
-                </Link>
-              )}
+              <Link to="/faq" className={link}>
+                FAQ / Help
+              </Link>
               <Link to="/contact" className={link}>
                 Contact us
               </Link>

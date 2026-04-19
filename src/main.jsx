@@ -35,6 +35,7 @@ import Dashboard from './Components/Dashboard.jsx'
 import ContactUs from './Components/Contact.jsx'
 import PaymentResult from './Components/Paymentresult.jsx'
 import Chatbot from './Components/Chatservices.jsx'
+import Faq from './Components/Faq.jsx'
 import CheckoutWithAddress from './Components/Address.jsx'
 import OrderHistory from './Components/Order.jsx'
 // import Update from './Components/Update.jsx'
@@ -179,6 +180,10 @@ const route = createBrowserRouter([
       {
         path: "/contact" ,
         element : <ContactUs />
+      },
+      {
+        path: "/faq",
+        element: <Faq />,
       },
       {
         path: "/address/:userid" ,

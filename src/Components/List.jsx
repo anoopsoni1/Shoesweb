@@ -570,11 +570,9 @@ export default function List() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Customer Service</h3>
             <ul className="grid gap-2 text-sm">
-              {user ? (
-                <Link to="/chat" className="hover:text-white">FAQ</Link>
-              ) : (
-                <Link to="/login" className="hover:text-white">FAQ</Link>
-              )}
+              <Link to="/faq" className="hover:text-white">
+                FAQ
+              </Link>
               <li className="hover:text-white">Returns</li>
               <li className="hover:text-white">Shipping</li>
               <li className="hover:text-white">Order Tracking</li>
