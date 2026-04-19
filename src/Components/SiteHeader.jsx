@@ -96,7 +96,7 @@ export default function SiteHeader({
             middleSlot ? "ml-auto sm:ml-0" : ""
           }`}
         >
-          <Link to="/" className={iconBtn} aria-label="Wishlist">
+          <Link to="/wishlist" className={iconBtn} aria-label="Wishlist">
             <FaRegHeart className="text-lg" />
           </Link>
           <Link to={cartHref} className={iconBtn} aria-label="Cart">

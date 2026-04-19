@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Feature/Slicetwo.jsx";
+import { store } from "../Store/Store.js";
+import { mergeGuestCartAfterLogin } from "../utils/addToCart.js";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
@@ -46,6 +48,11 @@ export default function LoginPage() {
 
       if (res.ok && userPayload) {
         dispatch(setUser(userPayload));
+        await mergeGuestCartAfterLogin(
+          String(userPayload._id ?? userPayload.id ?? ""),
+          store.dispatch,
+          store.getState
+        );
         setMessage(" Login Successful");
         navdata("/dashboard");
       } else if (res.ok) {

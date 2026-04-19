@@ -25,7 +25,8 @@ import { useTheme } from "../context/ThemeContext";
 import SiteHeader from "./SiteHeader.jsx";
 
 const API_USER = "https://shoesbackend-4.onrender.com/api/v1/user";
-const WISHLIST_STORAGE = "solemate_wishlist";
+export const WISHLIST_STORAGE = "solemate_wishlist";
+export const WISHLIST_CHANGED_EVENT = "solemate-wishlist-changed";
 const REVIEWS_STORAGE = "solemate_reviews";
 
 export const products = [
@@ -142,6 +143,13 @@ export default function List() {
 
   useEffect(() => {
     setWishlistIds(loadFromStorage(WISHLIST_STORAGE, []));
+    const syncWishlist = () =>
+      setWishlistIds(loadFromStorage(WISHLIST_STORAGE, []));
+    window.addEventListener(WISHLIST_CHANGED_EVENT, syncWishlist);
+    return () => window.removeEventListener(WISHLIST_CHANGED_EVENT, syncWishlist);
+  }, []);
+
+  useEffect(() => {
     const storedReviews = loadFromStorage(REVIEWS_STORAGE, null);
     if (storedReviews) {
       setReviewMap(storedReviews);
@@ -230,7 +238,12 @@ export default function List() {
       ? wishlistIds.filter((id) => id !== productId)
       : [...wishlistIds, productId];
     setWishlistIds(next);
-    localStorage.setItem(WISHLIST_STORAGE, JSON.stringify(next));
+    try {
+      localStorage.setItem(WISHLIST_STORAGE, JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+    window.dispatchEvent(new Event(WISHLIST_CHANGED_EVENT));
   };
 
   const getReviewStats = (productId) => {
@@ -432,6 +445,16 @@ export default function List() {
           >
             {showWishlistOnly ? "Showing wishlist only" : `Show wishlist (${wishlistIds.length})`}
           </button>
+          <Link
+            to="/wishlist"
+            className={`mt-2 block w-full rounded-lg py-2 text-center text-sm font-semibold transition hover:opacity-90 ${
+              isDark
+                ? "bg-slate-800 text-pink-300 hover:bg-slate-700"
+                : "bg-pink-100 text-pink-800 hover:bg-pink-200"
+            }`}
+          >
+            Open wishlist page
+          </Link>
         </aside>
         <main className="flex-1 px-4 sm:px-6 py-6">
           <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
